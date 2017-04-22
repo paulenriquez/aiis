@@ -1,0 +1,23 @@
+<%= form_for @product, url: products_path, html: {class: 'ui form'} do |product| %>
+    <div class = 'input field'>
+        <%= label_tag :product_name, 'Product Name' %>
+        <%= product.text_field :product_name %>
+    </div>
+    <div class = 'input field'>
+        <%= label_tag :product_type, 'Product Type' %>
+        <%= product.text_field :product_type %>
+    </div>
+    <div class = 'input field'>
+        <%= label_tag :product_specs, 'Specifications'%>
+        <%= product.text_field :product_specs %>
+    </div>
+    <div class = 'input field'>
+        <%= label_tag :description %>
+        <%= product.text_field :description %>
+    </div>
+    <div class = 'input field'>
+        <%= label_tag :unit_price, 'Unit Price' %>
+        <%= product.text_field :unit_price %>
+    </div>
+    <%= product.submit, 'Create', class: 'ui button'%>
+<% end %>

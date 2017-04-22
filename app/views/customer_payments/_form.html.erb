@@ -1,0 +1,19 @@
+<%= form_for @customer_payment, url: customer_payments_path, html: {class: 'ui form'} do |customer_payment| %>
+    <!-- Make Hidden Fields -->
+    <%= label_tag :customer_account_id %>
+    <%= customer_payment.text_field :customer_account_id %>
+
+    <%= label_tag :purchase_account_id %>
+    <%= customer_payment.text_field :purchase_order_id %>
+
+    <div class = 'inline field'>
+        <%= label_tag :payment_date, 'Payment Date' %>
+        <%= customer_payment.date_field :payment_date  %>
+    </div>
+    <div class = 'inline field'>
+        <%= label_tag :amount_paid %>
+        <%= customer_payment.text_field :amount_paid %>
+    </div>
+
+    <%= customer_payment.submit 'Create', class: 'ui button' %>
+<% end %>

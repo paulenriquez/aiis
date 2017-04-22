@@ -1,0 +1,23 @@
+<%= form_for @customer_account, url: customer_accounts_path, html: {class: 'ui form'} do |customer_account| %>
+    <div class = 'inline field'>
+        <%= label_tag :customer_name, 'Customer Name' %>
+        <%= customer_account.text_field :customer_name %>
+    </div>
+    <div class = 'inline field'>
+        <%= label_tag :address %>
+        <%= customer_account.text_field :address %>
+    </div>
+    <div class = 'inline field'>
+        <%= label_tag :email%>
+        <%= customer_account.text_field :email %>
+    </div>
+    <div class = 'inline field'>
+        <%= label_tag :telephone_number %>
+        <%= customer_account.telephone_field :telephone_number %>
+    </div>
+    <div class = 'inline field'>
+        <%= label_tag :fax_number %>
+        <%= customer_account.telephone_field :fax_number %>
+    </div>
+    <%= customer_account.submit 'Create', class: 'ui button' %>
+<% end %>

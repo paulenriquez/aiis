@@ -1,0 +1,26 @@
+<table class='ui celled table'>
+    <thead>
+        <th>Product Name</th>
+        <th>Product Type</th>
+        <th>Specifications</th>
+        <th>Description</th>
+        <th>Unit Price</th>
+    </thead>
+    <tbody>
+        <% if @products.empty? %>
+            <tr>
+                <td><p>No Products</p></td>
+            </tr>
+        <% else %>
+            <% @products.each do |product| %>
+                <tr>
+                    <td><%= product.product_name %></td>
+                    <td><%= product.product_type %></td>
+                    <td><%= product.product_specs %></td>
+                    <td><%= product.description %></td>
+                    <td><%= product.unit_price %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
