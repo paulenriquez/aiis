@@ -1,0 +1,47 @@
+<%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
+    <div class = 'inline field'>
+        <%= label_tag :purchase_date, 'Purchase Date' %>
+        <%= purchase_order.date_field :purchase_date %>
+    </div>
+
+    <!-- Put User-facing Customer Selector Form Here -->
+    <div class = 'inline field'>
+        <%= label_tag :customer_account_selector, 'Customer' %>
+        <div class = 'ui search'>
+            <div class = 'ui icon input'>
+                <%= text_field :customer_account_selector, class: 'prompt', placeholder: 'Search Customers' %>  
+                <i class = 'search icon'></i>
+            </div>
+            <div class = 'results'>
+            </div>
+        </div>
+    </div>
+
+
+    <div class = 'inline field'>
+        <%= label_tag :customer_account_id, 'Customer Account ID HIDDEN' %>
+        <%= purchase_order.text_field :customer_account_id %>
+    </div>
+
+    <!-- Put table of Selected Products here -->
+
+    <!-- Put Subtotal Here -->
+
+    <div class = 'inline field'>
+        <%= label_tag :discount, 'Apply Discount' %>
+        <%= purchase_order.text_field :discount %>
+    </div>
+    
+    <!-- Put Negotiated Price Here -->
+
+    <!-- Put User-facing Payment Terms Form Here -->
+    <!-- Make Rails-accessible Payment Terms Field Hidden -->
+    <div class = 'inline field'>
+        <%= label_tag :payment_terms, 'Payment Terms HIDDEN' %>
+        <%= purchase_order.text_field :payment_terms %>
+    </div>
+
+    <!-- Put Due Date here -->
+
+    <div class = 'inline field'></div>
+<% end %>
