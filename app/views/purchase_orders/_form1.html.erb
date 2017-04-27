@@ -1,0 +1,55 @@
+<%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
+    <div class = 'field'>
+        <%= label_tag :purchase_date, 'Purchase Date' %>
+        <%= purchase_order.date_field :purchase_date %>
+    </div>
+
+    <!-- User-Facing Customer Selector -->
+    <div class = 'field'>
+        <label for = 'text-customerAccounts-search'>Customer</label>
+        <div id = 'container-customerAccounts-search' class = 'ui search'>
+            <div class = 'ui icon right action input'>
+                <input id = 'text-customerAccounts-search' class = 'prompt' type = 'text' placeholder = 'Select Customer...'>
+                <i class = 'icon'></i>
+                <div id = 'select-customerAccounts-searchCriteria' class = 'ui compact dropdown button'>
+                    <div class = 'text' id = 'searchCriteria'>Search by Name</div>
+                        <i class = 'dropdown icon'></i>
+                        <div class = 'menu'>
+                        <div class="header">Set Criteria</div>
+                        <div class = 'item' data-value = 'customer_name'>Name</div>
+                        <div class = 'item' data-value = 'address'>Address</div>
+                        <div class = 'item' data-value = 'email'>Email</div>
+                        <div class = 'item' data-value = 'telephone_number'>Telephone No.</div>
+                        <div class = 'item' data-value = 'fax_number'>Fax No.</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class = 'field'>
+        <%= label_tag :customer_account_id, 'Customer Account ID HIDDEN' %>
+        <%= purchase_order.text_field :customer_account_id %>
+    </div>
+
+    <!-- Put table of Selected Products here -->
+
+    <!-- Put Subtotal Here -->
+
+    <div class = 'field'>
+        <%= label_tag :discount, 'Apply Discount' %>
+        <%= purchase_order.text_field :discount %>
+    </div>
+    
+    <!-- Put Negotiated Price Here -->
+
+    <!-- Put User-facing Payment Terms Form Here -->
+    <!-- Make Rails-accessible Payment Terms Field Hidden -->
+    <div class = 'field'>
+        <%= label_tag :payment_terms, 'Payment Terms HIDDEN' %>
+        <%= purchase_order.text_field :payment_terms %>
+    </div>
+
+    <!-- Put Due Date here -->
+<% end %>

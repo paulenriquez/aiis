@@ -8,19 +8,21 @@ class ApiController < ApplicationController
 
     private
         def get_records(model_name, query)
-            model = model_name.singularize.classify.constantize
+            records = model_name.singularize.classify.constantize
             if query.downcase == 'all'
-                return model.all
+                return records.all
             else
-                return model.find(Integer(query))
+                return records.find(Integer(query))
             end
         end
         def search_records(model_name, search_criteria, search_query)
             records = model_name.singularize.classify.constantize.all
             criteria = search_criteria.downcase
             query = search_query.downcase
+            
             results = []
-
+            hash_results = {}
+            
             # Stage 1: Exact, starts_with? Match
             records.each do |entry|
                 if entry[criteria].downcase.starts_with?(query)
@@ -31,7 +33,7 @@ class ApiController < ApplicationController
             # Stage 2: AlphaNumeric Only, starts_with? Match
             records.each do |entry|
                 if entry[criteria].downcase.gsub(/[^0-9a-z]/i, '').starts_with?(query.gsub(/[^0-9a-z]/i, ''))
-                    results.push if results.include?(entry) == false
+                    results.push(entry) if results.include?(entry) == false
                 end
             end
 
@@ -49,10 +51,13 @@ class ApiController < ApplicationController
                 end
             end
 
-            if results.count > 0
-                return results
-            else
-                return {'results': 0}
+            # Convert to Hash
+            hash_results['count'] = results.count
+            hash_results['items'] = []
+            for i in 0..(results.count - 1)
+                hash_results['items'].push(results[i])
             end
+
+            return hash_results
         end
 end

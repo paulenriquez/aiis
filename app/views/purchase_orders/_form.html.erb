@@ -1,33 +1,42 @@
 <%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
-    <div class = 'inline field'>
+    <div class = 'field'>
         <%= label_tag :purchase_date, 'Purchase Date' %>
         <%= purchase_order.date_field :purchase_date %>
     </div>
 
-    <!-- Put User-facing Customer Selector Form Here -->
-    <div class = 'inline field'>
-        <%= label_tag :customer_account_selector, 'Customer' %>
-        <div class = 'ui search'>
-            <div class = 'ui icon input'>
-                <%= text_field :customer_account_selector, class: 'prompt', placeholder: 'Search Customers' %>  
-                <i class = 'search icon'></i>
-            </div>
-            <div class = 'results'>
+    <!-- User-Facing Customer Selector -->
+    <h4 class="ui dividing header">Customer Information</h4>
+    <div class = 'field'>
+        <label>Customer</label>
+        <div id = 'container-customerAccounts-search' class = 'ui right action left icon input search'>
+            <input id = 'text-customerAccounts-search' class = 'prompt' type = 'text' placeholder = 'Search Customer...'>
+            <i class = 'search icon'></i>
+            <div id = 'select-customerAccounts-searchCriteria' class = 'ui basic floating dropdown button'>
+                <span class = 'text'>Search By Name</span>
+                <i class = 'dropdown icon'></i>
+                <div class = 'menu'>
+                    <div class = 'item' data-value = 'customer_name'>Name</div>
+                    <div class = 'item' data-value = 'address'>Address</div>
+                    <div class = 'item' data-value = 'email'>Email</div>
+                    <div class = 'item' data-value = 'telephone_number'>Telephone No.</div>
+                    <div class = 'item' data-value = 'fax_number'>Fax No.</div>
+                </div>
             </div>
         </div>
     </div>
+    
+    <%= purchase_order.text_field :customer_account_id, hidden: true %>
 
-
-    <div class = 'inline field'>
-        <%= label_tag :customer_account_id, 'Customer Account ID HIDDEN' %>
-        <%= purchase_order.text_field :customer_account_id %>
-    </div>
-
-    <!-- Put table of Selected Products here -->
+    <h4 class="ui dividing header">Order Details</h4>
+    
+    <%= purchase_order.fields_for :order_lines do |order_line| %>
+        <% render 'order_line_fields', purchase_order: order_line %>
+    <% end %>
+    <%= link_to_add_association 'Add Product', purchase_order, :order_lines %>
 
     <!-- Put Subtotal Here -->
 
-    <div class = 'inline field'>
+    <div class = 'field'>
         <%= label_tag :discount, 'Apply Discount' %>
         <%= purchase_order.text_field :discount %>
     </div>
@@ -36,12 +45,10 @@
 
     <!-- Put User-facing Payment Terms Form Here -->
     <!-- Make Rails-accessible Payment Terms Field Hidden -->
-    <div class = 'inline field'>
+    <div class = 'field'>
         <%= label_tag :payment_terms, 'Payment Terms HIDDEN' %>
         <%= purchase_order.text_field :payment_terms %>
     </div>
 
     <!-- Put Due Date here -->
-
-    <div class = 'inline field'></div>
 <% end %>

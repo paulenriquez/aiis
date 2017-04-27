@@ -1,21 +1,21 @@
 <%= form_for @product, url: products_path, html: {class: 'ui form'} do |product| %>
-    <div class = 'inline field'>
+    <div class = 'inline'>
         <%= label_tag :product_name, 'Product Name' %>
         <%= product.text_field :product_name %>
     </div>
-    <div class = 'inline field'>
+    <div class = 'inline'>
         <%= label_tag :product_type, 'Product Type' %>
         <%= product.text_field :product_type %>
     </div>
-    <div class = 'inline field'>
+    <div class = 'inline'>
         <%= label_tag :product_specs, 'Specifications'%>
         <%= product.text_field :product_specs %>
     </div>
-    <div class = 'inline field'>
+    <div class = 'inline'>
         <%= label_tag :description %>
         <%= product.text_field :description %>
     </div>
-    <div class = 'inline field'>
+    <div class = 'inline'>
         <%= label_tag :unit_price, 'Unit Price' %>
         <%= product.text_field :unit_price %>
     </div>
