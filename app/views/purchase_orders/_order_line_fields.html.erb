@@ -1,4 +1,12 @@
-<%= purchase_order.text_field :product_id %>
-<%= purchase_order.text_field :quantity %>
-<%= purchase_order.text_field :order_price %>
-<%= link_to_remove_association "remove task", purchase_order %>
+<tr class = 'item'>
+    <td>Product Name Should Be Here</td>
+    <td>Unit Price of Product</td>
+    <td><%= order_line.text_field :quantity %></td>
+    <td>Computed Order Price</td>
+    <td><%= link_to_remove_association 'Remove', order_line, wrapper_class: 'item' %></td>
+
+<%= order_line.text_field :product_id, hidden: true %>
+<%= order_line.text_field :order_price, hidden: true %>
+</tr>
+
+

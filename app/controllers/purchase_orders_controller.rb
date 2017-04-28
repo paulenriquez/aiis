@@ -4,6 +4,8 @@ class PurchaseOrdersController < ApplicationController
     end
     def new
         @purchase_order = PurchaseOrder.new
+        @customer_accounts = CustomerAccount.all
+        @products = Product.all
     end
     def create
         @purchase_order = PurchaseOrder.new(purchase_order_params)

@@ -1,45 +1,141 @@
 <%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
-    <div class = 'field'>
-        <%= label_tag :purchase_date, 'Purchase Date' %>
-        <%= purchase_order.date_field :purchase_date %>
-    </div>
 
     <!-- User-Facing Customer Selector -->
-    <h4 class="ui dividing header">Customer Information</h4>
-    <div class = 'field'>
-        <label>Customer</label>
-        <div id = 'container-customerAccounts-search' class = 'ui right action left icon input search'>
-            <input id = 'text-customerAccounts-search' class = 'prompt' type = 'text' placeholder = 'Search Customer...'>
-            <i class = 'search icon'></i>
-            <div id = 'select-customerAccounts-searchCriteria' class = 'ui basic floating dropdown button'>
-                <span class = 'text'>Search By Name</span>
-                <i class = 'dropdown icon'></i>
-                <div class = 'menu'>
-                    <div class = 'item' data-value = 'customer_name'>Name</div>
-                    <div class = 'item' data-value = 'address'>Address</div>
-                    <div class = 'item' data-value = 'email'>Email</div>
-                    <div class = 'item' data-value = 'telephone_number'>Telephone No.</div>
-                    <div class = 'item' data-value = 'fax_number'>Fax No.</div>
+    <div class = 'ui attached message'>
+        <div class = 'header'>New Purchase Order</div>
+    </div>
+    <div class = 'ui attached segment'>
+        <div class = 'field'>
+            <%= label_tag :purchase_date, 'Purchase Date' %>
+            <%= purchase_order.date_field :purchase_date %>
+        </div>
+        <div class = 'field'>
+            <label>Customer Information</label>
+            <div class = 'ui segments'>
+                <div class = 'ui attached segment'>
+                    <div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
+                        <i class = 'dropdown icon'></i>
+                        <span class = 'default text'>Select Customer...</span>
+                        <div class = 'menu custom'>
+                            <% @customer_accounts.each do |customer_account| %>
+                                <div class = 'item' data-value = <%= + customer_account.id %>>
+                                    <span class = 'title text'><%= customer_account.customer_name %></span>
+                                    <table class = 'details'>
+                                        <tbody>
+                                            <tr>
+                                                <td class = 'key'>Email: </td>
+                                                <td class = 'value email'><%= customer_account.email %></td>
+                                                <td class = 'key'>Tel. No.: </td>
+                                                <td class = 'value telephone_number'><%= customer_account.telephone_number %></td>
+                                                <td class = 'key'>Fax No.: </td>
+                                                <td class = 'value fax_number'><%= customer_account.fax_number %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Address: </td>
+                                                <td class = 'value address'><%= customer_account.address %></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'ui attached segment visible'>
+                    <div id = 'display-customerAccountInfo'>
+                        No Customer is selected.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foreign Key Field for Purchase Order -->
+            <%= purchase_order.text_field :customer_account_id, hidden: true %>
+        </div>
+       
+    </div>
+    <div class = 'ui attached segment'>
+        <div class = 'field'>
+            <label>Order Details</label>
+            <div class = 'ui segments'>
+                <div class = 'ui attached segment'>
+                    <div class="ui three column grid">
+                        <div class="row">
+                            <div class="eight wide column">
+                                <div id = 'select-products' class = 'ui fluid selection search dropdown'>
+                                    <i class = 'dropdown icon'></i>
+                                    <span class = 'default text'>Select Product to Add...</span>
+                                    <div class = 'menu custom'>
+                                        <% @products.each do |product| %>
+                                            <div class = 'item' data-value = <%= product.id %>>
+                                                <span class = 'title text'><%= product.product_name %></span>
+                                                <span class = 'subtext'> — 55 left</span>
+                                                <table class = 'details'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class = 'key'>Remaining Qty.: </td>
+                                                            <td class = 'value remaining_qty'>WALA PA</td>
+                                                            <td class = 'key'>Specifications.: </td>
+                                                            <td class = 'value product_specs'><%= product.product_specs %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class = 'key'>Product Type: </td>
+                                                            <td class = 'value product_type'><%= product.product_type %></td>
+                                                            <td class = 'key'>Unit Price: </td>
+                                                            <td class = 'value unit_price'><%= product.unit_price %></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class = 'field'>
+                                    <input id = 'newProductQty' type = 'text' placeholder = 'Qty.' >
+                                </div>
+                            </div>
+                            <div class="two wide column">
+                                <%= link_to_add_association 'Add', purchase_order, :order_lines, form_name: 'order_line', data: {'association-insertion-node': '#table-orderLines tbody', 'association-insertion-method': 'append'}, id: 'button-addOrderLine', class: 'ui button' %>
+                            </div>
+                            <div class="two wide column">
+                                <a class = 'ui button'>Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'ui attached segment no-padding'>
+                    <div class = 'order-line-table-container'>
+                        <table id = 'table-orderLines' class = 'ui celled striped table'>
+                            <thead>
+                                <tr>
+                                    <th>Particulars</th>
+                                    <th>Price / Unit</th>
+                                    <th>Qty.</th>
+                                    <th>Order Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% purchase_order.fields_for :order_lines do |order_line| %>
+                                    <%= render 'order_line_fields', order_line: order_line %>
+                                <% end %>
+                            </tbody> 
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <%= purchase_order.text_field :customer_account_id, hidden: true %>
-
-    <h4 class="ui dividing header">Order Details</h4>
-    
-    <%= purchase_order.fields_for :order_lines do |order_line| %>
-        <% render 'order_line_fields', purchase_order: order_line %>
-    <% end %>
-    <%= link_to_add_association 'Add Product', purchase_order, :order_lines %>
+    <div class = 'ui attached segment'>
+        <div class = 'field'>
+            <%= label_tag :discount, 'Apply Discount' %>
+            <%= purchase_order.text_field :discount %>
+        </div>
+    </div>
 
     <!-- Put Subtotal Here -->
 
-    <div class = 'field'>
-        <%= label_tag :discount, 'Apply Discount' %>
-        <%= purchase_order.text_field :discount %>
-    </div>
     
     <!-- Put Negotiated Price Here -->
 

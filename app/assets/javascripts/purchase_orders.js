@@ -1,69 +1,63 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+var select_customerAccounts, mainForm_customerAccountID;
+var select_products;
+
+var observer_config = { childList: true, subtree: true, attributes: true, characterData: true }
+
 $(document).ready(function () {
     /** _FORM.HTML.ERB */
-    /** Customer Accounts */
-        var customerAccounts_searchText = $('#text-customerAccounts-search');
-        var customerAccounts_criteriaSelector = $('#select-customerAccounts-searchCriteria');
-        var customerAccounts_container = $('#container-customerAccounts-search');
-        var mainForm_customerAccountID = $('#purchase_order_customer_account_id');
+        // Initialize All Dropdowns
+        $('.ui.search.dropdown').dropdown();
 
-        function customerAccounts_getSearchQuery() { return customerAccounts_searchText.val(); }
-        function customerAccounts_getSearchCriteria() { return customerAccounts_criteriaSelector.dropdown('get value'); }
-        
-        function customerAccounts_doSearch(criteria, query) {
-            customerAccounts_container.search({
-                apiSettings: {
-                    url: '../api/db/search?table=customer_accounts&by=' + criteria + '&q=' + query
-                },
-                type: 'customerAccountsTemplate',
-                templates: {
-                    customerAccountsTemplate: function (response, fields) {
-                        var html = '';
-                        $.each (response[fields.results], function (index, result) {
-                            html += '<a class="result" value="' + result[fields.id] + '">';
-                            html += '<div class="content">';
-                            html += '<div class="title">' + result[fields.title] + '</div>';
-                            html += '<div class="description">' + result[fields.address]  + '</div>';
-                            html += '<div class="description">' + result[fields.email] + '</div>';
-                            html += '</div>';
-                            html += '</a>';
-                        });
-                        return html;
-                    }
-                },
-                fields: {
-                    results: 'items',
-                    id: 'id',
-                    title: 'customer_name',
-                    address : 'address',
-                    email: 'email',
-                    telephone_number: 'telephone_number',
-                    fax_number: 'fax_number'
-                },
-                minimumCharacters: 0,
-                onSelect: function(result, response) {
-                    customerAccounts_setSelectedItem(result);
+        /** Customer Selector */
+        select_customerAccounts = $('#select-customerAccounts');
+        mainForm_customerAccountID = $('#purchase_order_customer_account_id');
+
+        observer_customerAccounts.observe(select_customerAccounts.find('.menu')[0], observer_config);
+        select_customerAccounts.dropdown({
+            fullTextSearch: true,
+            onShow: function() {
+                select_customerAccounts.find('.menu .item.selected').removeClass('selected');
+                select_customerAccounts.find('.menu .item.active').addClass('selected');
+            },
+            onHide: function() {
+                var selectedCustomer = {
+                    'id': select_customerAccounts.find('.menu .item.active').attr('data-value'),
+                    'customer_name': select_customerAccounts.find('.menu .item.active .title.text').html(),
+                    'address': select_customerAccounts.find('.menu .item.active .details .value.address').html(),
+                    'email': select_customerAccounts.find('.menu .item.active .details .value.email').html(),
+                    'telephone_number': select_customerAccounts.find('.menu .item.active .details .value.telephone_number').html(),
+                    'fax_number': select_customerAccounts.find('.menu .item.active .details .value.fax_number').html(),
                 }
-            });
-        }
-        function customerAccounts_setSelectedItem(item) {
-            mainForm_customerAccountID.val(item.id);
-        }
-        customerAccounts_searchText.keyup(function() {
-            customerAccounts_doSearch(customerAccounts_getSearchCriteria(), customerAccounts_getSearchQuery());
-        });
-
-        // Search Criteria Selector
-        customerAccounts_criteriaSelector.dropdown('set value', 'customer_name');
-        customerAccounts_criteriaSelector.dropdown({
-            selectOnKeydown: false,
-            onChange: function(value, text) {
-                customerAccounts_criteriaSelector.dropdown('set text', 'Search By ' + text);
-                customerAccounts_searchText.focus();
+                mainForm_customerAccountID.val(selectedCustomer.id);
             }
         });
-        customerAccounts_criteriaSelector.dropdown('set text', 'Search By Name');
-        
-    /** Product Selector */
+
+        /** Product Selector */
+        select_products = $('#select-products');
+        table_orderLines = $('#table-orderLines');
+        observer_products.observe(select_products.find('.menu')[0], observer_config);
+        select_products.dropdown({
+            onShow: function() {
+                select_products.find('.menu .item.selected').removeClass('selected');
+                select_products.find('.menu .item.active').addClass('selected');
+            },
+            onHide: function() {
+
+            },
+            onChange: function() {
+
+            }
+        });
+
+});
+
+var observer_customerAccounts = new MutationObserver(function () {
+    if (select_customerAccounts.find('input').val() === '' && select_customerAccounts.dropdown('get value') !== '') {
+        select_customerAccounts.dropdown('set text', select_customerAccounts.find('.menu .item.active .title.text').html());
+    }
+});
+var observer_products = new MutationObserver(function () {
+    if (select_products.find('input').val() === '' && select_products.dropdown('get value') !== '') {
+        select_products.dropdown('set text', select_products.find('.menu .item.active .title.text').html());
+    }
 });

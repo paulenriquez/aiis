@@ -1,0 +1,39 @@
+body {
+    padding: 1em;
+}
+
+.field .ui.segments {
+    margin-top: 0;
+}
+
+.ui.search.dropdown .menu.custom {
+    max-height: 50vh;
+    .item {
+        border-top: 1px solid rgba(34,36,38,.1);
+        .text.title {
+            font-weight: 700;
+            font-size: 1em;
+        }
+        .details {
+            margin-top: 0.5em;
+            font-size: 0.928em;
+            color: rgba(0,0,0, 0.6);
+            tr {
+                td {
+                    padding-bottom: 0.25em;
+                }
+                .key {
+                    width: 10em;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .item.active, .item.selected { 
+        font-weight: normal;
+        background: rgba(0, 0, 0, 0.05);
+        .details {
+            color: rgba(0,0,0, 0.9);
+        }
+    }
+}
