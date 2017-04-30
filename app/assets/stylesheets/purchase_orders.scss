@@ -1,22 +1,21 @@
-.select-qty-label-container {
-    padding-right: 0 !important;
-    .select-qty-label {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgba(0, 0, 0, 0.87);
-        font-size: 0.92857143em;
-        font-weight: bold
+.add-product-fields-container {
+    .product-selector-label-container {
+        width: 10% !important;
     }
-    .disabled {
-        pointer-events: none;
-        opacity: .45;
+    .product-selector-container {
+        width: 60% !important;
     }
-}
-.qty-container {
-    padding-left: 0 !important;
-    #text-newProductQty {
-        text-align: center !important;
+    .qty-text-label-container {
+        width: 6% !important;
+    }
+    .qty-text-container {
+        width: 14% !important;
+        #text-newProductQty {
+            text-align: center !important;
+        }
+    }
+    .add-order-line-button-container {
+        width: 10% !important;
     }
 }
 
@@ -56,6 +55,7 @@
         }
         .col-particulars {
             width: 48%;
+            border-left-width: 0 !important;
         }
         .col-unit-price {
             width: 15%;
@@ -69,8 +69,80 @@
             }
         }
         .col-order-price {
-            width: 20%;
+            width: 15%;
             text-align: right !important;
+        }
+    }
+}
+
+.main-price-container {
+    display: table;
+    .left-col {
+        display: table-cell;
+        height: 100% !important;
+        width: 90% !important;
+        .label {
+            float: right;
+            padding-right: 1em;
+            text-transform: uppercase;
+            font-size: 0.93em;
+            font-weight: 700;
+        }
+    }
+    .right-col {
+        display: table-cell;
+        width: 10% !important;
+         .value {
+            float: right;
+            font-weight: 700;
+        }
+    }
+}
+.discount-segment {
+    border-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    .discount-container {
+        .discount-type-label-container {
+            width: 10% !important;
+        }
+        .discount-type-container {
+            width: 22% !important;
+            #select-discountType {
+                text-align: center;
+            }
+        }
+        .discount-value-label-container {
+            width: 8% !important;
+            span {
+                display: none;
+            }
+        }
+        .discount-value-container {
+            display: none;
+            width: 13% !important;
+            .text-discount-percent-container {
+                display: none;
+            }
+            .text-discount-amount-container {
+                display: none;
+            }
+        }
+    }
+}
+.total-price-container {
+    display: table;
+    padding-top: 2.3em !important;
+    .left-col {
+        display: table-cell;
+        width: 50% !important;
+    }
+    .right-col {
+        display: table-cell;
+        width: 50% !important;
+         .value {
+            float: right;
+            font-weight: 700;
+            font-size: 2em;
         }
     }
 }

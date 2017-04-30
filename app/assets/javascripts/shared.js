@@ -4,10 +4,11 @@ $(document).ready(function() {
             e.preventDefault();
         }
     });
+    
 });
 function displayPrice(num) {
-    return Number(num).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parseFloat(num).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 function parsePrice(price) {
-    return price.replace(',', '');
+    return parseFloat(price.replace(new RegExp(',', 'g'), ''));
 }

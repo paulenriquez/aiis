@@ -3,7 +3,10 @@ var select_products, text_newProductQty, button_addOrderLine,
     container_normalMode, button_deleteMode, button_editMode,
     container_editMode, button_saveEdit, button_cancelEdit,
     container_deleteMode, button_deleteSelected, button_cancelDelete, 
-    table_orderLines; 
+    table_orderLines,
+    container_discountPercent, container_discountAmount,
+    select_discountType, text_discountPercent, text_discountAmount, mainForm_discountAmount,
+    info_subtotal, info_discount, info_total;
 
 var observerConfig = { childList: true, subtree: true, attributes: true, characterData: true };
 
@@ -39,7 +42,7 @@ $(document).ready(function () {
         }
     });
 
-    /** Product Selector */
+    /** Order Details */
     select_products = $('#select-products');
     button_addOrderLine = $('#button-addOrderLine');
     text_newProductQty = $('#text-newProductQty');
@@ -56,11 +59,24 @@ $(document).ready(function () {
     button_cancelDelete = $('#button-deleteMode-cancel');
     check_selectAll = $('#check-selectAll');
 
-
     // Table
     label_itemsAddedCount = $('#label-itemsAddedCount');
     table_orderLines = $('#table-orderLines');
+
+    // Discount
+    select_discountType = $('#select-discountType');
+    container_discountPercent = $('.text-discount-percent-container');
+    text_discountPercent = $('#text-discountPercent');
+    container_discountAmount = $('.text-discount-amount-container');
+    text_discountAmount = $('#text-discountAmount');
+    mainForm_discountAmount = $('#purchase_order_discount');
     
+    // Prices
+    info_subtotal = $('#info-subtotal');
+    info_discount = $('#info-discount');
+    info_total = $('#info-total');
+
+
     // Attach MutationOberver to Product Selector
     observer_products.observe(select_products.find('.menu')[0], observerConfig);
     
@@ -104,8 +120,8 @@ $(document).ready(function () {
      */
     observer_orderLineTable.observe(table_orderLines.find('tbody')[0], {childList: true, attributes: true, characterData: true });
 
-     // Edit & Delete Mode Functions
-     function enterEditMode() {
+    // Edit & Delete Mode Functions
+    function enterEditMode() {
          var inputHTML = '<input id="text-editQty" type="number" min="1" value="1">';
 
         container_normalMode.css('display', 'none');
@@ -141,11 +157,13 @@ $(document).ready(function () {
         container_editMode.css('display', 'none');
         enableDisableProductSelectorFields('enable');
         updateOrderLineItemsInfo();
+        computeSubtotalAndTotal();
     }
     function enterDeleteMode() {
         container_normalMode.css('display', 'none');
         container_deleteMode.css('display', 'block');
-        $('.col-checkbox').css('display', 'block');
+        table_orderLines.find('.col-checkbox').css('display', 'table-cell');
+        table_orderLines.find('.col-particulars').css('border-left-width', '1px');
         enableDisableProductSelectorFields('disable');
 
         $('.item-count-container').html('<b>Delete:</b> Select the items you want to delete.');
@@ -216,18 +234,21 @@ $(document).ready(function () {
         container_normalMode.css('display', 'block');
         container_deleteMode.css('display', 'none');
         $('.col-checkbox').css('display', 'none');
+        $('.col-particulars').css('border-left-width', '0');
         enableDisableProductSelectorFields('enable');
     }
+
+    // Product Selector & Order Line Table Functions
     function enableDisableProductSelectorFields(val) {
         if (val.toLowerCase() === 'disable') {
             select_products.addClass('disabled');
-            $('.select-qty-label').addClass('disabled');
+            $('.select-qty-label').addClass('text-label disabled');
             // Targets parent() due to Semantic-UI Structure
             text_newProductQty.parent().addClass('disabled');
             button_addOrderLine.addClass('disabled');
         } else if (val.toLowerCase() === 'enable') {
             select_products.removeClass('disabled');
-            $('.select-qty-label').removeClass('disabled');
+            $('.select-qty-label').removeClass('text-label disabled');
             text_newProductQty.parent().removeClass('disabled');
             button_addOrderLine.removeClass('disabled');
             enableDisableAddOrderLine();
@@ -271,9 +292,23 @@ $(document).ready(function () {
         if (itemCount > 0) {
             button_deleteMode.removeClass('disabled');
             button_editMode.removeClass('disabled');
+            table_orderLines.css('border-bottom-width', '1px');
+
+            // Enable Discount
+            $('.discount-type-label-container span').removeClass('text-label disabled');
+            select_discountType.removeClass('disabled');
+            $('.discount-info-label').removeClass('text-label disabled');
+            info_discount.removeClass('text-label disabled');
         } else {
             button_deleteMode.addClass('disabled');
             button_editMode.addClass('disabled');
+            table_orderLines.css('border-bottom-width', '0');
+
+            // Disable Discount
+            $('.discount-type-label-container span').addClass('text-label disabled');
+            select_discountType.addClass('disabled');
+            $('.discount-info-label').addClass('text-label disabled');
+            info_discount.addClass('text-label disabled');
         }
         if (itemCount === 0) {
             $('.item-count-container').html('Select a product to add from the dropdown.');
@@ -289,6 +324,9 @@ $(document).ready(function () {
         });
     }
 
+
+
+    // HTML Elements Event Handlers
     button_editMode.click(function() { enterEditMode(); });
     button_deleteMode.click(function() { enterDeleteMode(); });
     button_saveEdit.click(function() { exitEditMode(true); });
@@ -306,17 +344,73 @@ $(document).ready(function () {
                 $(this).find('.col-checkbox #check-itemSelect').checkbox('uncheck');
             });
         }
-    });
-        
+    });    
     table_orderLines.on('cocoon:after-insert', function(e, insertedItem) {
         insertOrderLineAttributes(insertedItem);
         updateProductSelector();
         updateOrderLineItemsInfo();
+        computeSubtotalAndTotal();
     });
     table_orderLines.on('cocoon:after-remove', function(e, removedItem) {
         updateProductSelector();
         updateOrderLineItemsInfo();
-    });   
+        computeSubtotalAndTotal();
+    });
+    updateProductSelector();
+    updateOrderLineItemsInfo();
+
+    // Discount & Prices
+    function computeDiscount() {
+        var discount = 0;
+        if (select_discountType.dropdown('get value') === 'percent') {
+            discount = parsePrice(info_subtotal.html()) * (text_discountPercent.val() / 100);
+        } else if (select_discountType.dropdown('get value') === 'amount') {
+            discount = text_discountAmount.val();
+        }
+        mainForm_discountAmount.val(discount);
+        info_discount.html(displayPrice(mainForm_discountAmount.val()));
+
+        if (isNaN(parsePrice(info_discount.html()))) {
+            info_discount.html('0.00');
+        }
+    }       
+    function computeSubtotalAndTotal() {
+        var subtotal = 0;
+        table_orderLines.find('tbody .order-line-item').each(function() {
+            subtotal += parsePrice($(this).find('.col-order-price').html());
+        });
+        info_subtotal.html(displayPrice(subtotal));
+        info_total.html(displayPrice(subtotal - parsePrice(info_discount.html())));
+    }
+    select_discountType.dropdown({
+        onChange: function() {
+            text_discountPercent.val('');
+            text_discountAmount.val('');
+            info_discount.html('0.00');
+            if ($(this).dropdown('get value') === 'none') {
+                $('.discount-value-label-container span').css('display', 'none');
+                container_discountAmount.css('display', 'none');
+                container_discountPercent.css('display', 'none');
+            } else if ($(this).dropdown('get value') === 'percent') {
+                $('.discount-value-label-container span').css('display', 'block');
+                container_discountAmount.css('display', 'none');
+                container_discountPercent.css('display', 'inline-flex');
+                text_discountPercent.focus();
+            } else if ($(this).dropdown('get value') === 'amount') {
+                $('.discount-value-label-container span').css('display', 'block');
+                container_discountAmount.css('display', 'inline-flex');
+                container_discountPercent.css('display', 'none');
+                text_discountAmount.focus();
+            } 
+        }
+    });
+    text_discountPercent.on('input', function() {
+        computeDiscount();
+    });
+    text_discountAmount.on('input', function() {
+        computeDiscount();
+    });
+
 });
 
 // MutationObserver Events
@@ -331,22 +425,33 @@ var observer_products = new MutationObserver(function () {
     }
 });
 var observer_orderLineTable = new MutationObserver(function (mutations) {
+    var subtotal = 0, total = 0;
     table_orderLines.find('tbody .order-line-item').each(function() {
-        var mainForm_orderLineProductID = $(this).find('.main-form.product-id');
-        var mainForm_orderLineQty = $(this).find('.main-form.qty');
+        var orderLineItem = $(this);
+
+        var mainForm_orderLineProductID = orderLineItem.find('.main-form.product-id');
+        var mainForm_orderLineQty = orderLineItem.find('.main-form.qty');
 
         var currentProductID = mainForm_orderLineProductID.val();
         
-        var orderLineTable_colParticulars = $(this).find('.col-particulars');
-        var orderLineTable_colUnitPrice = $(this).find('.col-unit-price');
-        var orderLineTable_colQty = $(this).find('.col-qty');
-        var orderLineTable_colOrderPrice = $(this).find('.col-order-price');
+        var orderLineTable_colParticulars = orderLineItem.find('.col-particulars');
+        var orderLineTable_colUnitPrice = orderLineItem.find('.col-unit-price');
+        var orderLineTable_colQty = orderLineItem.find('.col-qty');
+        var orderLineTable_colOrderPrice = orderLineItem.find('.col-order-price');
 
         $.getJSON('../api/db?table=products&q=' + currentProductID, function(data) {
             orderLineTable_colParticulars.html(data.product_name + ' (' + data.product_specs + ')');            
             orderLineTable_colUnitPrice.html(displayPrice(data.unit_price));
             orderLineTable_colQty.html(mainForm_orderLineQty.val());
             orderLineTable_colOrderPrice.html(displayPrice(mainForm_orderLineQty.val() * data.unit_price));
+
+            /** Compute Subtotal & Total Upon Insertion. Function computeSubtotalAndTotal()
+            * in $(document).ready() cannot be used since information about OrderLine
+            * arrives right after insertion.
+            */
+            subtotal += parsePrice(orderLineItem.find('.col-order-price').html());
+            info_subtotal.html(displayPrice(subtotal));
+            info_total.html(displayPrice(subtotal - parsePrice(info_discount.html())));
         });
     });
 });

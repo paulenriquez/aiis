@@ -55,10 +55,7 @@
                                     No Customer is selected.
                                 </div>
                             </div>
-                        </div>
-                    
-                        <!-- Foreign Key Field for Purchase Order -->
-                        <%= purchase_order.text_field :customer_account_id, hidden: true %>
+                        </div>                    
                     </div>
                 </div>
             </div>
@@ -70,9 +67,12 @@
             <label>Order Details</label>
             <div class = 'ui segments'>
                 <div class = 'ui attached segment'>
-                    <div class = 'ui four column grid'>
-                        <div class = 'row'>
-                            <div class = 'eleven wide column'>
+                    <div class = 'ui five column grid'>
+                        <div class = 'row add-product-fields-container'>
+                            <div class = 'wide column product-selector-label-container inline-grid-label-container'>
+                                <span class = 'inline-grid-label'>Products:</span>
+                            </div>
+                            <div class = 'wide column product-selector-container inline-grid-field-container'>
                                 <div id = 'select-products' class = 'ui fluid selection search dropdown'>
                                     <i class = 'dropdown icon'></i>
                                     <span class = 'default text'>Select Product to Add...</span>
@@ -103,15 +103,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class = 'one wide column select-qty-label-container'>
-                                <p class = 'select-qty-label right floated'>Qty:</p>                            
+                            <div class = 'wide column qty-text-label-container inline-grid-label-container'>
+                                <span class = 'inline-grid-label select-qty-label'>Qty:</span>                            
                             </div>
-                            <div class = 'two wide column qty-container'>
+                            <div class = 'wide column qty-text-container inline-grid-field-container'>
                                 <div class = 'ui input'>
                                     <input id = 'text-newProductQty' type = 'number' min = '1' value = '1' placeholder = 'Qty...'>
                                 </div>
                             </div>
-                            <div class = 'two wide column'>
+                            <div class = 'wide column add-order-line-button-container'>
                                 <%= link_to_add_association 'Add', purchase_order, :order_lines, form_name: 'order_line', data: {'association-insertion-node': '#table-orderLines tbody', 'association-insertion-method': 'append'}, id: 'button-addOrderLine', class: 'ui button right floated right disabled' %>
                             </div>
                         </div>
@@ -148,7 +148,6 @@
                                     <th class = 'col-checkbox'>
                                         <div id = 'check-selectAll' class = 'ui fitted checkbox'>
                                             <input type = 'checkbox'>
-                                            <label></label>
                                         </div>
                                     </th>
                                     <th class = 'col-particulars'>Particulars</th>
@@ -165,40 +164,78 @@
                         </table>
                     </div>
                 </div>
-                <div class = 'ui attached segment'>
-                    <div class = 'ui three column grid'>
-                        <div class = 'row'>
-                            <div class = 'ten wide column'></div>
-                            <div class = 'two wide column subtotal-label-container'>
-                                <h5 class = 'subtotal-label'>SUBTOTAL:</p>
-                            </div>
-                            <div class = 'four wide column subtotal-info-container'>
-                                <h5 id = 'info-subtotal' class = 'subtotal-info'>0.00</p>
-                            </div>
-                        </div>
+                <div class = 'ui attached segment main-price-container'>
+                    <div class = 'left-col'>
+                         <span class = 'label subtotal-info-label'>Subtotal:</span>
+                    </div>
+                    <div class = 'right-col'>
+                         <span id = 'info-subtotal' class = 'value'>0.00</span>
                     </div>
                 </div>
-                <div class = 'ui attached segment'>
-                    <div class = 'field'>
-                        <%= label_tag :discount, 'Apply Discount' %>
-                        <%= purchase_order.text_field :discount %>
+                <div class = 'ui attached segment discount-segment'>
+                    <div class = 'ui four column grid'>
+                        <div class = 'row discount-container'>
+                            <div class = 'wide column discount-type-label-container inline-grid-label-container'>
+                                <span class = 'inline-grid-label text-label disabled'>Discount:</span>
+                            </div>
+                            <div class = 'wide column discount-type-container inline-grid-field-container'>
+                                <div class = 'field'>
+                                    <div id = 'select-discountType' class = 'ui fluid floating dropdown button disabled'>
+                                        <span class = 'text'>No Discount</span>
+                                        <i class = 'dropdown icon'></i>
+                                        <div class = 'menu'>
+                                            <div class = 'item' data-value = 'none'>No Discount</div>
+                                            <div class = 'item' data-value = 'percent'>% of Subtotal</div>
+                                            <div class = 'item' data-value = 'amount'>Exact Amount</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = 'wide column discount-value-label-container inline-grid-label-container'>
+                                <span class = 'inline-grid-label'>Value:</span>
+                            </div>
+                            <div class = 'wide column discount-value-container inline-grid-field-container'>
+                                <div class = 'ui right labeled input text-discount-percent-container'>
+                                    <input id = 'text-discountPercent' type = 'text' placeholder= 'Percent'>
+                                    <div class = 'ui basic label'>%</div>
+                                </div>
+                                <div class = 'ui labeled input text-discount-amount-container'>
+                                    <div class = 'ui basic label'>₱</div>
+                                    <input id = 'text-discountAmount' type = 'text' placeholder = 'Amount'>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class = 'ui attached segment main-price-container'>
+                    <div class = 'left-col'>
+                         <span class = 'label discount-info-label text-label disabled'>Discount:</span>
+                    </div>
+                    <div class = 'right-col'>
+                         <span id = 'info-discount' class = 'value text-label disabled'>0.00</span>
+                    </div>
+                </div>
+                <div class = 'ui attached segment total-price-container'>
+                    <div class = 'left-col'>
+                         <!-- <span class = 'label total-info-label'>Grand Total:</span> -->
+                    </div>
+                    <div class = 'right-col'>
+                         <span class = 'value'>₱ <span id = 'info-total'>0.00</span></span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
- 
-    <!-- Put Subtotal Here -->
 
-    
-    <!-- Put Negotiated Price Here -->
-
-    <!-- Put User-facing Payment Terms Form Here -->
-    <!-- Make Rails-accessible Payment Terms Field Hidden -->
-    <div class = 'field'>
-        <%= label_tag :payment_terms, 'Payment Terms HIDDEN' %>
-        <%= purchase_order.text_field :payment_terms %>
+    <div class = 'ui attached segment'>
+        <h1>Yo</h1>
     </div>
 
-    <!-- Put Due Date here -->
+
+    <!-- Hidden Fields -->
+    <%= purchase_order.text_field :customer_account_id, hidden: true %>
+    <%= purchase_order.text_field :discount, hidden: true %>
+    <%= purchase_order.text_field :payment_terms, hidden: true %>
+    <%= purchase_order.date_field :due_date, hidden: true %>
 <% end %>
