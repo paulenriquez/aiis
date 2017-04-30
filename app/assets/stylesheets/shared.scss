@@ -2,6 +2,10 @@ body {
     padding: 1em;
 }
 
+.no-padding {
+    padding: 0 !important;
+}
+
 .field .ui.segments {
     margin-top: 0;
 }
@@ -14,6 +18,9 @@ body {
             font-weight: 700;
             font-size: 1em;
         }
+        .float-right {
+            float: right;
+        }
         .details {
             margin-top: 0.5em;
             font-size: 0.928em;
@@ -23,7 +30,7 @@ body {
                     padding-bottom: 0.25em;
                 }
                 .key {
-                    width: 10em;
+                    width: 6em;
                     font-weight: 600;
                 }
             }
