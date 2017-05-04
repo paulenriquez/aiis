@@ -1,62 +1,61 @@
 <%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
+    <div class = 'ui attached message'>
+        <div class = 'header'>New Purchase Order</div>
+    </div>
     <div class = 'ui attached segment'>
-        <div class = 'ui three column grid'>
+        <div class = 'ui four column grid'>
             <div class = 'row'>
-                <div class = 'nine wide column'>
-                    <div class = 'field'>
-                        <label>Customer Information</label>
-                        <div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
-                            <i class = 'dropdown icon'></i>
-                            <span class = 'default text'>Select Customer...</span>
-                            <div class = 'menu custom'>
-                            <% @customer_accounts.each do |customer_account| %>
-                                <div class = 'item' data-value = <%= customer_account.id %>>
-                                    <span class = 'title text'><%= customer_account.customer_name %></span>
-                                        <table class = 'details'>
-                                            <tbody>
-                                                <tr>
-                                                    <td class = 'key'>Email:</td>
-                                                    <td id = 'val-customerName' class = 'value'><%= customer_account.email %></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class = 'key'  >Tel. No.: </td>
-                                                    <td id = 'val-telephoneNumber' class = 'value'><%= customer_account.telephone_number %></td>
-                                                </tr>
-                                                <tr></tr>
-                                                    <td class = 'key'  >Fax No.: </td>
-                                                    <td id = 'val-faxNumber' class = 'value'><%= customer_account.fax_number %></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class = 'key'  >Address: </td>
-                                                    <td id = 'val-address' class = 'value'><%= customer_account.address %></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <% end %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class = 'four wide column'>
+                <div class = 'eight wide column'>
                     <div class = 'field'>
                         <%= label_tag :purchase_date, 'Purchase Date' %>
-                        <%= purchase_order.date_field :purchase_date, value: Date.today, required: 'required' %>
+                        <%= purchase_order.date_field :purchase_date, value: Date.today %>
                     </div>
                 </div>
-                <div class = 'three wide column'>
+            </div>
+            <div class = 'row'>
+                <div class = 'eight wide column'>
                     <div class = 'field'>
-                        <label>Payment Terms</label>
-                        <div id = 'select-paymentTerms' class = 'ui fluid floating dropdown button' data-value = '30-days'>
-                            <span class = 'text'>30 Days</span>
-                            <i class = 'dropdown icon'></i>
-                            <div class = 'menu'>
-                                <div class = 'item' data-value = '30-days'>30 Days</div>
-                                <div class = 'item' data-value = '60-days'>60 Days</div>
-                                <div class = 'item' data-value = '90-days'>90 Days</div>
-                                <div class = 'item' data-value = 'paid'>Paid</div>
+                        <label>Customer Information</label>
+                        <div class = 'ui segments'>
+                            <div class = 'ui attached segment'>
+                                <div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
+                                    <i class = 'dropdown icon'></i>
+                                    <span class = 'default text'>Select Customer...</span>
+                                    <div class = 'menu custom'>
+                                    <% @customer_accounts.each do |customer_account| %>
+                                        <div class = 'item' data-value = <%= customer_account.id %>>
+                                            <span class = 'title text'><%= customer_account.customer_name %></span>
+                                                <table class = 'details'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class = 'key'>Email:</td>
+                                                            <td id = 'val-customerName' class = 'value'><%= customer_account.email %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class = 'key'  >Tel. No.: </td>
+                                                            <td id = 'val-telephoneNumber' class = 'value'><%= customer_account.telephone_number %></td>
+                                                        </tr>
+                                                        <tr></tr>
+                                                            <td class = 'key'  >Fax No.: </td>
+                                                            <td id = 'val-faxNumber' class = 'value'><%= customer_account.fax_number %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class = 'key'  >Address: </td>
+                                                            <td id = 'val-address' class = 'value'><%= customer_account.address %></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class = 'ui attached segment visible'>
+                                <div id = 'display-customerAccountInfo'>
+                                    No Customer is selected.
+                                </div>
+                            </div>
+                        </div>                    
                     </div>
                 </div>
             </div>
@@ -67,7 +66,7 @@
         <div class = 'field'>
             <label>Order Details</label>
             <div class = 'ui segments'>
-                <div class = 'ui attached segment add-product-fields-segment'>
+                <div class = 'ui attached segment'>
                     <div class = 'ui five column grid'>
                         <div class = 'row add-product-fields-container'>
                             <div class = 'wide column product-selector-label-container inline-grid-label-container'>
@@ -229,40 +228,53 @@
             </div>
         </div>
     </div>
-    <div class = 'ui bottom attached segment'>
-        <div class = 'field'>
-            <label>Fulfillment Status</label>
-            <div class = 'ui two column grid'>
-                <div class = 'four wide column'>
-                    <div id = 'select-status' class = 'ui fluid floating dropdown button' data-value = '30-days'>
-                        <span class = 'text'>Unfulfilled</span>
-                        <i class = 'dropdown icon'></i>
-                        <div class = 'menu'>
-                            <div class = 'item' data-value = 'unfulfilled'>Unfulfilled</div>
-                            <div class = 'item' data-value = 'fullfilled'>Fulfilled</div>
+
+    <div class = 'ui attached segment'>
+        <div class = 'ui four column grid'>
+            <div class = 'row'>
+                <div class = 'eight wide column'>
+                    <div class = 'field'>
+                        <label>Payment Terms</label>
+                        <div class = 'ui segments'>
+                            <div class = 'ui attached segment'>
+                                <div class = 'grouped fields'>
+                                    <div class = 'field'>
+                                        <div id = 'radio-paymentTerms30' class = 'ui radio checkbox'>
+                                            <input type = 'radio' checked = 'checked'>
+                                            <label>30 Days from Purchase Date</label>
+                                        </div>
+                                    </div>
+                                    <div class = 'field'>
+                                        <div id = 'radio-paymentTerms60' class = 'ui radio checkbox'>
+                                            <input type = 'radio'>
+                                            <label>60 Days from Purchase Date</label>
+                                        </div>
+                                    </div>
+                                    <div class = 'field'>
+                                        <div id = 'radio-paymentTerms90' class = 'ui radio checkbox'>
+                                            <input type = 'radio'>
+                                            <label>90 Days from Purchase Date</label>
+                                        </div>
+                                    </div>
+                                    <div class = 'field'>
+                                        <div id = 'radio-paymentTermsCustom' class = 'ui radio checkbox'>
+                                            <input type = 'radio'>
+                                            <label>Custom Due Date</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class = 'wide column date-fulfilled-label-container inline-grid-label-container'>
-                    <span class = 'inline-grid-label'>Date Fulfilled:</span>
-                </div>
-                <div class = 'four wide column'>
-                    <input id = 'field-dateFulfilled' type = 'date'>
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    
-    <%= purchase_order.submit 'Create', class: 'ui primary button' %>
+
 
     <!-- Hidden Fields -->
-    <!-- Purchase Date field used above. -->
     <%= purchase_order.text_field :customer_account_id, hidden: true %>
-    <%= purchase_order.text_field :subtotal, value: '0', hidden: true %>
-    <%= purchase_order.text_field :discount, value: '0', hidden: true %>
-    <%= purchase_order.text_field :negotiated_price, value: '0', hidden: true %>
-    <%= purchase_order.text_field :payment_terms, value: '30-days', hidden: true %>
-    <%= purchase_order.date_field :due_date, value: Date.today + 30.days, hidden: true %>
-    <%= purchase_order.text_field :status, value: 'unfulfilled', hidden: true %>
+    <%= purchase_order.text_field :discount, hidden: true %>
+    <%= purchase_order.text_field :payment_terms, hidden: true %>
+    <%= purchase_order.date_field :due_date, hidden: true %>
 <% end %>

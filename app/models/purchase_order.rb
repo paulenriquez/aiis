@@ -5,4 +5,12 @@ class PurchaseOrder < ApplicationRecord
     belongs_to :customer_account
 
     accepts_nested_attributes_for :order_lines
+
+    private
+        def complete_attributes
+            
+        end
+        def get_status
+
+        end
 end

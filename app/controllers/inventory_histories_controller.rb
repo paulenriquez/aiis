@@ -1,0 +1,2 @@
+class InventoryHistoriesController < ApplicationController
+end

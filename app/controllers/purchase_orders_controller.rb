@@ -9,21 +9,24 @@ class PurchaseOrdersController < ApplicationController
     end
     def create
         @purchase_order = PurchaseOrder.new(purchase_order_params)
-        
+        if @purchase_order.save
+            
+        else
+
+        end
     end
     def show
 
     end
+    def edit
+
+    end
+    def update
+        
+    end
 
     private
         def purchase_order_params
-            params.require(:purchase_order).permit(
-                :purchase_date,
-                :discount,
-                :negotiated_price,
-                :payment_terms,
-                :due_date,
-                :customer_account_id
-            )
+            params.require(:purchase_order).permit!
         end
 end

@@ -12,6 +12,7 @@
     <td style = 'display: none;'>
         <%= order_line.text_field :product_id, class: 'main-form product-id', hidden: 'true' %>
         <%= order_line.text_field :quantity, class: 'main-form qty', hidden: 'true' %>
+        <%= order_line.text_field :order_price, class: 'main-form order-price', hidden: 'true' %>
         <%= link_to_remove_association 'Remove', order_line, wrapper_class: 'order-line-item', style: 'display: none;', id: 'button-removeItem' %>
     </td>
 </tr>

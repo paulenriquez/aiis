@@ -1,40 +1,48 @@
-.add-product-fields-container {
-    .product-selector-label-container {
-        width: 10% !important;
-    }
-    .product-selector-container {
-        width: 60% !important;
-    }
-    .qty-text-label-container {
-        width: 6% !important;
-    }
-    .qty-text-container {
-        width: 14% !important;
-        #text-newProductQty {
-            text-align: center !important;
+#select-paymentTermsType {
+    text-align: center;
+}
+
+.add-product-fields-segment {
+    border-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    .add-product-fields-container {
+        .product-selector-label-container {
+            width: 10% !important;
         }
-    }
-    .add-order-line-button-container {
-        width: 10% !important;
+        .product-selector-container {
+            width: 60% !important;
+        }
+        .qty-field-label-container {
+            width: 6% !important;
+        }
+        .qty-field-container {
+            width: 14% !important;
+            #field-newProductQty {
+                text-align: center !important;
+            }
+        }
+        .add-order-line-button-container {
+            width: 10% !important;
+        }
     }
 }
 
 .action-buttons-container {
-    .item-count-container {
+    #label-actionInfo {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
     }
-    .normal-mode-buttons {
+    .normal-mode-buttons-container {
         display: block;
         #button-deleteMode, #button-editMode {
             min-width: 8em !important;
         }
     }
-    .edit-mode-buttons {
+    .edit-mode-buttons-container {
         display: none;
     }
-    .delete-mode-buttons {
+    .delete-mode-buttons-container {
         display: none;
     }
 }
@@ -64,7 +72,7 @@
         .col-qty {
             width: 12%;
             text-align: right !important;
-            #text-editQty {
+            #field-editQty {
                 text-align: center !important;
             }
         }
@@ -80,7 +88,7 @@
     .left-col {
         display: table-cell;
         height: 100% !important;
-        width: 90% !important;
+        width: 86.5% !important;
         .label {
             float: right;
             padding-right: 1em;
@@ -91,7 +99,7 @@
     }
     .right-col {
         display: table-cell;
-        width: 10% !important;
+        width: 13.5% !important;
          .value {
             float: right;
             font-weight: 700;
@@ -106,7 +114,7 @@
             width: 10% !important;
         }
         .discount-type-container {
-            width: 22% !important;
+            width: 23% !important;
             #select-discountType {
                 text-align: center;
             }
@@ -120,10 +128,10 @@
         .discount-value-container {
             display: none;
             width: 13% !important;
-            .text-discount-percent-container {
+            .discount-field-percent-container {
                 display: none;
             }
-            .text-discount-amount-container {
+            .discount-field-amount-container {
                 display: none;
             }
         }
@@ -145,4 +153,7 @@
             font-size: 2em;
         }
     }
+}
+.date-fulfilled-label-container {
+    width: 12% !important;
 }
