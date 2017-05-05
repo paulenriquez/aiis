@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170504051656) do
+ActiveRecord::Schema.define(version: 20170505050048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20170504051656) do
 
   create_table "inventory_histories", force: :cascade do |t|
     t.date     "date_changed"
-    t.string   "type"
+    t.string   "action_type"
     t.integer  "quantity"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 20170504051656) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "customer_account_id"
+    t.date     "date_fulfilled"
+    t.string   "po_num"
     t.index ["customer_account_id"], name: "index_purchase_orders_on_customer_account_id", using: :btree
   end
 

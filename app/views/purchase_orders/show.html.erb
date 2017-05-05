@@ -1,14 +1,51 @@
 <div class = 'ui attached message'>
-    <div class = 'header'>View Purchase Order</div>
+    <div class = 'header'>Purchase Order (<%= @purchase_order.po_num %>)</div>
 </div>
 <div class = 'ui attached segment'>
-   
+    <span><%= @purchase_order.customer_account.customer_name %></span>
+    <table>
+        <tbody>
+            <tr>
+                <td>Address:</td>
+                <td><%= @purchase_order.customer_account.address %></td>
+            </tr>
+            <tr>
+                <td>Telephone No.:</td>
+                <td><%= @purchase_order.customer_account.telephone_number %></td>
+            </tr>
+            <tr>
+                <td>Fax No.:</td>
+                <td><%= @purchase_order.customer_account.fax_number %></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div class = 'ui attached segment'>
-    <div class = 'field'>
-        <label>Order Details</label>
-        <div class = 'ui segments'>
-            
+    <div class = 'ui form'>
+        <div class = 'field'>
+            <label>Order Details</label>
+            <div class = 'ui segments'>
+                <table class = 'ui celled striped table'>
+                    <thead>
+                        <tr>
+                            <th class = 'col-particulars'>Particulars</th>
+                            <th class = 'col-unit-price'>Unit Price</th>
+                            <th class = 'col-qty'>Qty.</th>
+                            <th class = 'col-order-price'>Order Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @purchase_order.order_lines.each do |order_line| %>
+                            <tr>
+                                <td class = 'col-particulars'><%= @purchase_order.products.find(order_line.product_id).product_name.to_s + ' (' + @purchase_order.products.find(order_line.product_id).product_specs.to_s + ')' %> </td>
+                                <td class = 'col-unit-price'><%= number_with_precision(@purchase_order.products.find(order_line.product_id).unit_price, precision: 2, delimiter: ',') %></td>
+                                <td class = 'col-qty'><%= order_line.quantity %></td>
+                                <td class = 'col-order-price'><%= number_with_precision(order_line.order_price, precision: 2, delimiter: ',') %></td>
+                            </tr>
+                        <% end %>
+                    </tbody> 
+                </table>
+            </div>
         </div>
     </div>
 </div>

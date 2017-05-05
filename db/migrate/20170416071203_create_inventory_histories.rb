@@ -3,7 +3,7 @@ class CreateInventoryHistories < ActiveRecord::Migration[5.0]
     create_table :inventory_histories do |t|
       t.date :date_changed
 
-      t.string :type
+      t.string :action_type
       t.integer :quantity
       
       t.timestamps

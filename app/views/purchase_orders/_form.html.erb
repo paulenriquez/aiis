@@ -1,268 +1,280 @@
-<%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
-    <div class = 'ui attached segment'>
-        <div class = 'ui three column grid'>
-            <div class = 'row'>
-                <div class = 'nine wide column'>
-                    <div class = 'field'>
-                        <label>Customer Information</label>
-                        <div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
-                            <i class = 'dropdown icon'></i>
-                            <span class = 'default text'>Select Customer...</span>
-                            <div class = 'menu custom'>
-                            <% @customer_accounts.each do |customer_account| %>
-                                <div class = 'item' data-value = <%= customer_account.id %>>
-                                    <span class = 'title text'><%= customer_account.customer_name %></span>
-                                        <table class = 'details'>
-                                            <tbody>
-                                                <tr>
-                                                    <td class = 'key'>Email:</td>
-                                                    <td id = 'val-customerName' class = 'value'><%= customer_account.email %></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class = 'key'  >Tel. No.: </td>
-                                                    <td id = 'val-telephoneNumber' class = 'value'><%= customer_account.telephone_number %></td>
-                                                </tr>
-                                                <tr></tr>
-                                                    <td class = 'key'  >Fax No.: </td>
-                                                    <td id = 'val-faxNumber' class = 'value'><%= customer_account.fax_number %></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class = 'key'  >Address: </td>
-                                                    <td id = 'val-address' class = 'value'><%= customer_account.address %></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <% end %>
+<div class = 'view-form-partial'>
+    <%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
+        <div class = 'ui attached segment'>
+            <div class = 'ui three column grid'>
+                <div class = 'row'>
+                    <div class = 'nine wide column'>
+                        <div class = 'field'>
+                            <label>Customer Information</label>
+                            <div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
+                                <i class = 'dropdown icon'></i>
+                                <span class = 'default text'>Select Customer...</span>
+                                <div class = 'menu custom'>
+                                <% @customer_accounts.each do |customer_account| %>
+                                    <div class = 'item' data-value = <%= customer_account.id %>>
+                                        <span class = 'title text'><%= customer_account.customer_name %></span>
+                                            <table class = 'details'>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class = 'key'>Email:</td>
+                                                        <td id = 'val-customerName' class = 'value'><%= customer_account.email %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class = 'key'  >Tel. No.: </td>
+                                                        <td id = 'val-telephoneNumber' class = 'value'><%= customer_account.telephone_number %></td>
+                                                    </tr>
+                                                    <tr></tr>
+                                                        <td class = 'key'  >Fax No.: </td>
+                                                        <td id = 'val-faxNumber' class = 'value'><%= customer_account.fax_number %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class = 'key'  >Address: </td>
+                                                        <td id = 'val-address' class = 'value'><%= customer_account.address %></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'four wide column'>
+                        <div class = 'field'>
+                            <%= label_tag :purchase_date, 'Purchase Date' %>
+                            <%= purchase_order.date_field :purchase_date, value: Date.today, required: 'required' %>
+                        </div>
+                    </div>
+                    <div class = 'three wide column'>
+                        <div class = 'field'>
+                            <label>Payment Terms</label>
+                            <div id = 'select-paymentTerms' class = 'ui fluid floating dropdown button' data-value = '30-days'>
+                                <span class = 'text'>30 Days</span>
+                                <i class = 'dropdown icon'></i>
+                                <div class = 'menu'>
+                                    <div class = 'item' data-value = '30-days'>30 Days</div>
+                                    <div class = 'item' data-value = '60-days'>60 Days</div>
+                                    <div class = 'item' data-value = '90-days'>90 Days</div>
+                                    <div class = 'item' data-value = 'paid'>Paid</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class = 'four wide column'>
-                    <div class = 'field'>
-                        <%= label_tag :purchase_date, 'Purchase Date' %>
-                        <%= purchase_order.date_field :purchase_date, value: Date.today, required: 'required' %>
+            </div>
+        </div>
+
+        <div class = 'ui attached segment'>
+            <div class = 'field'>
+                <label>Order Details</label>
+                <div class = 'ui segments'>
+                    <div class = 'ui attached segment add-product-fields-segment'>
+                        <div class = 'ui five column grid'>
+                            <div class = 'row add-product-fields-container'>
+                                <div class = 'wide column product-selector-label-container inline-grid-label-container'>
+                                    <span class = 'inline-grid-label'>Products:</span>
+                                </div>
+                                <div class = 'wide column product-selector-container inline-grid-field-container'>
+                                    <div id = 'select-products' class = 'ui fluid selection search dropdown'>
+                                        <i class = 'dropdown icon'></i>
+                                        <span class = 'default text'>Select Product to Add...</span>
+                                        <div class = 'menu custom'>
+                                            <% @products.each do |product| %>
+                                                <div class = 'item' data-value = <%= product.id %>>
+                                                    <span class = 'title text' id = 'val-productName'><%= product.product_name %></span>
+                                                    <span class = 'subtext'>
+                                                        <span class = ''> ― <span id = 'val-quantity'>69</span> units left </span>
+                                                        <span class = 'float-right'>₱ <span id = 'val-unitPrice'><%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></span></span>
+                                                    </span>
+                                                    <table class = 'details'>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class = 'key'>Type: </td>
+                                                                <td id = 'val-productType' class = 'value'><%= product.product_type %></td>
+                                                            </tr>
+                                                                <td class = 'key'>Specs.: </td>
+                                                                <td id = 'val-productSpecs' class = 'value specs'><%= product.product_specs %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class = 'key'>Description: </td>
+                                                                <td id = 'val-description' class = 'value'><%= product.description %></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'wide column qty-field-label-container inline-grid-label-container'>
+                                    <span class = 'inline-grid-label select-qty-label'>Qty:</span>                            
+                                </div>
+                                <div class = 'wide column qty-field-container inline-grid-field-container'>
+                                    <div class = 'ui input'>
+                                        <input id = 'field-newProductQty' type = 'number' min = '1' value = '1' placeholder = 'Qty...'>
+                                    </div>
+                                </div>
+                                <div class = 'wide column add-order-line-button-container'>
+                                    <%= link_to_add_association 'Add', purchase_order, :order_lines, form_name: 'order_line', data: {'association-insertion-node': '#table-orderLines tbody', 'association-insertion-method': 'append'}, id: 'button-addOrderLine', class: 'ui button right floated right disabled' %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment action-buttons-container'>
+                        <div class = 'ui two column grid'>
+                            <div class = 'row'>
+                                <div class = 'ten wide column'>
+                                    <span id = 'label-actionInfo'>Select a product to add from the dropdown.</span>
+                                </div>
+                                <div class = 'six wide column'>
+                                    <div class = 'normal-mode-buttons-container'>
+                                        <a id = 'button-deleteMode' class = 'ui compact labeled icon button right floated disabled'><i class = 'trash icon'></i>Delete</a>
+                                        <a id = 'button-editMode' class = 'ui compact labeled icon button right floated disabled'><i class = 'edit icon'></i>Edit</a>
+                                    </div>
+                                    <div class = 'edit-mode-buttons-container'>
+                                        <a id = 'button-editMode-save' class = 'ui compact positive labeled icon button right floated'><i class = 'save icon'></i>Save</a>
+                                        <a id = 'button-editMode-cancel' class = 'ui compact button right floated'>Cancel</a>
+                                    </div>
+                                    <div class = 'delete-mode-buttons-container'>
+                                        <a id = 'button-deleteMode-delete' class = 'ui compact negative labeled icon button right floated disabled'><i class = 'trash icon'></i>Delete<span class = 'selected-count'></span></a>
+                                        <a id = 'button-deleteMode-cancel' class = 'ui compact button right floated'>Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment order-line-table-container no-padding'>
+                        <div class = ''>
+                            <table id = 'table-orderLines' class = 'ui celled striped table'>
+                                <thead>
+                                    <tr>
+                                        <th class = 'col-checkbox'>
+                                            <div id = 'check-selectAll' class = 'ui fitted checkbox'>
+                                                <input type = 'checkbox'>
+                                            </div>
+                                        </th>
+                                        <th class = 'col-particulars'>Particulars</th>
+                                        <th class = 'col-unit-price'>Unit Price</th>
+                                        <th class = 'col-qty'>Qty.</th>
+                                        <th class = 'col-order-price'>Order Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%= purchase_order.fields_for :order_lines do |order_line| %>
+                                        <%= render 'order_line_fields', order_line: order_line %>
+                                    <% end %>
+                                </tbody> 
+                            </table>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment main-price-container'>
+                        <div class = 'left-col'>
+                             <span class = 'label subtotal-info-label'>Subtotal:</span>
+                        </div>
+                        <div class = 'right-col'>
+                             <span id = 'label-subtotal' class = 'value'>0.00</span>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment discount-segment'>
+                        <div class = 'ui four column grid'>
+                            <div class = 'row discount-container'>
+                                <div class = 'wide column discount-type-label-container inline-grid-label-container'>
+                                    <span class = 'inline-grid-label text-label disabled'>Discount:</span>
+                                </div>
+                                <div class = 'wide column discount-type-container inline-grid-field-container'>
+                                    <div class = 'field'>
+                                        <div id = 'select-discountType' class = 'ui fluid floating dropdown button disabled'>
+                                            <span class = 'text'>No Discount</span>
+                                            <i class = 'dropdown icon'></i>
+                                            <div class = 'menu'>
+                                                <div class = 'item' data-value = 'none'>No Discount</div>
+                                                <div class = 'item' data-value = 'percent'>% of Subtotal</div>
+                                                <div class = 'item' data-value = 'amount'>Exact Amount</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'wide column discount-value-label-container inline-grid-label-container'>
+                                    <span class = 'inline-grid-label'>Value:</span>
+                                </div>
+                                <div class = 'wide column discount-value-container inline-grid-field-container'>
+                                    <div class = 'ui right labeled input discount-field-percent-container'>
+                                        <input id = 'field-discountPercent' type = 'text' placeholder= 'Percent'>
+                                        <div class = 'ui basic label'>%</div>
+                                    </div>
+                                    <div class = 'ui labeled input discount-field-amount-container'>
+                                        <div class = 'ui basic label'>₱</div>
+                                        <input id = 'field-discountAmount' type = 'text' placeholder = 'Amount'>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment main-price-container'>
+                        <div class = 'left-col'>
+                             <span class = 'label discount-info-label text-label disabled'>Discount:</span>
+                        </div>
+                        <div class = 'right-col'>
+                             <span id = 'label-discount' class = 'value text-label disabled'>0.00</span>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment total-price-container'>
+                        <div class = 'left-col'>
+                             <!-- <span class = 'label total-info-label'>Grand Total:</span> -->
+                        </div>
+                        <div class = 'right-col'>
+                             <span class = 'value'>₱ <span id = 'label-total'>0.00</span></span>
+                        </div>
                     </div>
                 </div>
-                <div class = 'three wide column'>
-                    <div class = 'field'>
-                        <label>Payment Terms</label>
-                        <div id = 'select-paymentTerms' class = 'ui fluid floating dropdown button' data-value = '30-days'>
-                            <span class = 'text'>30 Days</span>
+            </div>
+        </div>
+        <div class = 'ui bottom attached segment'>
+            <div class = 'field'>
+                <label>Status</label>
+                <div class = 'ui two column grid'>
+                    <div class = 'four wide column'>
+                        <div id = 'select-status' class = 'ui fluid floating dropdown button' data-value = 'unfulfilled'>
+                            <span class = 'text'>Unfulfilled</span>
                             <i class = 'dropdown icon'></i>
                             <div class = 'menu'>
-                                <div class = 'item' data-value = '30-days'>30 Days</div>
-                                <div class = 'item' data-value = '60-days'>60 Days</div>
-                                <div class = 'item' data-value = '90-days'>90 Days</div>
-                                <div class = 'item' data-value = 'paid'>Paid</div>
+                                <div class = 'item' data-value = 'unfulfilled'>Unfulfilled</div>
+                                <div class = 'item' data-value = 'fulfilled'>Fulfilled</div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class = 'ui attached segment'>
-        <div class = 'field'>
-            <label>Order Details</label>
-            <div class = 'ui segments'>
-                <div class = 'ui attached segment add-product-fields-segment'>
-                    <div class = 'ui five column grid'>
-                        <div class = 'row add-product-fields-container'>
-                            <div class = 'wide column product-selector-label-container inline-grid-label-container'>
-                                <span class = 'inline-grid-label'>Products:</span>
-                            </div>
-                            <div class = 'wide column product-selector-container inline-grid-field-container'>
-                                <div id = 'select-products' class = 'ui fluid selection search dropdown'>
-                                    <i class = 'dropdown icon'></i>
-                                    <span class = 'default text'>Select Product to Add...</span>
-                                    <div class = 'menu custom'>
-                                        <% @products.each do |product| %>
-                                            <div class = 'item' data-value = <%= product.id %>>
-                                                <span class = 'title text' id = 'val-productName'><%= product.product_name %></span>
-                                                <span class = 'subtext'>
-                                                    <span class = ''> ― <span id = 'val-quantity'>69</span> units left </span>
-                                                    <span class = 'float-right'>₱ <span id = 'val-unitPrice'><%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></span></span>
-                                                </span>
-                                                <table class = 'details'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class = 'key'>Type: </td>
-                                                            <td id = 'val-productType' class = 'value'><%= product.product_type %></td>
-                                                        </tr>
-                                                            <td class = 'key'>Specs.: </td>
-                                                            <td id = 'val-productSpecs' class = 'value specs'><%= product.product_specs %></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class = 'key'>Description: </td>
-                                                            <td id = 'val-description' class = 'value'><%= product.description %></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        <% end %>
+                    <div class = 'six wide column'>
+                        <div class = 'date-fulfilled-container'>
+                            <div class = 'ui two column grid'>
+                                <div class = 'row'>
+                                    <div class = 'six wide column inline-grid-label-container'>
+                                        <span class = 'inline-grid-label'>Date Fulfilled:</span>
+                                    </div>
+                                    <div class = 'ten wide column inline-grid-field-container'>
+                                        <%= purchase_order.date_field :date_fulfilled %>
                                     </div>
                                 </div>
                             </div>
-                            <div class = 'wide column qty-field-label-container inline-grid-label-container'>
-                                <span class = 'inline-grid-label select-qty-label'>Qty:</span>                            
-                            </div>
-                            <div class = 'wide column qty-field-container inline-grid-field-container'>
-                                <div class = 'ui input'>
-                                    <input id = 'field-newProductQty' type = 'number' min = '1' value = '1' placeholder = 'Qty...'>
-                                </div>
-                            </div>
-                            <div class = 'wide column add-order-line-button-container'>
-                                <%= link_to_add_association 'Add', purchase_order, :order_lines, form_name: 'order_line', data: {'association-insertion-node': '#table-orderLines tbody', 'association-insertion-method': 'append'}, id: 'button-addOrderLine', class: 'ui button right floated right disabled' %>
-                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class = 'ui attached segment action-buttons-container'>
-                    <div class = 'ui two column grid'>
-                        <div class = 'row'>
-                            <div class = 'eight wide column'>
-                                <span id = 'label-actionInfo'>Select a product to add from the dropdown.</span>
-                            </div>
-                            <div class = 'eight wide column'>
-                                <div class = 'normal-mode-buttons-container'>
-                                    <a id = 'button-deleteMode' class = 'ui compact labeled icon button right floated disabled'><i class = 'trash icon'></i>Delete</a>
-                                    <a id = 'button-editMode' class = 'ui compact labeled icon button right floated disabled'><i class = 'edit icon'></i>Edit</a>
-                                </div>
-                                <div class = 'edit-mode-buttons-container'>
-                                    <a id = 'button-editMode-save' class = 'ui compact positive labeled icon button right floated'><i class = 'save icon'></i>Save</a>
-                                    <a id = 'button-editMode-cancel' class = 'ui compact button right floated'>Cancel</a>
-                                </div>
-                                <div class = 'delete-mode-buttons-container'>
-                                    <a id = 'button-deleteMode-delete' class = 'ui compact negative labeled icon button right floated disabled'><i class = 'trash icon'></i>Delete<span class = 'selected-count'></span></a>
-                                    <a id = 'button-deleteMode-cancel' class = 'ui compact button right floated'>Cancel</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class = 'ui attached segment order-line-table-container no-padding'>
-                    <div class = ''>
-                        <table id = 'table-orderLines' class = 'ui celled striped table'>
-                            <thead>
-                                <tr>
-                                    <th class = 'col-checkbox'>
-                                        <div id = 'check-selectAll' class = 'ui fitted checkbox'>
-                                            <input type = 'checkbox'>
-                                        </div>
-                                    </th>
-                                    <th class = 'col-particulars'>Particulars</th>
-                                    <th class = 'col-unit-price'>Unit Price</th>
-                                    <th class = 'col-qty'>Qty.</th>
-                                    <th class = 'col-order-price'>Order Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% purchase_order.fields_for :order_lines do |order_line| %>
-                                    <%= render 'order_line_fields', order_line: order_line %>
-                                <% end %>
-                            </tbody> 
-                        </table>
-                    </div>
-                </div>
-                <div class = 'ui attached segment main-price-container'>
-                    <div class = 'left-col'>
-                         <span class = 'label subtotal-info-label'>Subtotal:</span>
-                    </div>
-                    <div class = 'right-col'>
-                         <span id = 'label-subtotal' class = 'value'>0.00</span>
-                    </div>
-                </div>
-                <div class = 'ui attached segment discount-segment'>
-                    <div class = 'ui four column grid'>
-                        <div class = 'row discount-container'>
-                            <div class = 'wide column discount-type-label-container inline-grid-label-container'>
-                                <span class = 'inline-grid-label text-label disabled'>Discount:</span>
-                            </div>
-                            <div class = 'wide column discount-type-container inline-grid-field-container'>
-                                <div class = 'field'>
-                                    <div id = 'select-discountType' class = 'ui fluid floating dropdown button disabled'>
-                                        <span class = 'text'>No Discount</span>
-                                        <i class = 'dropdown icon'></i>
-                                        <div class = 'menu'>
-                                            <div class = 'item' data-value = 'none'>No Discount</div>
-                                            <div class = 'item' data-value = 'percent'>% of Subtotal</div>
-                                            <div class = 'item' data-value = 'amount'>Exact Amount</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class = 'wide column discount-value-label-container inline-grid-label-container'>
-                                <span class = 'inline-grid-label'>Value:</span>
-                            </div>
-                            <div class = 'wide column discount-value-container inline-grid-field-container'>
-                                <div class = 'ui right labeled input discount-field-percent-container'>
-                                    <input id = 'field-discountPercent' type = 'text' placeholder= 'Percent'>
-                                    <div class = 'ui basic label'>%</div>
-                                </div>
-                                <div class = 'ui labeled input discount-field-amount-container'>
-                                    <div class = 'ui basic label'>₱</div>
-                                    <input id = 'field-discountAmount' type = 'text' placeholder = 'Amount'>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
-                <div class = 'ui attached segment main-price-container'>
-                    <div class = 'left-col'>
-                         <span class = 'label discount-info-label text-label disabled'>Discount:</span>
-                    </div>
-                    <div class = 'right-col'>
-                         <span id = 'label-discount' class = 'value text-label disabled'>0.00</span>
-                    </div>
-                </div>
-                <div class = 'ui attached segment total-price-container'>
-                    <div class = 'left-col'>
-                         <!-- <span class = 'label total-info-label'>Grand Total:</span> -->
-                    </div>
-                    <div class = 'right-col'>
-                         <span class = 'value'>₱ <span id = 'label-total'>0.00</span></span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class = 'ui bottom attached segment'>
-        <div class = 'field'>
-            <label>Fulfillment Status</label>
-            <div class = 'ui two column grid'>
-                <div class = 'four wide column'>
-                    <div id = 'select-status' class = 'ui fluid floating dropdown button' data-value = '30-days'>
-                        <span class = 'text'>Unfulfilled</span>
-                        <i class = 'dropdown icon'></i>
-                        <div class = 'menu'>
-                            <div class = 'item' data-value = 'unfulfilled'>Unfulfilled</div>
-                            <div class = 'item' data-value = 'fullfilled'>Fulfilled</div>
-                        </div>
-                    </div>
-                </div>
-                <div class = 'wide column date-fulfilled-label-container inline-grid-label-container'>
-                    <span class = 'inline-grid-label'>Date Fulfilled:</span>
-                </div>
-                <div class = 'four wide column'>
-                    <input id = 'field-dateFulfilled' type = 'date'>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    
-    <%= purchase_order.submit 'Create', class: 'ui primary button' %>
+        <br>
 
-    <!-- Hidden Fields -->
-    <!-- Purchase Date field used above. -->
-    <%= purchase_order.text_field :customer_account_id, hidden: true %>
-    <%= purchase_order.text_field :subtotal, value: '0', hidden: true %>
-    <%= purchase_order.text_field :discount, value: '0', hidden: true %>
-    <%= purchase_order.text_field :negotiated_price, value: '0', hidden: true %>
-    <%= purchase_order.text_field :payment_terms, value: '30-days', hidden: true %>
-    <%= purchase_order.date_field :due_date, value: Date.today + 30.days, hidden: true %>
-    <%= purchase_order.text_field :status, value: 'unfulfilled', hidden: true %>
-<% end %>
+        <%= purchase_order.submit 'Create', class: 'ui primary button' %>
+
+        <!-- HIDDEN FIELD -->
+        <!-- Purchase Date field used above. -->
+        <%= purchase_order.text_field :customer_account_id, hidden: false %>
+        <%= purchase_order.text_field :subtotal, hidden: false %>
+        <%= purchase_order.text_field :discount, hidden: false %>
+        <%= purchase_order.text_field :negotiated_price, hidden: false %>
+        <%= purchase_order.text_field :payment_terms, hidden: false %>
+        <%= purchase_order.date_field :due_date, hidden: false %>
+        <%= purchase_order.text_field :outstanding_balance, hidden: false %>
+        <%= purchase_order.text_field :status, hidden: false %>
+        <!-- Date Fulfilled field used above. -->
+    <% end %>
+</div>

@@ -1,4 +1,4 @@
-function script_newPurchaseOrder() {
+function view_form_partial(loadValues) {
     var select_customerAccounts;
     var select_paymentTerms;
     var select_products, field_newProductQty, button_addOrderLine;
@@ -9,6 +9,7 @@ function script_newPurchaseOrder() {
     var container_discountPercent, container_discountAmount,
         select_discountType, field_discountPercent, field_discountAmount;
     var label_subtotal, label_discount, label_total;
+    var select_status;
 
     var mainForm_purchaseDate,
         mainForm_customerAccountID,
@@ -17,7 +18,8 @@ function script_newPurchaseOrder() {
         mainForm_discountAmount,
         mainForm_paymentTerms,
         mainForm_dueDate,
-        mainForm_outstandingBalance;
+        mainForm_outstandingBalance,
+        mainForm_dateFulfilled;
 
     var observer_customerAccounts = new MutationObserver(function () {
         if (select_customerAccounts.dropdown('get value') !== '') {
@@ -39,45 +41,50 @@ function script_newPurchaseOrder() {
     });
 
     $(document).ready(function() {
-        select_customerAccounts = $('#select-customerAccounts');
+        select_customerAccounts = $('.view-form-partial #select-customerAccounts');
         
-        select_paymentTerms = $('#select-paymentTerms');
+        select_paymentTerms = $('.view-form-partial #select-paymentTerms');
 
-        select_products = $('#select-products');
-        button_addOrderLine = $('#button-addOrderLine');
-        field_newProductQty = $('#field-newProductQty');
+        select_products = $('.view-form-partial #select-products');
+        button_addOrderLine = $('.view-form-partial #button-addOrderLine');
+        field_newProductQty = $('.view-form-partial #field-newProductQty');
 
-        label_actionInfo = $('#label-actionInfo');
-        container_normalMode = $('.normal-mode-buttons-container');
-        button_deleteMode = $('#button-deleteMode');
-        button_editMode = $('#button-editMode');
-        container_editMode = $('.edit-mode-buttons-container');
-        button_saveEdit = $('#button-editMode-save');
-        button_cancelEdit = $('#button-editMode-cancel');
-        container_deleteMode = $('.delete-mode-buttons-container');
-        button_deleteSelected = $('#button-deleteMode-delete');
-        button_cancelDelete = $('#button-deleteMode-cancel');
+        label_actionInfo = $('.view-form-partial #label-actionInfo');
+        container_normalMode = $('.view-form-partial .normal-mode-buttons-container');
+        button_deleteMode = $('.view-form-partial #button-deleteMode');
+        button_editMode = $('.view-form-partial #button-editMode');
+        container_editMode = $('.view-form-partial .edit-mode-buttons-container');
+        button_saveEdit = $('.view-form-partial #button-editMode-save');
+        button_cancelEdit = $('.view-form-partial #button-editMode-cancel');
+        container_deleteMode = $('.view-form-partial .delete-mode-buttons-container');
+        button_deleteSelected = $('.view-form-partial #button-deleteMode-delete');
+        button_cancelDelete = $('.view-form-partial #button-deleteMode-cancel');
 
-        table_orderLines = $('#table-orderLines');
-        check_selectAll = $('#check-selectAll');
+        table_orderLines = $('.view-form-partial #table-orderLines');
+        check_selectAll = $('.view-form-partial #check-selectAll');
         
-        select_discountType = $('#select-discountType');
-        container_discountPercent = $('.discount-field-percent-container');
-        field_discountPercent = $('#field-discountPercent');
-        container_discountAmount = $('.discount-field-amount-container');
-        field_discountAmount = $('#field-discountAmount');
+        select_discountType = $('.view-form-partial #select-discountType');
+        container_discountPercent = $('.view-form-partial .discount-field-percent-container');
+        field_discountPercent = $('.view-form-partial #field-discountPercent');
+        container_discountAmount = $('.view-form-partial .discount-field-amount-container');
+        field_discountAmount = $('.view-form-partial #field-discountAmount');
 
-        label_discount = $('#label-discount');
-        label_subtotal = $('#label-subtotal');
-        label_total = $('#label-total');
+        label_discount = $('.view-form-partial #label-discount');
+        label_subtotal = $('.view-form-partial #label-subtotal');
+        label_total = $('.view-form-partial #label-total');
 
-        mainForm_purchaseDate = $('#purchase_order_purchase_date');
-        mainForm_customerAccountID = $('#purchase_order_customer_account_id');
-        mainForm_subtotal = $('#purchase_order_subtotal');
-        mainForm_discount = $('#purchase_order_discount');
-        mainForm_negotiatedPrice = $('#purchase_order_negotiated_price');
-        mainForm_paymentTerms = $('#purchase_order_payment_terms');
-        mainForm_dueDate = $('#purchase_order_due_date');
+        select_status = $('.view-form-partial #select-status');
+        container_dateFulfilled = $('.view-form-partial .date-fulfilled-container');
+
+        mainForm_purchaseDate = $('.view-form-partial #purchase_order_purchase_date');
+        mainForm_customerAccountID = $('.view-form-partial #purchase_order_customer_account_id');
+        mainForm_subtotal = $('.view-form-partial #purchase_order_subtotal');
+        mainForm_discount = $('.view-form-partial #purchase_order_discount');
+        mainForm_negotiatedPrice = $('.view-form-partial #purchase_order_negotiated_price');
+        mainForm_paymentTerms = $('.view-form-partial #purchase_order_payment_terms');
+        mainForm_outstandingBalance = $('.view-form-partial #purchase_order_outstanding_balance');
+        mainForm_dueDate = $('.view-form-partial #purchase_order_due_date');
+        mainForm_dateFulfilled = $('.view-form-partial #purchase_order_date_fulfilled');
 
         /** CUSTOMER SELECTOR */
             /** MutationObserver is used to detect changes in the dropdown. Once a change is detected, 
@@ -115,6 +122,7 @@ function script_newPurchaseOrder() {
             select_paymentTerms.dropdown({
                 onChange: function() {
                     computeDueDate();
+                    computeOutstandingBalance();
                 }
             });
             mainForm_purchaseDate.on('input change', function() {
@@ -162,7 +170,7 @@ function script_newPurchaseOrder() {
 
                      /** onInput() event for each edit-Qty. field.  */
                     $(this).find('#field-editQty').on('input', function() {
-                        var orderLineItem = $('#field-editQty').parent().parent();
+                        var orderLineItem = $('.view-form-partial #field-editQty').parent().parent();
                         orderLineItem.find('.col-order-price').html(toPriceString(orderLineItem.find('#field-editQty').val() * getPriceValue(orderLineItem.find('.col-unit-price').html())));
                         computeSubtotal();
                         computeDiscount();
@@ -259,8 +267,8 @@ function script_newPurchaseOrder() {
                 });
                 container_normalMode.css('display', 'block');
                 container_deleteMode.css('display', 'none');
-                $('.col-checkbox').css('display', 'none');
-                $('.col-particulars').css('border-left-width', '0');
+                $('.view-form-partial .col-checkbox').css('display', 'none');
+                $('.view-form-partial .col-particulars').css('border-left-width', '0');
 
                 setEnableOfAddProductFields(true);
 
@@ -270,13 +278,13 @@ function script_newPurchaseOrder() {
             function setEnableOfAddProductFields(enabled) {
                 if (enabled === false) {
                     select_products.addClass('disabled');
-                    $('.select-qty-label').addClass('text-label disabled');
+                    $('.view-form-partial .select-qty-label').addClass('text-label disabled');
                     /** Targets .parent() because of Semantic UI Structure */
                     field_newProductQty.parent().addClass('disabled');
                     button_addOrderLine.addClass('disabled');
                 } else {
                     select_products.removeClass('disabled');
-                    $('.select-qty-label').removeClass('text-label disabled');
+                    $('.view-form-partial .select-qty-label').removeClass('text-label disabled');
                     field_newProductQty.parent().removeClass('disabled');
                     button_addOrderLine.removeClass('disabled');
                 }
@@ -297,6 +305,7 @@ function script_newPurchaseOrder() {
                 }
                 select_products.dropdown('clear');
                 field_newProductQty.val('');
+                validateSelectedProductAndQty();
             }
             function updateTableWithCurrentQty() {
                 var itemCount = 0;
@@ -399,94 +408,123 @@ function script_newPurchaseOrder() {
             });
 
         /** SUBTOTAL, DISCOUNT, AND TOTAL */
-        function setEnableOfDiscountFields(enabled) {
-            if (enabled === false)  {
-                $('.discount-type-label-container span').addClass('text-label disabled');
-                select_discountType.addClass('disabled');
-                $('.discount-info-label').addClass('text-label disabled');
-                label_discount.addClass('text-label disabled');
-            } else {
-                $('.discount-type-label-container span').removeClass('text-label disabled');
-                select_discountType.removeClass('disabled');
-                $('.discount-info-label').removeClass('text-label disabled');
-                label_discount.removeClass('text-label disabled');
+            function setEnableOfDiscountFields(enabled) {
+                if (enabled === false)  {
+                    $('.view-form-partial .discount-type-label-container span').addClass('text-label disabled');
+                    select_discountType.addClass('disabled');
+                    $('.view-form-partial .discount-info-label').addClass('text-label disabled');
+                    label_discount.addClass('text-label disabled');
+                } else {
+                    $('.view-form-partial .discount-type-label-container span').removeClass('text-label disabled');
+                    select_discountType.removeClass('disabled');
+                    $('.view-form-partial .discount-info-label').removeClass('text-label disabled');
+                    label_discount.removeClass('text-label disabled');
+                }
             }
-        }
-        function computeSubtotal() {
-            computeOrderPrices();
-            var subtotal = 0;
-            table_orderLines.find('tbody .order-line-item').each(function() {
-                subtotal += getPriceValue($(this).find('.main-form.order-price').val());
+            function computeSubtotal() {
+                computeOrderPrices();
+                var subtotal = 0;
+                table_orderLines.find('tbody .order-line-item').each(function() {
+                    subtotal += getPriceValue($(this).find('.main-form.order-price').val());
+                });
+                label_subtotal.html(toPriceString(subtotal));
+                mainForm_subtotal.val(subtotal);
+            }
+            function computeTotal() {
+                label_total.html(toPriceString(getPriceValue(label_subtotal.html()) - getPriceValue(label_discount.html())));
+                mainForm_negotiatedPrice.val(getPriceValue(label_total.html()));
+            }
+            function computeDiscount() {
+                var discount = 0;
+                if (select_discountType.dropdown('get value') === 'percent') {
+                    discount = getPriceValue(label_subtotal.html()) * (field_discountPercent.val() / 100);
+                } else if (select_discountType.dropdown('get value') === 'amount') {
+                    discount = getPriceValue(field_discountAmount.val());
+                }
+                mainForm_discount.val(discount);
+                label_discount.html(toPriceString(mainForm_discount.val()));
+
+                if (isNaN(getPriceValue(label_discount.html()))) {
+                    label_discount.html('0.00');
+                }
+
+                mainForm_discount.val(getPriceValue(label_discount.html()));
+            }
+            function computeOutstandingBalance() {
+                if (select_paymentTerms.dropdown('get value') == 'paid') {
+                    mainForm_outstandingBalance.val(0);
+                } else {
+                    mainForm_outstandingBalance.val(mainForm_negotiatedPrice.val());
+                }
+            }
+            function updateAllPrices() {
+                computeOrderPrices();
+                computeSubtotal();
+                computeDiscount();
+                computeTotal();
+                computeOutstandingBalance();
+            }
+            select_discountType.dropdown({
+                onChange: function() {
+                    field_discountPercent.val('');
+                    field_discountAmount.val('');
+                    label_discount.html('0.00');
+                    computeDiscount();
+                    computeTotal();
+                    computeOutstandingBalance();
+                    if ($(this).dropdown('get value') === 'none') {
+                        $('.view-form-partial .discount-value-label-container span').css('display', 'none');
+                        container_discountAmount.css('display', 'none');
+                        container_discountPercent.css('display', 'none');
+                    } else if ($(this).dropdown('get value') === 'percent') {
+                        $('.view-form-partial .discount-value-label-container span').css('display', 'block');
+                        container_discountAmount.css('display', 'none');
+                        container_discountPercent.css('display', 'inline-flex');
+                        field_discountPercent.focus();
+                    } else if ($(this).dropdown('get value') === 'amount') {
+                        $('.view-form-partial .discount-value-label-container span').css('display', 'block');
+                        container_discountAmount.css('display', 'inline-flex');
+                        container_discountPercent.css('display', 'none');
+                        field_discountAmount.focus();
+                    }
+                }
             });
-            label_subtotal.html(toPriceString(subtotal));
-            mainForm_subtotal.val(subtotal);
-        }
-        function computeTotal() {
-            label_total.html(toPriceString(getPriceValue(label_subtotal.html()) - getPriceValue(label_discount.html())));
-            mainForm_negotiatedPrice.val(getPriceValue(label_total.html()));
-        }
-        function computeDiscount() {
-            var discount = 0;
-            if (select_discountType.dropdown('get value') === 'percent') {
-                discount = getPriceValue(label_subtotal.html()) * (field_discountPercent.val() / 100);
-            } else if (select_discountType.dropdown('get value') === 'amount') {
-                discount = getPriceValue(field_discountAmount.val());
-            }
-            mainForm_discount.val(discount);
-            label_discount.html(toPriceString(mainForm_discount.val()));
-
-            if (isNaN(getPriceValue(label_discount.html()))) {
-                label_discount.html('0.00');
-            }
-
-            mainForm_discount.val(getPriceValue(label_discount.html()));
-        }
-        function computeOutstandingBalance() {
-            if (select_paymentTerms.dropdown('get value') == 'paid') {
-                
-            }
-        }
-        function updateAllPrices() {
-            computeOrderPrices();
-            computeSubtotal();
-            computeDiscount();
-            computeTotal();
-        }
-        select_discountType.dropdown({
-            onChange: function() {
-                field_discountPercent.val('');
-                field_discountAmount.val('');
-                label_discount.html('0.00');
-                if ($(this).dropdown('get value') === 'none') {
-                    $('.discount-value-label-container span').css('display', 'none');
-                    container_discountAmount.css('display', 'none');
-                    container_discountPercent.css('display', 'none');
-                } else if ($(this).dropdown('get value') === 'percent') {
-                    $('.discount-value-label-container span').css('display', 'block');
-                    container_discountAmount.css('display', 'none');
-                    container_discountPercent.css('display', 'inline-flex');
-                    field_discountPercent.focus();
-                } else if ($(this).dropdown('get value') === 'amount') {
-                    $('.discount-value-label-container span').css('display', 'block');
-                    container_discountAmount.css('display', 'inline-flex');
-                    container_discountPercent.css('display', 'none');
-                    field_discountAmount.focus();
-                } 
-            }
-        });
-        field_discountPercent.on('input', function() {
-            computeDiscount();
-            computeTotal();
-        });
-        field_discountAmount.on('input', function() {
-            computeDiscount();
-            computeTotal();
-        });
+            field_discountPercent.on('input', function() {
+                computeDiscount();
+                computeTotal();
+                computeOutstandingBalance();
+            });
+            field_discountAmount.on('input', function() {
+                computeDiscount();
+                computeTotal();
+                computeOutstandingBalance();
+            });
 
         /** PAYMENT TERMS */
+            select_status.dropdown({
+                onChange: function() {
+                    if ($(this).dropdown('get value') == 'unfulfilled') {
+                        container_dateFulfilled.css('display', 'none');
+                    } else if ($(this).dropdown('get value') == 'fulfilled') {
+                        container_dateFulfilled.css('display', 'block');
+                    }
+                    mainForm_dateFulfilled.val('');
+                }
+            })
+
+        /** NEW/EDIT - Load data to user-facing form elements for edit */
+            function loadData() {
+                if (loadValues.toLowerCase() === 'new') {
+
+                } else if (loadValues.toLowerCase() === 'edit') {
+
+                }
+            }
     });
 }
 
 if (getLastSegmentOfCurrentPath() === 'new') {
-    script_newPurchaseOrder();
+    view_form_partial('new');
+} else if (getLastSegmentOfCurrentPath() === 'edit') {
+    view_form_partial('edit');
 }

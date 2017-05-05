@@ -6,11 +6,10 @@ class PurchaseOrder < ApplicationRecord
 
     accepts_nested_attributes_for :order_lines
 
-    private
-        def complete_attributes
-            
-        end
-        def get_status
+    before_save :generate_purchase_order_number
 
+    private
+        def generate_purchase_order_number
+            self.po_num = 'PO-' + self.customer_account_id.to_s + '-' + self.purchase_date.to_s.gsub('-', '') + '-' + (PurchaseOrder.last.id + 1).to_s
         end
 end
