@@ -1,4 +1,4 @@
-function view_form_partial(loadValues) {
+function view_form_partial() {
     var select_customerAccounts;
     var select_paymentTerms;
     var select_products, field_newProductQty, button_addOrderLine;
@@ -15,11 +15,13 @@ function view_form_partial(loadValues) {
         mainForm_customerAccountID,
         mainForm_subtotal,
         mainForm_negotiatedPrice,
-        mainForm_discountAmount,
+        mainForm_discountType,
+        mainForm_discount,
         mainForm_paymentTerms,
         mainForm_dueDate,
         mainForm_outstandingBalance,
-        mainForm_dateFulfilled;
+        mainForm_dateFulfilled,
+        mainForm_status;
 
     var observer_customerAccounts = new MutationObserver(function () {
         if (select_customerAccounts.dropdown('get value') !== '') {
@@ -40,7 +42,7 @@ function view_form_partial(loadValues) {
         }
     });
 
-    $(document).ready(function() {
+    function script() {
         select_customerAccounts = $('.view-form-partial #select-customerAccounts');
         
         select_paymentTerms = $('.view-form-partial #select-paymentTerms');
@@ -79,12 +81,14 @@ function view_form_partial(loadValues) {
         mainForm_purchaseDate = $('.view-form-partial #purchase_order_purchase_date');
         mainForm_customerAccountID = $('.view-form-partial #purchase_order_customer_account_id');
         mainForm_subtotal = $('.view-form-partial #purchase_order_subtotal');
+        mainForm_discountType = $('.view-form-partial #purchase_order_discount_type');
         mainForm_discount = $('.view-form-partial #purchase_order_discount');
         mainForm_negotiatedPrice = $('.view-form-partial #purchase_order_negotiated_price');
         mainForm_paymentTerms = $('.view-form-partial #purchase_order_payment_terms');
         mainForm_outstandingBalance = $('.view-form-partial #purchase_order_outstanding_balance');
         mainForm_dueDate = $('.view-form-partial #purchase_order_due_date');
         mainForm_dateFulfilled = $('.view-form-partial #purchase_order_date_fulfilled');
+        mainForm_status = $('.view-form-partial #purchase_order_status');
 
         /** CUSTOMER SELECTOR */
             /** MutationObserver is used to detect changes in the dropdown. Once a change is detected, 
@@ -96,6 +100,15 @@ function view_form_partial(loadValues) {
                 forceSelection: false,
                 onHide: function() {
                     mainForm_customerAccountID.val($(this).dropdown('get value'));
+                }
+            });
+
+        /** PURCHASE DATE */
+            mainForm_purchaseDate.on('input change', function() {
+                computeDueDate();
+                mainForm_dateFulfilled.attr('min', mainForm_purchaseDate.val());
+                if (new Date(mainForm_dateFulfilled.val()).getTime() < new Date(mainForm_purchaseDate.val()).getTime()) {
+                    mainForm_dateFulfilled.val(mainForm_purchaseDate.val());
                 }
             });
 
@@ -112,21 +125,14 @@ function view_form_partial(loadValues) {
                     newDate = new Date(mainForm_purchaseDate.val());
                 }
 
-                formattedDate = newDate.getFullYear()
-                    + '-' + ((newDate.getMonth() + 1) < 10 ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1))
-                    + '-' + ((newDate.getDate()) < 10 ? ('0' + newDate.getDate()) : (newDate.getDate()));
-
                 mainForm_paymentTerms.val(select_paymentTerms.dropdown('get value'));
-                mainForm_dueDate.val(formattedDate);
+                mainForm_dueDate.val(newDate.formatForDateField());
             }
             select_paymentTerms.dropdown({
                 onChange: function() {
                     computeDueDate();
                     computeOutstandingBalance();
                 }
-            });
-            mainForm_purchaseDate.on('input change', function() {
-                computeDueDate();
             });
 
         /** ADD PRODUCT FIELDS  */
@@ -356,7 +362,7 @@ function view_form_partial(loadValues) {
             });    
 
         /** ORDER LINE TABLE */
-            function writeProductIDAndQtyToNewOrderLineItem(item) {
+            function writeOrderLineItemAttributes(item) {
                 var mainForm_orderLineProductID = item.find('.main-form.product-id');
                 var mainForm_orderLineQty = item.find('.main-form.qty');
                 var productData = {};
@@ -396,7 +402,7 @@ function view_form_partial(loadValues) {
             }
 
             table_orderLines.on('cocoon:after-insert', function(e, insertedItem) {
-                writeProductIDAndQtyToNewOrderLineItem(insertedItem);
+                writeOrderLineItemAttributes(insertedItem);
                 updateProductSelectorItems(insertedItem, 'after-insert');
                 updateTableWithCurrentQty();
                 updateAllPrices();
@@ -435,11 +441,13 @@ function view_form_partial(loadValues) {
                 mainForm_negotiatedPrice.val(getPriceValue(label_total.html()));
             }
             function computeDiscount() {
-                var discount = 0;
+                var discount = mainForm_discount.val();
                 if (select_discountType.dropdown('get value') === 'percent') {
                     discount = getPriceValue(label_subtotal.html()) * (field_discountPercent.val() / 100);
                 } else if (select_discountType.dropdown('get value') === 'amount') {
                     discount = getPriceValue(field_discountAmount.val());
+                } else if (select_discountType.dropdown('get value') === 'none') {
+                    discount = 0;
                 }
                 mainForm_discount.val(discount);
                 label_discount.html(toPriceString(mainForm_discount.val()));
@@ -487,6 +495,7 @@ function view_form_partial(loadValues) {
                         container_discountPercent.css('display', 'none');
                         field_discountAmount.focus();
                     }
+                    mainForm_discountType.val($(this).dropdown('get value'));
                 }
             });
             field_discountPercent.on('input', function() {
@@ -508,23 +517,79 @@ function view_form_partial(loadValues) {
                     } else if ($(this).dropdown('get value') == 'fulfilled') {
                         container_dateFulfilled.css('display', 'block');
                     }
-                    mainForm_dateFulfilled.val('');
+                    mainForm_status.val($(this).dropdown('get value'));
                 }
             })
 
-        /** NEW/EDIT - Load data to user-facing form elements for edit */
+        /** LOAD DATA ON EDIT */
             function loadData() {
-                if (loadValues.toLowerCase() === 'new') {
+                var mainFormValuesOnLoad = {
+                    purchaseDate: mainForm_purchaseDate.val(),
+                    customerAccountID: mainForm_customerAccountID.val(),
+                    paymentTerms: mainForm_paymentTerms.val(),
+                    dueDate: mainForm_dueDate.val(),
+                    subtotal: mainForm_subtotal.val(),
+                    discountType: mainForm_discountType.val(),
+                    discount: mainForm_discount.val(),
+                    negotiatedPrice: mainForm_negotiatedPrice.val(),
+                    outstandingBalance: mainForm_outstandingBalance.val(),
+                    status: mainForm_status.val(),
+                    dateFulfilled: mainForm_dateFulfilled.val()
+                }
 
-                } else if (loadValues.toLowerCase() === 'edit') {
+                /** Customer Accounts Selector */
+                if (mainFormValuesOnLoad.customerAccountID !== '') {
+                    select_customerAccounts.dropdown('set selected', mainForm_customerAccountID.val());
+                }
 
+                /** Purchase Date */
+                if (mainFormValuesOnLoad.purchaseDate === '') {
+                    mainForm_purchaseDate.val(new Date().formatForDateField());
+                    mainForm_dateFulfilled.attr('min', mainForm_purchaseDate.val());
+                    mainForm_dateFulfilled.val(mainForm_purchaseDate.val());
+                }
+
+                /** Payment Terms */
+                if (mainFormValuesOnLoad.paymentTerms !== '') {
+                    select_paymentTerms.dropdown('set selected', mainForm_paymentTerms.val());
+                } else {
+                    select_paymentTerms.dropdown('set selected', '30-days');
+                }
+
+                /** Order Details */
+                table_orderLines.find('.order-line-item').each(function() {
+                    writeOrderLineItemAttributes($(this));
+                    updateProductSelectorItems($(this), 'after-insert');
+                    updateTableWithCurrentQty();
+                });
+                computeSubtotal();
+
+                /** Discount */
+                select_discountType.dropdown('set selected', mainFormValuesOnLoad.discountType);
+                if (select_discountType.dropdown('get value') === 'percent') {
+                    field_discountPercent.val((mainFormValuesOnLoad.discount / mainFormValuesOnLoad.subtotal) * 100);
+                } else if (select_discountType.dropdown('get value') === 'amount') {
+                    field_discountAmount.val(mainFormValuesOnLoad.discount);
+                } else {
+                    mainForm_discountType.val('none');
+                    field_discountAmount.val(0);
+                }
+
+                /** Compute All Prices */
+                updateAllPrices();
+
+                /** Status */
+                if (mainFormValuesOnLoad.status !== '') {
+                    select_status.dropdown('set selected', mainFormValuesOnLoad.status);
+                    mainForm_dateFulfilled.val(mainFormValuesOnLoad.dateFulfilled);
+                } else {
+                    mainForm_status.val('unfulfilled');
                 }
             }
-    });
+            loadData();
+    }
+
+    script();
 }
 
-if (getLastSegmentOfCurrentPath() === 'new') {
-    view_form_partial('new');
-} else if (getLastSegmentOfCurrentPath() === 'edit') {
-    view_form_partial('edit');
-}
+executeScriptFor('.view-form-partial', view_form_partial);

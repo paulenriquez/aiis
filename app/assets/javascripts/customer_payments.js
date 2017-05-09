@@ -1,2 +1,5 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+function view_form_partial() {
+    var select_CustomerAccounts;
+}
+
+executeScriptFor('.view-form-partial', view_form_partial);

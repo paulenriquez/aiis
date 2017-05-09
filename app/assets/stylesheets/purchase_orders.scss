@@ -1,3 +1,11 @@
+.view-index {
+    max-width: 900px;
+}
+
+.view-new {
+    max-width: 820px;
+}
+
 .view-form-partial {
     #select-paymentTermsType {
         text-align: center;
@@ -83,15 +91,13 @@
             }
         }
     }
-
     .main-price-container {
-        display: table;
+        display: flex;
         .left-col {
-            display: table-cell;
-            height: 100% !important;
-            width: 86.5% !important;
+            display: inline-flex;
+            width: 80% !important;
             .label {
-                float: right;
+                margin-left: auto;
                 padding-right: 1em;
                 text-transform: uppercase;
                 font-size: 0.93em;
@@ -99,10 +105,10 @@
             }
         }
         .right-col {
-            display: table-cell;
-            width: 13.5% !important;
-             .value {
-                float: right;
+            display: inline-flex;
+            width: 20% !important;
+            .value {
+                margin-left: auto;
                 font-weight: 700;
             }
         }
@@ -127,7 +133,6 @@
                 }
             }
             .discount-value-container {
-                display: none;
                 width: 13% !important;
                 .discount-field-percent-container {
                     display: none;
@@ -139,17 +144,17 @@
         }
     }
     .total-price-container {
-        display: table;
+        display: flex;
         padding-top: 2.3em !important;
         .left-col {
-            display: table-cell;
+            display: inline-flex;
             width: 50% !important;
         }
         .right-col {
-            display: table-cell;
+            display: inline-flex;
             width: 50% !important;
-             .value {
-                float: right;
+            .value {
+                margin-left: auto;
                 font-weight: 700;
                 font-size: 2em;
             }
@@ -160,5 +165,115 @@
     }
     .date-fulfilled-container {
         display: none;
+    }
+}
+
+.view-show {
+    .customer-information-container {
+        .field {
+            margin-bottom: 0.2em !important; 
+            label {
+                margin-bottom: 1em;
+            }
+            .customer-account-name {
+                font-size: 1.3em;
+            }
+        } 
+        .customer-details-container {
+            .customer-detail {
+                font-weight: 500;
+                padding: 0;
+                font-size: 0.95em;
+                border: 0;
+                margin-right: 2em;
+                .detail {
+                    margin-left: 0.3em !important;
+                }
+            }
+        }
+    }
+    .metadata-container {
+        .custom.wide.column {
+            margin-right: 1em;
+            width: auto !important;
+        }
+        
+    }
+    .order-line-table-container {
+        padding: 0;
+        min-height: 50vh;
+        table {
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+            border-top: 0 !important;
+            border-left: 0 !important;
+            border-right: 0 !important;
+            .col-particulars {
+                width: 48%;
+                border-left-width: 0 !important;
+            }
+            .col-unit-price {
+                width: 15%;
+                text-align: right !important;
+            }
+            .col-qty {
+                width: 12%;
+                text-align: right !important;
+                #field-editQty {
+                    text-align: center !important;
+                }
+            }
+            .col-order-price {
+                width: 15%;
+                text-align: right !important;
+            }
+        }
+    }
+    .main-price-container {
+        display: flex;
+        .left-col {
+            display: flex;
+            align-items: center;
+            width: 80% !important;
+            .label {
+                margin-left: auto;
+                padding-right: 1em;
+                text-transform: uppercase;
+                font-size: 0.93em;
+                font-weight: 700;
+            }
+        }
+        .right-col {
+            display: inline-flex;
+            width: 20% !important;
+             .value {
+                display: flex;
+                align-items: center; 
+                margin-left: auto;
+                font-weight: 700;
+            }
+        }
+    }
+    .subtotal-info-container {
+        padding-bottom: 0 !important;
+        border-bottom: 0 !important;
+    }
+
+    .total-price-container {
+        display: flex;
+        padding-top: 2.3em !important;
+        .left-col {
+            display: inline-flex;
+            width: 50% !important;
+        }
+        .right-col {
+            display: inline-flex;
+            width: 50% !important;
+            .value {
+                margin-left: auto;
+                font-weight: 700;
+                font-size: 2em;
+            }
+        }
     }
 }

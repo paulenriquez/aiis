@@ -1,19 +1,65 @@
-<%= form_for @customer_payment, url: customer_payments_path, html: {class: 'ui form'} do |customer_payment| %>
-    <!-- Make Hidden Fields -->
-    <%= label_tag :customer_account_id %>
-    <%= customer_payment.text_field :customer_account_id %>
+<div class = 'view-form-partial'>
+    <%= form_for @customer_payment, url: customer_payments_path, html: {class: 'ui form'} do |customer_payment| %>
+        <div class = 'ui attached bottom segment'>
+            <div class = 'field'>
+                <label>Customer Account</label>
+                <%= render '/shared/customer_account_selector' %>
+            </div>
+            <div class = 'field'>
+                <label>Purchase Order</label>
+                <div class = 'ui segments'>
+                    <div class = 'ui attached segment'>
+                        <div class = 'ui two column grid'>
+                            <div class = 'row'>
+                                <div class = 'six wide column'>
+                                    <div class = 'ui input'>
+                                        <input type = 'text' placeholder = 'Search...'>
+                                    </div>
+                                </div>
+                                <div class = 'ten wide column'>
+                                    <span id = 'label-poCount'></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment po-table-container'>
+                        <table id = 'table-poTable' class = 'ui celled striped table'>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Purchase Date</th>
+                                    <th>Total</th>
+                                    <th>Outstanding Bal.</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = 'ui attached segment'>
+            <div class = ''>
+            
+            </div>
+        </div>
+        <div class = 'inline field'>
+            <%= label_tag :payment_date, 'Payment Date' %>
+            <%= customer_payment.date_field :payment_date  %>
+        </div>
+        <div class = 'inline field'>
+            <%= label_tag :amount_paid %>
+            <%= customer_payment.text_field :amount_paid %>
+        </div>
 
-    <%= label_tag :purchase_account_id %>
-    <%= customer_payment.text_field :purchase_order_id %>
+        <%= customer_payment.submit 'Create', class: 'ui button' %>
 
-    <div class = 'inline field'>
-        <%= label_tag :payment_date, 'Payment Date' %>
-        <%= customer_payment.date_field :payment_date  %>
-    </div>
-    <div class = 'inline field'>
-        <%= label_tag :amount_paid %>
-        <%= customer_payment.text_field :amount_paid %>
-    </div>
-
-    <%= customer_payment.submit 'Create', class: 'ui button' %>
-<% end %>
+        <!-- Hidden Fields -->
+        <%= customer_payment.text_field :customer_account_id %>
+        <%= customer_payment.text_field :purchase_order_id %>
+    <% end %>
+</div>

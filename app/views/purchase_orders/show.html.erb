@@ -1,50 +1,154 @@
-<div class = 'ui attached message'>
-    <div class = 'header'>Purchase Order (<%= @purchase_order.po_num %>)</div>
-</div>
-<div class = 'ui attached segment'>
-    <span><%= @purchase_order.customer_account.customer_name %></span>
-    <table>
-        <tbody>
-            <tr>
-                <td>Address:</td>
-                <td><%= @purchase_order.customer_account.address %></td>
-            </tr>
-            <tr>
-                <td>Telephone No.:</td>
-                <td><%= @purchase_order.customer_account.telephone_number %></td>
-            </tr>
-            <tr>
-                <td>Fax No.:</td>
-                <td><%= @purchase_order.customer_account.fax_number %></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class = 'ui attached segment'>
+<div class = 'view-show'>
     <div class = 'ui form'>
-        <div class = 'field'>
-            <label>Order Details</label>
-            <div class = 'ui segments'>
-                <table class = 'ui celled striped table'>
-                    <thead>
-                        <tr>
-                            <th class = 'col-particulars'>Particulars</th>
-                            <th class = 'col-unit-price'>Unit Price</th>
-                            <th class = 'col-qty'>Qty.</th>
-                            <th class = 'col-order-price'>Order Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% @purchase_order.order_lines.each do |order_line| %>
-                            <tr>
-                                <td class = 'col-particulars'><%= @purchase_order.products.find(order_line.product_id).product_name.to_s + ' (' + @purchase_order.products.find(order_line.product_id).product_specs.to_s + ')' %> </td>
-                                <td class = 'col-unit-price'><%= number_with_precision(@purchase_order.products.find(order_line.product_id).unit_price, precision: 2, delimiter: ',') %></td>
-                                <td class = 'col-qty'><%= order_line.quantity %></td>
-                                <td class = 'col-order-price'><%= number_with_precision(order_line.order_price, precision: 2, delimiter: ',') %></td>
-                            </tr>
-                        <% end %>
-                    </tbody> 
-                </table>
+        <div class = 'ui attached message'>
+            <div class = 'header'>Purchase Order (<%= @purchase_order.po_num %>)</div>
+        </div>
+        <div class = 'ui attached segment'>
+            <div class = 'customer-information-container'>
+                <div class = 'field'>
+                    <label>Customer Information</label>
+                    <span class = 'customer-account-name'><%= @purchase_order.customer_account.customer_name %></span>
+                </div>
+                <div class = 'customer-details-container'>
+                    <div class = 'field'>
+                        <div class = 'ui basic label customer-detail'>
+                            Email:
+                            <div class = 'detail'> <%= @purchase_order.customer_account.email %></div>
+                        </div>
+                        <div class = 'ui basic label customer-detail'>
+                            Tel.:
+                            <div class = 'detail'> <%= @purchase_order.customer_account.telephone_number %></div>
+                        </div>
+                        <div class = 'ui basic label customer-detail'>
+                            Fax:
+                            <div class = 'detail'> <%= @purchase_order.customer_account.fax_number %></div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+        <div class = 'ui attached segment'>
+            <div class = 'ui three column grid'>
+                <div class = 'row metadata-container'>
+                    <div class = 'custom wide column'>
+                        <div class = 'field'>
+                            <label>Purchase Date</label>
+                            <span><%= @purchase_order.purchase_date.to_formatted_s(:long) %></span>
+                        </div>
+                    </div>
+                    <div class = 'custom wide column'>
+                        <div class = 'field'>
+                            <label>Status / Date Fulfilled</label>
+                            <span>
+                                <%= @purchase_order.status.capitalize %>
+                                /
+                                <% if @purchase_order.status == 'unfulfilled' %>
+                                    NA
+                                <% elsif @purchase_order.status == 'fulfilled' %>
+                                    <%= @purchase_order.date_fulfilled.to_formatted_s(:long) %>
+                                <% end %>
+                            </span>
+                        </div>
+                    </div>
+                    <div class = 'custom wide column'>
+                        <div class = 'field'>
+                            <label>Payment Terms / Due Date</label>
+                            <span>
+                                <% if @purchase_order.payment_terms == '30-days' %>
+                                    30 Days
+                                <% elsif @purchase_order.payment_terms == '60-days' %>
+                                    60 Days
+                                <% elsif @purchase_order.payment_terms == '90-days' %>
+                                    90 Days
+                                <% elsif @purchase_order.payment_terms == 'paid' %>
+                                    Paid on purchase
+                                <% end %>
+                                /
+                                <% if @purchase_order.payment_terms == 'paid' %>
+                                    NA
+                                <% else %>
+                                    <%= @purchase_order.due_date.to_formatted_s(:long) %>
+                                <% end %>
+                            </span>
+                        </div>
+                    </div>
+                    <div class = 'custom wide column'>
+                        <div class = 'field'>
+                            <label>Outstanding Balance</label>
+                            <span>
+                                <% if @purchase_order.outstanding_balance > 0 %>
+                                    <%= number_with_precision(@purchase_order.outstanding_balance, precision: 2, delimiter: ',').to_s + ' remaining' %>
+                                <% else %>
+                                    Fully Paid.
+                                <% end %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = 'ui bottom attached segment'>
+            <div class = 'field'>
+                <label>Order Details</label>
+                <div class = 'ui segments'>
+                    <div class = 'ui attached segment order-line-table-container'>
+                        <table class = 'ui celled striped table'>
+                            <thead>
+                                <tr>
+                                    <th class = 'col-particulars'>Particulars</th>
+                                    <th class = 'col-unit-price'>Unit Price</th>
+                                    <th class = 'col-qty'>Qty.</th>
+                                    <th class = 'col-order-price'>Order Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @purchase_order.order_lines.each do |order_line| %>
+                                    <tr>
+                                        <td class = 'col-particulars'><%= @purchase_order.products.find(order_line.product_id).product_name.to_s + ' (' + @purchase_order.products.find(order_line.product_id).product_specs.to_s + ')' %> </td>
+                                        <td class = 'col-unit-price'><%= number_with_precision(@purchase_order.products.find(order_line.product_id).unit_price, precision: 2, delimiter: ',') %></td>
+                                        <td class = 'col-qty'><%= order_line.quantity %></td>
+                                        <td class = 'col-order-price'><%= number_with_precision(order_line.order_price, precision: 2, delimiter: ',') %></td>
+                                    </tr>
+                                <% end %>
+                            </tbody> 
+                        </table>
+                    </div>
+                    <div class = 'ui attached segment main-price-container subtotal-info-container'>
+                        <div class = 'left-col'>
+                             <span class = 'label'>Subtotal:</span>
+                        </div>
+                        <div class = 'right-col'>
+                             <span class = 'value'><%= number_with_precision(@purchase_order.subtotal, precision: 2, delimiter: ',') %></span>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment main-price-container discount-info-container'>
+                        <div class = 'left-col'>
+                             <span class = 'label'>Discount:</span>
+                        </div>
+                        <div class = 'right-col'>
+                            <% if @purchase_order.discount > 0 %>
+                                <div class = 'ui basic label'>
+                                    <% if @purchase_order.discount_type == 'percent' %>
+                                        <%= number_with_precision(((@purchase_order.discount / @purchase_order.subtotal) * 100), precision: 0).to_s + '%'  %>
+                                    <% elsif @purchase_order.discount_type == 'amount' %>
+                                        <%= 'Exact' %>
+                                    <% end %>
+                                </div>
+                            <% end %>
+                            <span class = 'value'>
+                                <%= number_with_precision(@purchase_order.discount, precision: 2, delimiter: ',') %>
+                            </span>
+                        </div>
+                    </div>
+                    <div class = 'ui attached segment total-price-container'>
+                        <div class = 'left-col'></div>
+                        <div class = 'right-col'>
+                             <span class = 'value'>
+                                <%= '₱ ' + number_with_precision(@purchase_order.negotiated_price, precision: 2, delimiter: ',').to_s %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

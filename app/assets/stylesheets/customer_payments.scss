@@ -1,3 +1,10 @@
-// Place all the styles related to the CustomerPayments controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.view-form-partial {
+    .po-table-container {
+        padding: 0;
+        #table-poTable {
+            border-top: 0 !important;
+            border-left: 0 !important;
+            border-right: 0 !important;    
+        }
+    }
+}

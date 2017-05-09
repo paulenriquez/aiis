@@ -1,11 +1,10 @@
 class PurchaseOrdersController < ApplicationController
-    def index
+    before_action :get_records, only: [:index, :new, :edit]
 
+    def index
     end
     def new
         @purchase_order = PurchaseOrder.new
-        @customer_accounts = CustomerAccount.all
-        @products = Product.all
     end
     def create
         @purchase_order = PurchaseOrder.new(purchase_order_params)
@@ -13,7 +12,7 @@ class PurchaseOrdersController < ApplicationController
             create_inventory_histories(@purchase_order)
             redirect_to(purchase_order_path(@purchase_order))
         else
-
+            render :new
         end
     end
     def show
@@ -29,6 +28,11 @@ class PurchaseOrdersController < ApplicationController
     end
 
     private
+        def get_records
+            @customer_accounts = CustomerAccount.all
+            @products = Product.all
+            @purchase_orders = PurchaseOrder.all
+        end
         def purchase_order_params
             params.require(:purchase_order).permit!
         end

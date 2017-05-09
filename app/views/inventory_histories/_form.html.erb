@@ -1,0 +1,57 @@
+<div class = 'view-form-partial'>
+    <%= form_for @inventory_history, url: inventory_histories_path, html: {class: 'ui form'} do |inventory_history| %>
+        <div class = 'ui attached segment'>
+            <div class = 'ui two column grid'>
+                <div class = 'row'>
+                    <div class = 'six wide column'>
+                        <div class = 'field'>
+                            <label>Date Changed</label>
+                            <%= inventory_history.date_field :date_changed %>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'ten wide column'>
+                        <div class = 'field'>
+                            <label>Product</label>
+                            <%= render '/shared/product_selector' %>
+                        </div>
+                    </div>
+                    <div class = 'three wide column'>
+                        <div class = 'field'>
+                            <label>Type</label>
+                            <div id = 'select-actionType' class = 'ui fluid floating dropdown button'>
+                                <span class = 'text'>In (+)</span>
+                                <i class = 'dropdown icon'></i>
+                                <div class = 'menu'>
+                                    <div class = 'item' data-value = 'in'>In (+)</div>
+                                    <div class = 'item' data-value = 'out'>Out (-)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'three wide column'>
+                        <div class = 'field'>
+                            <label>Qty</label>
+                            <%= inventory_history.text_field :quantity, type: 'number' %>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'sixteen wide column'>
+                        <div class = 'field'>
+                            <label>Remarks</label>
+                            <%= inventory_history.text_area :remarks %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%= inventory_history.submit 'Save', class: 'ui primary button' %>
+
+        <!-- Hidden Fields -->
+        <%= inventory_history.text_field :product_id %>
+        <%= inventory_history.text_field :action_type %>
+    <% end %>
+</div>

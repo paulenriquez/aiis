@@ -1,0 +1,42 @@
+<div class = 'view-index'>
+    <div class = 'sort-fields-container'>
+    
+    </div>
+    <div class = 'purchase-order-table-container'>
+        <table class = 'ui celled striped table'>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>ID</th>
+                    <th>Status / Date Fulfilled</th>
+                    <th>Payment Terms / Due Date</th>
+                    <th>Outstanding Bal.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if @purchase_orders.empty? %>
+
+                <% else %>
+                    <% @purchase_orders.each do |purchase_order| %>
+                        <tr>
+                            <td><%= purchase_order.purchase_date.to_formatted_s(:long) %></td>
+                            <td><%= purchase_order.customer_account.customer_name if purchase_order.customer_account != nil %></td>
+                            <td><%= purchase_order.po_num %></td>
+                            <td><%= purchase_order.status.capitalize + ' / ' if purchase_order.status != nil %><%= purchase_order.date_fulfilled == nil ? 'NA' : purchase_order.date_fulfilled.to_formatted_s(:long) %></td>
+                            <td>
+                                <%= '30 Days' if purchase_order.payment_terms == '30-days' %>
+                                <%= '60 Days' if purchase_order.payment_terms == '60-days' %>
+                                <%= '90 Days' if purchase_order.payment_terms == '90-days' %>
+                                <%= 'Paid on Purchase' if purchase_order.payment_terms == 'paid' %>
+                                <%= ' / ' %>
+                                <%= purchase_order.due_date.to_formatted_s(:long) if purchase_order.due_date != nil || purchase_order.payment_terms == 'paid' %>
+                            </td>
+                            <td><%= purchase_order.outstanding_balance.to_s if purchase_order.outstanding_balance != nil %></td>
+                        </tr>
+                    <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,4 +1,6 @@
 class CustomerPaymentsController < ApplicationController
+    before_action :get_records, only: [:index, :new, :edit]
+
     def index
         @customer_payments = CustomerPayment.all
     end
@@ -22,11 +24,12 @@ class CustomerPaymentsController < ApplicationController
     end
 
     private
+        def get_records
+            @customer_accounts = CustomerAccount.all
+            @products = Product.all
+            @purchase_orders = PurchaseOrder.all
+        end
         def customer_payment_params
-            params.require(:customer_payment).permit(
-                :payment_date,
-                :amount_paid,
-                :customer_account_id,
-                :purchase_order_id)
+            params.require(:customer_payment).permit!
         end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505050048) do
+ActiveRecord::Schema.define(version: 20170506063402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20170505050048) do
     t.integer  "customer_account_id"
     t.date     "date_fulfilled"
     t.string   "po_num"
+    t.string   "discount_type"
     t.index ["customer_account_id"], name: "index_purchase_orders_on_customer_account_id", using: :btree
   end
 

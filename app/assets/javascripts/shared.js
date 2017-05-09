@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('turbolinks:load', function() {
     /** Initialize all Semantic-UI Dropdowns */
     $('.ui.dropdown').dropdown();
     $('.ui.dropdown').dropdown({
@@ -30,8 +30,13 @@ $(document).ready(function() {
     });
 });
 
-function getLastSegmentOfCurrentPath() {
-    return window.location.pathname.toLowerCase().substr(window.location.pathname.lastIndexOf('/') + 1);
+/** Run page-specific JS */
+function executeScriptFor(elementIdentifier, script) {
+    $(document).on('turbolinks:load', function() {
+        if ($(elementIdentifier).length) {
+            script();
+        }
+    })
 }
 
 /** Date Functions */
@@ -39,6 +44,11 @@ Date.prototype.addDays = function(days) {
     var result = new Date(this.valueOf());
     result.setDate(result.getDate() + days);
     return result;
+}
+Date.prototype.formatForDateField = function() {
+    return this.getFullYear()
+        + '-' + ((this.getMonth() + 1) < 10 ? ('0' + (this.getMonth() + 1)) : (this.getMonth() + 1))
+        + '-' + ((this.getDate()) < 10 ? ('0' + this.getDate()) : (this.getDate()));
 }
 
 /** Price Functions */

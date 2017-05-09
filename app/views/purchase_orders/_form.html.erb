@@ -6,43 +6,13 @@
                     <div class = 'nine wide column'>
                         <div class = 'field'>
                             <label>Customer Information</label>
-                            <div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
-                                <i class = 'dropdown icon'></i>
-                                <span class = 'default text'>Select Customer...</span>
-                                <div class = 'menu custom'>
-                                <% @customer_accounts.each do |customer_account| %>
-                                    <div class = 'item' data-value = <%= customer_account.id %>>
-                                        <span class = 'title text'><%= customer_account.customer_name %></span>
-                                            <table class = 'details'>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class = 'key'>Email:</td>
-                                                        <td id = 'val-customerName' class = 'value'><%= customer_account.email %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class = 'key'  >Tel. No.: </td>
-                                                        <td id = 'val-telephoneNumber' class = 'value'><%= customer_account.telephone_number %></td>
-                                                    </tr>
-                                                    <tr></tr>
-                                                        <td class = 'key'  >Fax No.: </td>
-                                                        <td id = 'val-faxNumber' class = 'value'><%= customer_account.fax_number %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class = 'key'  >Address: </td>
-                                                        <td id = 'val-address' class = 'value'><%= customer_account.address %></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    <% end %>
-                                </div>
-                            </div>
+                            <%= render '/shared/customer_account_selector' %>
                         </div>
                     </div>
                     <div class = 'four wide column'>
                         <div class = 'field'>
                             <%= label_tag :purchase_date, 'Purchase Date' %>
-                            <%= purchase_order.date_field :purchase_date, value: Date.today, required: 'required' %>
+                            <%= purchase_order.date_field :purchase_date, required: true %>
                         </div>
                     </div>
                     <div class = 'three wide column'>
@@ -75,43 +45,14 @@
                                     <span class = 'inline-grid-label'>Products:</span>
                                 </div>
                                 <div class = 'wide column product-selector-container inline-grid-field-container'>
-                                    <div id = 'select-products' class = 'ui fluid selection search dropdown'>
-                                        <i class = 'dropdown icon'></i>
-                                        <span class = 'default text'>Select Product to Add...</span>
-                                        <div class = 'menu custom'>
-                                            <% @products.each do |product| %>
-                                                <div class = 'item' data-value = <%= product.id %>>
-                                                    <span class = 'title text' id = 'val-productName'><%= product.product_name %></span>
-                                                    <span class = 'subtext'>
-                                                        <span class = ''> ― <span id = 'val-quantity'>69</span> units left </span>
-                                                        <span class = 'float-right'>₱ <span id = 'val-unitPrice'><%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></span></span>
-                                                    </span>
-                                                    <table class = 'details'>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class = 'key'>Type: </td>
-                                                                <td id = 'val-productType' class = 'value'><%= product.product_type %></td>
-                                                            </tr>
-                                                                <td class = 'key'>Specs.: </td>
-                                                                <td id = 'val-productSpecs' class = 'value specs'><%= product.product_specs %></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class = 'key'>Description: </td>
-                                                                <td id = 'val-description' class = 'value'><%= product.description %></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            <% end %>
-                                        </div>
-                                    </div>
+                                    <%= render '/shared/product_selector' %>
                                 </div>
                                 <div class = 'wide column qty-field-label-container inline-grid-label-container'>
                                     <span class = 'inline-grid-label select-qty-label'>Qty:</span>                            
                                 </div>
                                 <div class = 'wide column qty-field-container inline-grid-field-container'>
                                     <div class = 'ui input'>
-                                        <input id = 'field-newProductQty' type = 'number' min = '1' value = '1' placeholder = 'Qty...'>
+                                        <input id = 'field-newProductQty' type = 'number' min = '1' placeholder = 'Qty...'>
                                     </div>
                                 </div>
                                 <div class = 'wide column add-order-line-button-container'>
@@ -252,7 +193,7 @@
                                         <span class = 'inline-grid-label'>Date Fulfilled:</span>
                                     </div>
                                     <div class = 'ten wide column inline-grid-field-container'>
-                                        <%= purchase_order.date_field :date_fulfilled %>
+                                        <%= purchase_order.date_field :date_fulfilled, required: true %>
                                     </div>
                                 </div>
                             </div>
@@ -261,20 +202,21 @@
                 </div>
             </div>
         </div>
-        <br>
 
+        <br>
         <%= purchase_order.submit 'Create', class: 'ui primary button' %>
 
         <!-- HIDDEN FIELD -->
         <!-- Purchase Date field used above. -->
-        <%= purchase_order.text_field :customer_account_id, hidden: false %>
-        <%= purchase_order.text_field :subtotal, hidden: false %>
-        <%= purchase_order.text_field :discount, hidden: false %>
-        <%= purchase_order.text_field :negotiated_price, hidden: false %>
-        <%= purchase_order.text_field :payment_terms, hidden: false %>
-        <%= purchase_order.date_field :due_date, hidden: false %>
-        <%= purchase_order.text_field :outstanding_balance, hidden: false %>
-        <%= purchase_order.text_field :status, hidden: false %>
+        <%= purchase_order.text_field :customer_account_id, hidden: true %>
+        <%= purchase_order.text_field :payment_terms, hidden: true %>
+        <%= purchase_order.date_field :due_date, hidden: true %>
+        <%= purchase_order.text_field :subtotal, hidden: true %>
+        <%= purchase_order.text_field :discount_type, hidden: true %>
+        <%= purchase_order.text_field :discount, hidden: true %>
+        <%= purchase_order.text_field :negotiated_price, hidden: true %>
+        <%= purchase_order.text_field :outstanding_balance, hidden: true %>
+        <%= purchase_order.text_field :status, hidden: true %>
         <!-- Date Fulfilled field used above. -->
     <% end %>
 </div>

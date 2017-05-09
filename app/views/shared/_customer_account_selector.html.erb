@@ -1,0 +1,31 @@
+<div id = 'select-customerAccounts' class = 'ui fluid selection search dropdown'>
+    <i class = 'dropdown icon'></i>
+    <span class = 'default text'>Select Customer...</span>
+    <div class = 'menu custom'>
+    <% @customer_accounts.each do |customer_account| %>
+        <div class = 'item' data-value = <%= customer_account.id %>>
+            <span class = 'title text'><%= customer_account.customer_name %></span>
+                <table class = 'details'>
+                    <tbody>
+                        <tr>
+                            <td class = 'key'>Email:</td>
+                            <td id = 'val-customerName' class = 'value'><%= customer_account.email %></td>
+                        </tr>
+                        <tr>
+                            <td class = 'key'  >Tel. No.: </td>
+                            <td id = 'val-telephoneNumber' class = 'value'><%= customer_account.telephone_number %></td>
+                        </tr>
+                        <tr></tr>
+                            <td class = 'key'  >Fax No.: </td>
+                            <td id = 'val-faxNumber' class = 'value'><%= customer_account.fax_number %></td>
+                        </tr>
+                        <tr>
+                            <td class = 'key'  >Address: </td>
+                            <td id = 'val-address' class = 'value'><%= customer_account.address %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <% end %>
+    </div>
+</div>
