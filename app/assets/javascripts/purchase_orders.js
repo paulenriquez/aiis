@@ -23,25 +23,6 @@ function view_form_partial() {
         mainForm_dateFulfilled,
         mainForm_status;
 
-    var observer_customerAccounts = new MutationObserver(function () {
-        if (select_customerAccounts.dropdown('get value') !== '') {
-            if (select_customerAccounts.find('input').val() === '') {
-                 select_customerAccounts.dropdown('set text', select_customerAccounts.find('.menu .item.active .title.text').html());
-            } else {
-                 select_customerAccounts.dropdown('set text', '');
-            }
-        }
-    });
-    var observer_products = new MutationObserver(function () {
-        if (select_products.dropdown('get value') !== '') {
-            if (select_products.find('input').val() === '') {
-                select_products.dropdown('set text', select_products.find('.menu .item.active .title.text').html() + ' (' + select_products.find('.menu .item.active .value.specs').html() + ')');
-            } else {
-                select_products.dropdown('set text', '');
-            }
-        }
-    });
-
     function script() {
         select_customerAccounts = $('.view-form-partial #select-customerAccounts');
         
@@ -91,16 +72,14 @@ function view_form_partial() {
         mainForm_status = $('.view-form-partial #purchase_order_status');
 
         /** CUSTOMER SELECTOR */
-            /** MutationObserver is used to detect changes in the dropdown. Once a change is detected, 
-             * the dropdown text is adjusted to show only the title text. Applies to select_products as well.
+            /** Since the Customer Account Selector is a shared dropdown, it is
+             * initialized at shared.js. Therefore, any settings change will take on
+             * the after-intialization format .dropdown('setting', <event>, function() {}).
+             * 
+             * Applies to the Product Selector, and other shared fields as well.
              */
-            observer_customerAccounts.observe(select_customerAccounts.find('.menu')[0], {childList: true, subtree: true, attributes: true, characterData: true});
-            select_customerAccounts.dropdown({
-                fullTextSearch: true,
-                forceSelection: false,
-                onHide: function() {
-                    mainForm_customerAccountID.val($(this).dropdown('get value'));
-                }
+            select_customerAccounts.dropdown('setting', 'onHide', function() {
+                mainForm_customerAccountID.val($(this).dropdown('get value'));
             });
 
         /** PURCHASE DATE */
@@ -136,8 +115,6 @@ function view_form_partial() {
             });
 
         /** ADD PRODUCT FIELDS  */
-            observer_products.observe(select_products.find('.menu')[0], {childList: true, subtree: true, attributes: true, characterData: true});
-            
             function validateSelectedProductAndQty() {
                 if (select_products.dropdown('get value') === '' || field_newProductQty.val() === '') {
                     button_addOrderLine.addClass('disabled');
@@ -146,14 +123,10 @@ function view_form_partial() {
                 }
             }
 
-            select_products.dropdown({
-                fullTextSearch: true,
-                forceSelection: false,
-                onHide: function() {
-                    field_newProductQty.focus();
-                    field_newProductQty.select();
-                    validateSelectedProductAndQty();
-                },
+            select_products.dropdown('setting', 'onHide', function() {
+                field_newProductQty.focus();
+                field_newProductQty.select();
+                validateSelectedProductAndQty();
             });
             field_newProductQty.on('input', function() {
                 validateSelectedProductAndQty();

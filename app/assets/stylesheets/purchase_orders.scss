@@ -1,170 +1,175 @@
-.view-index {
-    max-width: 900px;
-}
-
-.view-new {
-    max-width: 820px;
+.view-new, .view-edit {
+    min-width: 850px;
+    max-width: 60vw;
 }
 
 .view-form-partial {
-    #select-paymentTermsType {
-        text-align: center;
-    }
-
-    .add-product-fields-segment {
+    .basic-information-segment {
         border-bottom: 0 !important;
         padding-bottom: 0 !important;
-        .add-product-fields-container {
-            .product-selector-label-container {
-                width: 10% !important;
-            }
-            .product-selector-container {
-                width: 60% !important;
-            }
-            .qty-field-label-container {
-                width: 6% !important;
-            }
-            .qty-field-container {
-                width: 14% !important;
-                #field-newProductQty {
-                    text-align: center !important;
+        #select-paymentTermsType {
+            text-align: center;
+        }
+    }
+
+    .order-details-segment {
+        border-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        .add-product-fields-segment {
+            border-bottom: 0 !important;
+            padding-bottom: 0 !important;
+            .add-product-fields-container {
+                .product-selector-label-container {
+                    width: 10% !important;
+                }
+                .product-selector-container {
+                    width: 60% !important;
+                }
+                .qty-field-label-container {
+                    width: 6% !important;
+                }
+                .qty-field-container {
+                    width: 14% !important;
+                    #field-newProductQty {
+                        text-align: center !important;
+                    }
+                }
+                .add-order-line-button-container {
+                    width: 10% !important;
                 }
             }
-            .add-order-line-button-container {
-                width: 10% !important;
+        }
+        .action-buttons-container {
+            #label-actionInfo {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
             }
-        }
-    }
-
-    .action-buttons-container {
-        #label-actionInfo {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .normal-mode-buttons-container {
-            display: block;
-            #button-deleteMode, #button-editMode {
-                min-width: 8em !important;
+            .normal-mode-buttons-container {
+                display: block;
+                #button-deleteMode, #button-editMode {
+                    min-width: 8em !important;
+                }
             }
-        }
-        .edit-mode-buttons-container {
-            display: none;
-        }
-        .delete-mode-buttons-container {
-            display: none;
-        }
-    }
-
-    .order-line-table-container {
-        min-height: 50vh;
-        max-height: 70vh;
-        overflow: auto;
-        table {
-            border-top: 0 !important;
-            border-left: 0 !important;
-            border-right: 0 !important;
-            border-radius: 0 !important;
-            .col-checkbox {
-                width: 5%;
-                text-align: center !important;
+            .edit-mode-buttons-container {
                 display: none;
             }
-            .col-particulars {
-                width: 48%;
-                border-left-width: 0 !important;
+            .delete-mode-buttons-container {
+                display: none;
             }
-            .col-unit-price {
-                width: 15%;
-                text-align: right !important;
-            }
-            .col-qty {
-                width: 12%;
-                text-align: right !important;
-                #field-editQty {
+        }
+        .order-line-table-container {
+            min-height: 50vh;
+            max-height: 70vh;
+            overflow: auto;
+            table {
+                border-top: 0 !important;
+                border-left: 0 !important;
+                border-right: 0 !important;
+                border-radius: 0 !important;
+                .col-checkbox {
+                    width: 5%;
                     text-align: center !important;
-                }
-            }
-            .col-order-price {
-                width: 15%;
-                text-align: right !important;
-            }
-        }
-    }
-    .main-price-container {
-        display: flex;
-        .left-col {
-            display: inline-flex;
-            width: 80% !important;
-            .label {
-                margin-left: auto;
-                padding-right: 1em;
-                text-transform: uppercase;
-                font-size: 0.93em;
-                font-weight: 700;
-            }
-        }
-        .right-col {
-            display: inline-flex;
-            width: 20% !important;
-            .value {
-                margin-left: auto;
-                font-weight: 700;
-            }
-        }
-    }
-    .discount-segment {
-        border-bottom: 0 !important;
-        padding-bottom: 0 !important;
-        .discount-container {
-            .discount-type-label-container {
-                width: 10% !important;
-            }
-            .discount-type-container {
-                width: 23% !important;
-                #select-discountType {
-                    text-align: center;
-                }
-            }
-            .discount-value-label-container {
-                width: 8% !important;
-                span {
                     display: none;
                 }
-            }
-            .discount-value-container {
-                width: 13% !important;
-                .discount-field-percent-container {
-                    display: none;
+                .col-particulars {
+                    width: 48%;
+                    border-left-width: 0 !important;
                 }
-                .discount-field-amount-container {
-                    display: none;
+                .col-unit-price {
+                    width: 15%;
+                    text-align: right !important;
+                }
+                .col-qty {
+                    width: 12%;
+                    text-align: right !important;
+                    #field-editQty {
+                        text-align: center !important;
+                    }
+                }
+                .col-order-price {
+                    width: 15%;
+                    text-align: right !important;
+                }
+            }
+        }
+        .main-price-container {
+            display: flex;
+            .left-col {
+                display: inline-flex;
+                width: 80% !important;
+                .label {
+                    margin-left: auto;
+                    padding-right: 1em;
+                    text-transform: uppercase;
+                    font-size: 0.93em;
+                    font-weight: 700;
+                }
+            }
+            .right-col {
+                display: inline-flex;
+                width: 20% !important;
+                .value {
+                    margin-left: auto;
+                    font-weight: 700;
+                }
+            }
+        }
+        .discount-segment {
+            border-bottom: 0 !important;
+            padding-bottom: 0 !important;
+            .discount-container {
+                .discount-type-label-container {
+                    width: 10% !important;
+                }
+                .discount-type-container {
+                    width: 23% !important;
+                    #select-discountType {
+                        text-align: center;
+                    }
+                }
+                .discount-value-label-container {
+                    width: 8% !important;
+                    span {
+                        display: none;
+                    }
+                }
+                .discount-value-container {
+                    width: 13% !important;
+                    .discount-field-percent-container {
+                        display: none;
+                    }
+                    .discount-field-amount-container {
+                        display: none;
+                    }
+                }
+            }
+        }
+        .total-price-container {
+            display: flex;
+            padding-top: 2.3em !important;
+            .left-col {
+                display: inline-flex;
+                width: 50% !important;
+            }
+            .right-col {
+                display: inline-flex;
+                width: 50% !important;
+                .value {
+                    margin-left: auto;
+                    font-weight: 700;
+                    font-size: 2em;
                 }
             }
         }
     }
-    .total-price-container {
-        display: flex;
-        padding-top: 2.3em !important;
-        .left-col {
-            display: inline-flex;
-            width: 50% !important;
+    .status-segment {
+        #select-status {
+            text-align: center;
         }
-        .right-col {
-            display: inline-flex;
-            width: 50% !important;
-            .value {
-                margin-left: auto;
-                font-weight: 700;
-                font-size: 2em;
-            }
+        .date-fulfilled-container {
+            display: none;
         }
-    }
-    #select-status {
-        text-align: center;
-    }
-    .date-fulfilled-container {
-        display: none;
     }
 }
 

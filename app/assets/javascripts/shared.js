@@ -22,6 +22,28 @@ $(document).on('turbolinks:load', function() {
         }
     });
 
+    /** Configure Shared Dropdowns */
+
+    /** MutationObserver is used to detect changes in the dropdown. Once a change is detected, 
+     * the dropdown text is adjusted to show only the title text.
+     */
+    var observerConfig = {childList: true, subtree: true, attributes: true, characterData: true};
+    
+    if ($('#select-customerAccounts').length) {
+        $('#select-customerAccounts').dropdown({
+            fullTextSearch: true,
+            forceSelection: false,
+        });
+        observer_customerAccounts.observe($('#select-customerAccounts').find('.menu')[0], observerConfig);
+    }
+    if ($('#select-products').length) {
+        $('#select-products').dropdown({
+            fullTextSearch: true,
+            forceSelection: false,
+        });
+        observer_products.observe($('#select-products').find('.menu')[0], observerConfig);
+    }
+
     /** Prevent Disabled Links/Buttons from being activated through Keyboard Events */
     $('a').on('keydown keyup keypress', function(e) {
         if ($(this).hasClass('disabled')) {
@@ -58,3 +80,23 @@ function toPriceString(num) {
 function getPriceValue(price) {
     return parseFloat(price.replace(new RegExp(',', 'g'), ''));
 }
+
+/** Mutation Observers for Shared Dropdowns */
+var observer_customerAccounts = new MutationObserver(function () {
+    if ($('#select-customerAccounts').dropdown('get value') !== '') {
+        if ($('#select-customerAccounts').find('input').val() === '') {
+             $('#select-customerAccounts').dropdown('set text', $('#select-customerAccounts').find('.menu .item.active .title.text').html());
+        } else {
+             $('#select-customerAccounts').dropdown('set text', '');
+        }
+    }
+});
+var observer_products = new MutationObserver(function () {
+    if ($('#select-products').dropdown('get value') !== '') {
+        if ($('#select-products').find('input').val() === '') {
+            $('#select-products').dropdown('set text', $('#select-products').find('.menu .item.active .title.text').html() + ' (' + $('#select-products').find('.menu .item.active .value.specs').html() + ')');
+        } else {
+            $('#select-products').dropdown('set text', '');
+        }
+    }
+});

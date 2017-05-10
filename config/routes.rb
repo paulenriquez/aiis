@@ -10,7 +10,10 @@ Rails.application.routes.draw do
 
   resources :customer_accounts, path: 'customers'
   resources :purchase_orders, path: 'orders'
-  resources :products, path: 'products'
+  resources :products, path: 'inventory' do
+    collection do
+      resources :inventory_histories, path: 'updates'
+    end
+  end
   resources :customer_payments, path: 'payments'
-  resources :inventory_histories
 end

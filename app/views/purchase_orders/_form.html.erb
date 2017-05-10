@@ -1,6 +1,6 @@
 <div class = 'view-form-partial'>
     <%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
-        <div class = 'ui attached segment'>
+        <div class = 'ui attached segment basic-information-segment'>
             <div class = 'ui three column grid'>
                 <div class = 'row'>
                     <div class = 'nine wide column'>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div class = 'ui attached segment'>
+        <div class = 'ui attached segment order-details-segment'>
             <div class = 'field'>
                 <label>Order Details</label>
                 <div class = 'ui segments'>
@@ -149,7 +149,6 @@
                                     </div>
                                 </div>
                             </div>
-                        
                         </div>
                     </div>
                     <div class = 'ui attached segment main-price-container'>
@@ -171,7 +170,7 @@
                 </div>
             </div>
         </div>
-        <div class = 'ui bottom attached segment'>
+        <div class = 'ui attached segment status-segment'>
             <div class = 'field'>
                 <label>Status</label>
                 <div class = 'ui two column grid'>
@@ -202,9 +201,9 @@
                 </div>
             </div>
         </div>
-
-        <br>
-        <%= purchase_order.submit 'Create', class: 'ui primary button' %>
+        <div class = 'ui bottom attached segment'>
+            <%= purchase_order.submit 'Save', class: 'ui primary button' %>
+        </div>
 
         <!-- HIDDEN FIELD -->
         <!-- Purchase Date field used above. -->

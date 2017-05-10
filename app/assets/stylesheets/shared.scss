@@ -1,6 +1,12 @@
-.pusher {
-    max-width: 700px;
+.container-content, .container-header {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-bottom: 50px;
 }
+.container-header {
+    margin-bottom: 20px !important;
+}
+
 
 .no-padding {
     padding: 0 !important;

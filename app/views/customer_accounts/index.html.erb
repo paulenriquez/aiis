@@ -1,27 +1,29 @@
-<h1>Customer Accounts</h1>
-<table class='ui celled table'>
-    <thead>
-         <th>Customer Name</th>
-         <th>Address</th>
-         <th>Email</th>
-         <th>Telephone No.</th>
-         <th>Fax No.</th>
-    </thead>
-    <tbody>
-        <% if @customer_accounts.empty? %>
-            <tr>
-                <td><p>No Customer Accounts</p></td>
-            </tr>
-        <% else %>
-            <% @customer_accounts.each do |customer_account| %>
+<div class = 'container-content view-index'>
+    <h1>Customer Accounts</h1>
+    <table class='ui celled table'>
+        <thead>
+             <th>Customer Name</th>
+             <th>Address</th>
+             <th>Email</th>
+             <th>Telephone No.</th>
+             <th>Fax No.</th>
+        </thead>
+        <tbody>
+            <% if @customer_accounts.empty? %>
                 <tr>
-                    <td><%= customer_account.customer_name %></td>
-                    <td><%= customer_account.address %></td>
-                    <td><%= customer_account.email %></td>
-                    <td><%= customer_account.telephone_number %></td>
-                    <td><%= customer_account.fax_number %></td>
+                    <td><p>No Customer Accounts</p></td>
                 </tr>
+            <% else %>
+                <% @customer_accounts.each do |customer_account| %>
+                    <tr>
+                        <td><%= customer_account.customer_name %></td>
+                        <td><%= customer_account.address %></td>
+                        <td><%= customer_account.email %></td>
+                        <td><%= customer_account.telephone_number %></td>
+                        <td><%= customer_account.fax_number %></td>
+                    </tr>
+                <% end %>
             <% end %>
-        <% end %>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>

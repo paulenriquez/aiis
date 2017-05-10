@@ -1,24 +1,25 @@
-<table class='ui celled table'>
-    <thead>
-        <th>Payment Date</th>
-        <th>Customer Account</th>
-        <th>Purchase Order</th>
-        <th>Amount Paid</th>
-    </thead>
-    <tbody>
-        <% if @customer_payments.empty? %>
-            <tr>
-                <td><p>No Customer Payments</p></td>
-            </tr>
-        <% else %>
-            <% @customer_payments.each do |customer_payment| %>
+<div class = 'content-container view-index'>
+    <table class='ui celled table'>
+        <thead>
+            <th>Payment Date</th>
+            <th>Customer Account</th>
+            <th>Purchase Order</th>
+            <th>Amount Paid</th>
+        </thead>
+        <tbody>
+            <% if @customer_payments.empty? %>
                 <tr>
-                    <td><%= customer_payment.payment_date %></td>
-                    <td><%= customer_payment.customer_account %></td>
-                    <td><%= customer_payment.purchase_order %></td>
-                    <td><%= customer_payment.amount_paid %></td>
+                    <td><p>No Customer Payments</p></td>
                 </tr>
+            <% else %>
+                <% @customer_payments.each do |customer_payment| %>
+                    <tr>
+                        <td><%= customer_payment.payment_date %></td>
+                        <td><%= customer_payment.customer_account %></td>
+                        <td><%= customer_payment.purchase_order %></td>
+                        <td><%= customer_payment.amount_paid %></td>
+                    </tr>
+                <% end %>
             <% end %>
-        <% end %>
-    </tbody>
-</table>
+        </tbody>
+    </table>
