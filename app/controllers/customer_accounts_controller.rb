@@ -8,7 +8,7 @@ class CustomerAccountsController < ApplicationController
     def create
         @customer_account = CustomerAccount.new(customer_account_params)
         if @customer_account.save
-            redirect_to customer_account_path(@customer_account)
+            redirect_to(customer_account_path(@customer_account))
         else
             render :new
         end
@@ -20,7 +20,12 @@ class CustomerAccountsController < ApplicationController
         @customer_account = CustomerAccount.find(params[:id])
     end
     def update
-
+        @customer_account = CustomerAccount.find(params[:id])
+        if @customer_account.update(customer_account_params)
+            redirect_to(customer_account_path(@customer_account))
+        else
+            render :edit
+        end
     end
     def delete
 

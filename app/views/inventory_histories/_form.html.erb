@@ -1,5 +1,5 @@
 <div class = 'view-form-partial'>
-    <%= form_for @inventory_history, url: inventory_histories_path, html: {class: 'ui form'} do |inventory_history| %>
+    <%= form_for @inventory_history, html: {class: 'ui form'} do |inventory_history| %>
         <div class = 'ui attached segment'>
             <div class = 'ui column grid'>
                 <div class = 'row'>
@@ -14,7 +14,7 @@
                     <div class = 'eight wide column'>
                         <div class = 'field'>
                             <label>Date Changed</label>
-                            <%= inventory_history.date_field :date_changed %>
+                            <%= inventory_history.date_field :date_changed, required: true %>
                         </div>
                     </div>
                     <div class = 'four wide column'>

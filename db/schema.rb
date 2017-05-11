@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170506063402) do
+ActiveRecord::Schema.define(version: 20170511164645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,10 +40,12 @@ ActiveRecord::Schema.define(version: 20170506063402) do
     t.date     "date_changed"
     t.string   "action_type"
     t.integer  "quantity"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "product_id"
     t.text     "remarks"
+    t.integer  "order_line_id"
+    t.index ["order_line_id"], name: "index_inventory_histories_on_order_line_id", using: :btree
     t.index ["product_id"], name: "index_inventory_histories_on_product_id", using: :btree
   end
 
@@ -88,6 +90,7 @@ ActiveRecord::Schema.define(version: 20170506063402) do
 
   add_foreign_key "customer_payments", "customer_accounts"
   add_foreign_key "customer_payments", "purchase_orders"
+  add_foreign_key "inventory_histories", "order_lines"
   add_foreign_key "inventory_histories", "products"
   add_foreign_key "order_lines", "products"
   add_foreign_key "order_lines", "purchase_orders"

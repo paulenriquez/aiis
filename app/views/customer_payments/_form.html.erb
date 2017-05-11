@@ -1,5 +1,5 @@
 <div class = 'view-form-partial'>
-    <%= form_for @customer_payment, url: customer_payments_path, html: {class: 'ui form'} do |customer_payment| %>
+    <%= form_for @customer_payment, html: {class: 'ui form'} do |customer_payment| %>
         <div class = 'ui attached bottom segment'>
             <div class = 'field'>
                 <label>Customer Account</label>
@@ -35,28 +35,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                            
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class = 'ui attached segment'>
-            <div class = ''>
-            
+            <div class = 'fields'>
+                <div class = 'eight wide field'>
+                    <div class = 'field'>
+                        <%= label_tag :payment_date, 'Payment Date' %>
+                        <%= customer_payment.date_field :payment_date  %>
+                    </div>
+                </div>
+                <div class = 'eight wide field'>
+                    <div class = 'field'>
+                        <%= label_tag :amount_paid %>
+                        <%= customer_payment.text_field :amount_paid %>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class = 'inline field'>
-            <%= label_tag :payment_date, 'Payment Date' %>
-            <%= customer_payment.date_field :payment_date  %>
+        <div class = 'ui bottom attached segment'>
+            <%= customer_payment.submit 'Save', class: 'ui primary button' %>
         </div>
-        <div class = 'inline field'>
-            <%= label_tag :amount_paid %>
-            <%= customer_payment.text_field :amount_paid %>
-        </div>
-
-        <%= customer_payment.submit 'Create', class: 'ui button' %>
 
         <!-- Hidden Fields -->
         <%= customer_payment.text_field :customer_account_id %>

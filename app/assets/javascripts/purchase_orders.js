@@ -85,10 +85,6 @@ function view_form_partial() {
         /** PURCHASE DATE */
             mainForm_purchaseDate.on('input change', function() {
                 computeDueDate();
-                mainForm_dateFulfilled.attr('min', mainForm_purchaseDate.val());
-                if (new Date(mainForm_dateFulfilled.val()).getTime() < new Date(mainForm_purchaseDate.val()).getTime()) {
-                    mainForm_dateFulfilled.val(mainForm_purchaseDate.val());
-                }
             });
 
         /** PAYMENT TERMS */
@@ -268,17 +264,19 @@ function view_form_partial() {
                     button_addOrderLine.removeClass('disabled');
                 }
             }
-            function updateProductSelectorItems(item, action) { 
+            function updateProductSelectorItems(item, action) {
                 if (action.toLowerCase() === 'after-insert') {
                     select_products.find('.menu .item').each(function() {
                         if ($(this).data('value') == item.find('.main-form.product-id').val()) {
                             $(this).css('display', 'none');
+                            $(this).addClass('disabled');
                         }
                     });
                 } else if (action.toLowerCase() === 'after-remove') {
                     select_products.find('.menu .item').each(function() {
                         if ($(this).data('value') == item.find('.main-form.product-id').val()) {
                             $(this).css('display', 'block');
+                            $(this).removeClass('disabled');
                         }
                     });
                 }
@@ -365,12 +363,16 @@ function view_form_partial() {
             }
             function computeOrderPrices() {
                 table_orderLines.find('tbody .order-line-item').each(function() {
-                    if ($(this).find('.col-qty #field-editQty').length > 0) {
+                    if ($(this).css('display') !== 'none') {
+                        if ($(this).find('.col-qty #field-editQty').length > 0) {
                         $(this).find('.col-order-price').html(toPriceString($(this).find('#field-editQty').val() * getPriceValue($(this).find('.col-unit-price').html())));
+                        } else {
+                            $(this).find('.col-order-price').html(toPriceString($(this).find('.main-form.qty').val() * getPriceValue($(this).find('.col-unit-price').html())));
+                        }
+                        $(this).find('.main-form.order-price').val(getPriceValue($(this).find('.col-order-price').html()));
                     } else {
-                        $(this).find('.col-order-price').html(toPriceString($(this).find('.main-form.qty').val() * getPriceValue($(this).find('.col-unit-price').html())));
+                        $(this).find('.main-form.order-price').val(0);
                     }
-                    $(this).find('.main-form.order-price').val(getPriceValue($(this).find('.col-order-price').html()));
                 });
             }
 
@@ -482,7 +484,7 @@ function view_form_partial() {
                 computeOutstandingBalance();
             });
 
-        /** PAYMENT TERMS */
+        /** STATUS */
             select_status.dropdown({
                 onChange: function() {
                     if ($(this).dropdown('get value') == 'unfulfilled') {
@@ -518,9 +520,8 @@ function view_form_partial() {
                 /** Purchase Date */
                 if (mainFormValuesOnLoad.purchaseDate === '') {
                     mainForm_purchaseDate.val(new Date().formatForDateField());
-                    mainForm_dateFulfilled.attr('min', mainForm_purchaseDate.val());
-                    mainForm_dateFulfilled.val(mainForm_purchaseDate.val());
                 }
+                computeDueDate();
 
                 /** Payment Terms */
                 if (mainFormValuesOnLoad.paymentTerms !== '') {
@@ -554,9 +555,14 @@ function view_form_partial() {
                 /** Status */
                 if (mainFormValuesOnLoad.status !== '') {
                     select_status.dropdown('set selected', mainFormValuesOnLoad.status);
-                    mainForm_dateFulfilled.val(mainFormValuesOnLoad.dateFulfilled);
+                    if (mainFormValuesOnLoad.status === 'fulfilled') {
+                        mainForm_dateFulfilled.val(mainFormValuesOnLoad.dateFulfilled);
+                    } else {
+                        mainForm_dateFulfilled.val(new Date().formatForDateField());
+                    }
                 } else {
                     mainForm_status.val('unfulfilled');
+                    mainForm_dateFulfilled.val(new Date().formatForDateField());
                 }
             }
             loadData();

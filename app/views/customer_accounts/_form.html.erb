@@ -1,5 +1,5 @@
 <div class = 'view-form-partial'>
-    <%= form_for @customer_account, url: customer_accounts_path, html: {class: 'ui form'} do |customer_account| %>
+    <%= form_for @customer_account, html: {class: 'ui form'} do |customer_account| %>
         <div class = 'ui attached segment'>
             <div class = 'field'>
                 <%= label_tag :customer_name, 'Customer Name' %>
@@ -9,19 +9,25 @@
                 <%= label_tag :address %>
                 <%= customer_account.text_field :address %>
             </div>
-        </div>
-        <div class = 'ui attached segment'>
-            <div class = 'field'>
-                <%= label_tag :email%>
-                <%= customer_account.text_field :email %>
-            </div>
-            <div class = 'field'>
-                <%= label_tag :telephone_number, 'Telephone Number' %>
-                <%= customer_account.telephone_field :telephone_number %>
-            </div>
-            <div class = 'field'>
-                <%= label_tag :fax_number, 'Fax Number' %>
-                <%= customer_account.telephone_field :fax_number %>
+            <div class = 'fields'>
+                <div class = 'six wide field'>
+                    <div class = 'field'>
+                        <%= label_tag :email%>
+                        <%= customer_account.text_field :email %>
+                    </div>
+                </div>
+                <div class = 'five wide field'>   
+                    <div class = 'field'>
+                        <%= label_tag :telephone_number, 'Tel. No.' %>
+                        <%= customer_account.telephone_field :telephone_number %>
+                    </div>
+                </div>
+                <div class = 'five wide field'>
+                    <div class = 'field'>
+                        <%= label_tag :fax_number, 'Fax No.' %>
+                        <%= customer_account.telephone_field :fax_number %>
+                    </div>
+                </div>
             </div>
         </div>
         <div class = 'ui bottom attached segment'>

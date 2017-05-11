@@ -1,5 +1,5 @@
 <div class = 'view-form-partial'>
-    <%= form_for @purchase_order, url: purchase_orders_path, html: {class: 'ui form'} do |purchase_order| %>
+    <%= form_for @purchase_order, html: {class: 'ui form'} do |purchase_order| %>
         <div class = 'ui attached segment basic-information-segment'>
             <div class = 'ui three column grid'>
                 <div class = 'row'>
@@ -207,15 +207,15 @@
 
         <!-- HIDDEN FIELD -->
         <!-- Purchase Date field used above. -->
-        <%= purchase_order.text_field :customer_account_id, hidden: true %>
-        <%= purchase_order.text_field :payment_terms, hidden: true %>
-        <%= purchase_order.date_field :due_date, hidden: true %>
-        <%= purchase_order.text_field :subtotal, hidden: true %>
-        <%= purchase_order.text_field :discount_type, hidden: true %>
-        <%= purchase_order.text_field :discount, hidden: true %>
-        <%= purchase_order.text_field :negotiated_price, hidden: true %>
-        <%= purchase_order.text_field :outstanding_balance, hidden: true %>
-        <%= purchase_order.text_field :status, hidden: true %>
+        <%= purchase_order.text_field :customer_account_id, hidden: false %>
+        <%= purchase_order.text_field :payment_terms, hidden: false %>
+        <%= purchase_order.date_field :due_date, hidden: false %>
+        <%= purchase_order.text_field :subtotal, hidden: false %>
+        <%= purchase_order.text_field :discount_type, hidden: false %>
+        <%= purchase_order.text_field :discount, hidden: false %>
+        <%= purchase_order.text_field :negotiated_price, hidden: false %>
+        <%= purchase_order.text_field :outstanding_balance, hidden: false %>
+        <%= purchase_order.text_field :status, hidden: false %>
         <!-- Date Fulfilled field used above. -->
     <% end %>
 </div>

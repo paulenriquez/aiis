@@ -20,18 +20,21 @@ class PurchaseOrdersController < ApplicationController
     end
     def edit
         @purchase_order = PurchaseOrder.find(params[:id])
-        @customer_accounts = CustomerAccount.all
-        @products = Product.all
     end
     def update
-        
+        @purchase_order = PurchaseOrder.find(params[:id])
+        if @purchase_order.update(purchase_order_params)
+            redirect_to(purchase_order_path(@purchase_order))
+        else
+            render :edit
+        end
     end
 
     private
         def get_records
+            @purchase_orders = PurchaseOrder.all
             @customer_accounts = CustomerAccount.all
             @products = Product.all
-            @purchase_orders = PurchaseOrder.all
         end
         def purchase_order_params
             params.require(:purchase_order).permit!
@@ -42,8 +45,8 @@ class PurchaseOrdersController < ApplicationController
                     date_changed: purchase_order.purchase_date,
                     action_type: 'out',
                     quantity: order_line.quantity,
-                    remarks: 'Generated with ' + purchase_order.po_num,
-                    product_id: order_line.product_id
+                    product_id: order_line.product_id,
+                    order_line_id: order_line.id
                 )
                 inventory_history.save
             end

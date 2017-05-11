@@ -8,7 +8,15 @@ class InventoryHistoriesController < ApplicationController
         @inventory_history = InventoryHistory.new
     end
     def create
-
+        @inventory_history = InventoryHistory.new(inventory_history_params)
+        if @inventory_history.save
+            redirect_to(inventory_histories_path(@inventory_history))
+        else
+            render :new
+        end
+    end
+    def show
+        @inventory_history = InventoryHistory.find(params[:id])
     end
     def edit
 
@@ -19,7 +27,7 @@ class InventoryHistoriesController < ApplicationController
     
     private
         def inventory_history_params
-
+            params.require(:inventory_history).permit!
         end
         def get_records
             @products = Product.all

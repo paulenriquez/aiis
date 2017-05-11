@@ -1,41 +1,33 @@
 <div class = 'view-form-partial'>
-    <%= form_for @product, url: products_path, html: {class: 'ui form'} do |product| %>
+    <%= form_for @product, html: {class: 'ui form'} do |product| %>
         <div class = 'ui attached segment'>
-            <div class = 'ui column grid'>
-                <div class = 'row'>
-                    <div class = 'twelve wide column'>
-                        <div class = 'field'>
-                            <%= label_tag :product_name, 'Product Name' %>
-                            <%= product.text_field :product_name %>
-                        </div>
-                    </div>
-                    <div class = 'four wide column'>
-                        <div class = 'field'>
-                            <%= label_tag :unit_price, 'Unit Price' %>
-                            <%= product.text_field :unit_price %>
-                        </div>
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'eight wide column'>
-                        <div class = 'field'>
-                            <%= label_tag :product_specs, 'Specifications'%>
-                            <%= product.text_field :product_specs %>
-                        </div>
-                    </div>
-                    <div class = 'eight wide column'>
-                         <div class = 'field'>
-                            <%= label_tag :product_type, 'Product Type' %>
-                            <%= product.text_field :product_type %>
-                        </div>
+            <div class = 'field'>
+                <%= label_tag :product_name, 'Product Name' %>
+                <%= product.text_field :product_name %>
+            </div>
+            <div class = 'field'>
+                <%= label_tag :product_specs, 'Specifications'%>
+                <%= product.text_field :product_specs %>
+            </div>
+            <div class = 'fields'>
+                <div class = 'ten wide field'>
+                    <div class = 'field'>
+                        <%= label_tag :product_type, 'Product Type' %>
+                        <%= product.text_field :product_type %>
                     </div>
                 </div>
-                <div class = 'row'>
-                    <div class = 'sixteen wide column'>
-                        <div class = 'field'>
-                            <%= label_tag :description %>
-                            <%= product.text_area :description %>
-                        </div>
+                <div class = 'six wide field'>
+                    <div class = 'field'>
+                        <%= label_tag :unit_price, 'Unit Price' %>
+                        <%= product.text_field :unit_price %>
+                    </div>
+                </div>
+            </div>
+            <div class = 'field'>
+                <div class = 'sixteen wide column'>
+                    <div class = 'field'>
+                        <%= label_tag :description %>
+                        <%= product.text_area :description %>
                     </div>
                 </div>
             </div>

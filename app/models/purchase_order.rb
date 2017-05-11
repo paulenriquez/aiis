@@ -1,10 +1,10 @@
 class PurchaseOrder < ApplicationRecord
-    has_many :order_lines, inverse_of: :purchase_order
+    has_many :order_lines, inverse_of: :purchase_order, dependent: :destroy
     has_many :products, through: :order_lines
     has_many :customer_payments
     belongs_to :customer_account
 
-    accepts_nested_attributes_for :order_lines
+    accepts_nested_attributes_for :order_lines, allow_destroy: true
 
     validates :customer_account_id, presence: true
 
@@ -12,7 +12,7 @@ class PurchaseOrder < ApplicationRecord
 
     private
         def generate_purchase_order_number
-            self.po_num = 'PO-' + self.customer_account_id.to_s + '-' + self.purchase_date.to_s.gsub('-', '') + '-' + (PurchaseOrder.last.id + 1).to_s
+            self.po_num = 'PO-' + self.customer_account_id.to_s + '-' + CustomerAccount.find(self.customer_account_id).purchase_orders.count.to_s
         end
         def sanitize_input
             # Discount
