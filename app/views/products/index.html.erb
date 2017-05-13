@@ -1,28 +1,114 @@
+<%= render 'header' %>
 <div class = 'container-content view-index'>
-    <table class='ui celled table'>
-        <thead>
-            <th>Product Name</th>
-            <th>Product Type</th>
-            <th>Specifications</th>
-            <th>Description</th>
-            <th>Unit Price</th>
-        </thead>
-        <tbody>
-            <% if @products.empty? %>
-                <tr>
-                    <td><p>No Products</p></td>
-                </tr>
-            <% else %>
+    <div class = 'ui segment filter-menu-container'>
+        <div class = 'ui column grid'>
+            <div class = 'row'>
+                <div class = 'wide column label-container show-label'>
+                    <span>Show:</span>
+                </div>
+                <div class = 'wide column field-container show-field'>
+                    <div class = 'ui fluid floating dropdown basic button'>
+                        <div class = 'default text'>All Products</div>
+                        <i class = 'dropdown icon'></i>
+                        <div class = 'menu'>
+                            <div class = 'item'>All Products</div>
+                            <div class = 'item'>In-stock</div>
+                            <div class = 'item'>Out-of-Stock</div>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'wide column label-container sort-label'>
+                    <span>Sort:</span>
+                </div>
+                <div class = 'wide column field-container sort-by-field'>
+                    <div class = 'ui fluid floating dropdown basic button'>
+                        <div class = 'default text'>Name</div>
+                        <i class = 'dropdown icon'></i>
+                        <div class = 'menu'>
+                            <div class = 'item'>Name</div>
+                            <div class = 'item'>Price</div>
+                            <div class = 'item'>Classification</div>
+                            <div class = 'item'>Quantity</div>
+                            <div class = 'item'>Date Added</div>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'wide column field-container sort-asc-desc-field'>
+                    <div class = 'ui fluid floating dropdown basic button'>
+                        <div class = 'default text'>Asc.</div>
+                        <i class = 'dropdown icon'></i>
+                        <div class = 'menu'>
+                            <div class = 'item'>Asc.</div>
+                            <div class = 'item'>Desc.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = 'ui segment index-all-records-list-container'>
+        <div class = 'ui middle aligned divided very relaxed list index-all-records-list'>
+            <div class = 'item list-header'>
+                <div class = 'ui column grid content'>
+                    <div class = 'row'>
+                        <div class = 'wide column col-productDetails'>Product Details</div>
+                        <div class = 'wide column col-qty'>Quantity</div>
+                        <div class = 'wide column col-actions'>Actions</div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'scrollable-item-area'>
                 <% @products.each do |product| %>
-                    <tr>
-                        <td><%= product.product_name %></td>
-                        <td><%= product.product_type %></td>
-                        <td><%= product.product_specs %></td>
-                        <td><%= product.description %></td>
-                        <td><%= product.unit_price %></td>
-                    </tr>
+                    <div class = 'item'>
+                        <div class = 'ui column grid content'>
+                            <div class = 'row'>
+                                <div class = 'wide column col-productDetails'>
+                                    <div class = 'header'><%= product.product_name %></div>
+                                    <table = class = 'details'>
+                                        <tbody>
+                                        <tr>
+                                            <td class = 'key'>Classification:</td>
+                                            <td class = 'value'><%= product.product_type %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class = 'key'>Specifications:</td>
+                                            <td class = 'value'><%= product.product_specs %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class = 'key'>Unit Price:</td>
+                                            <td class = 'value'>₱ <%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class = 'key'>Description:</td>
+                                            <td class = 'value'>
+                                                <% if product.description != nil && product.description != '' %>
+                                                    <%= product.description %>
+                                                <% else %>
+                                                    <i>No Description</i>
+                                                <% end %>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class = 'wide column col-qty'>
+                                    <%= product.remaining_quantity %>
+                                </div>
+                                <div class = 'wide column col-actions'>
+                                    <div class = 'ui small basic icon buttons basic-action-container'>
+                                        <a class = 'ui button' href = <%= product_path(product.id) %>><i class = 'folder open icon'></i></a>
+                                        <a class = 'ui button' href = <%= edit_product_path(product.id) %>><i class = 'edit icon'></i></a>
+                                        <a class = 'ui button'><i class = 'trash icon'></i></a>
+                                    </div>
+                                    <div class = 'ui small basic buttons update-qty-container'>
+                                        <a class = 'ui button' href = <%= new_inventory_history_path(product:product.id) %>>Update Qty.</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <% end %>
-            <% end %>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
 </div>

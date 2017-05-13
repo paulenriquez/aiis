@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Aiis</title>
+    <title>Accuratech IIS</title>
     <%= csrf_meta_tags %>
     
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= stylesheet_link_tag params[:controller] %>
 
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag params[:controller] %>
 
   </head>
@@ -16,22 +16,22 @@
       <div class = 'item'>
         <div class = 'header'>Quick Links</div>
         <div class = 'menu'>
-          <a class = 'item'>Add Purchase Order</a>
-          <a class = 'item'>Add Customer Payment</a>
+          <a class = 'item' href = <%= new_purchase_order_path %>>Add Purchase Order</a>
+          <a class = 'item' href = <%= new_customer_payment_path %>>Add Customer Payment</a>
         </div>
       </div>
       <div class = 'item'>
         <div class = 'header'>Dashboard</div>
         <div class = 'menu'>
           <a class = 'item'>Home</a>
-          <a class = 'item'>Inventory</a>
-          <a class = 'item'>Purchase Orders</a>
-          <a class = 'item'>Customer Payments</a>
-          <a class = 'item'>Customer Accounts</a>
+          <a class = 'item' href = <%= products_path %>>Inventory</a>
+          <a class = 'item' href = <%= purchase_orders_path %>>Purchase Orders</a>
+          <a class = 'item' href = <%= customer_payments_path %>>Customer Payments</a>
+          <a class = 'item' href = <%= customer_accounts_path %>>Customer Accounts</a>
         </div>
       </div>
     </div>
-    <div class = 'fixed pusher'>
+    <div class = 'pusher view-content-container'>
       <div class = 'center-content'>
         <%= yield %>
       </div>

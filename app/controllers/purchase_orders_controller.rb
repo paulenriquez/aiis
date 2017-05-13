@@ -21,6 +21,9 @@ class PurchaseOrdersController < ApplicationController
     def edit
         @purchase_order = PurchaseOrder.find(params[:id])
     end
+    def edit_status
+        @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+    end
     def update
         @purchase_order = PurchaseOrder.find(params[:id])
         if @purchase_order.update(purchase_order_params)
@@ -50,5 +53,10 @@ class PurchaseOrdersController < ApplicationController
                 )
                 inventory_history.save
             end
+        end
+
+        # Create Customer Payment if fully paid.
+        def create_customer_payment(purchase_order)
+
         end
 end

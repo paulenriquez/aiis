@@ -4,24 +4,33 @@
     <div class = 'menu custom'>
         <% @products.each do |product| %>
             <div class = 'item' data-value = <%= product.id %>>
-                <span class = 'title text' id = 'val-productName'><%= product.product_name %></span>
-                <span class = 'subtext'>
-                    <span class = ''> ― <span id = 'val-quantity'><%= product.remaining_quantity %></span> units left </span>
-                    <span class = 'float-right'>₱ <span id = 'val-unitPrice'><%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></span></span>
-                </span>
+                <table class = 'segmented-title-container'>
+                    <tbody>
+                        <tr>
+                            <td class = 'left-text'><span class = 'title text' id = 'val-productName'><%= product.product_name %></span></td>
+                            <td class = 'right-text'><span><span id = 'val-quantity'><%= product.remaining_quantity %></span> <%= product.remaining_quantity != 1 ? 'units' : 'unit' %> left</span></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <table class = 'details'>
                     <tbody>
                         <tr>
-                            <td class = 'key'>Type: </td>
+                            <td class = 'key'>Classification: </td>
                             <td id = 'val-productType' class = 'value'><%= product.product_type %></td>
                         </tr>
-                            <td class = 'key'>Specs.: </td>
-                            <td id = 'val-productSpecs' class = 'value specs'><%= product.product_specs %></td>
+                            <td class = 'key'>Specifications: </td>
+                            <td id = 'val-productSpecs' class = 'value'><%= product.product_specs %></td>
                         </tr>
                         <tr>
-                            <td class = 'key'>Description: </td>
-                            <td id = 'val-description' class = 'value'><%= product.description %></td>
+                            <td class = 'key'>Unit Price: </td>
+                            <td class = 'value'>₱ <span id = 'val-unitPrice'><%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></span></td>
                         </tr>
+                        <% if product.description != nil && product.description != '' %>
+                            <tr>
+                                <td class = 'key'>Description: </td>
+                                <td id = 'val-description' class = 'value'><%= product.description %></td>
+                            </tr>
+                        <% end %>
                     </tbody>
                 </table>
             </div>

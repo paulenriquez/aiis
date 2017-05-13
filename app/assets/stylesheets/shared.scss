@@ -1,3 +1,7 @@
+.view-content-container {
+    width: calc(100% - 260px);
+}
+
 .container-content, .container-header {
     padding-left: 15px !important;
     padding-right: 15px !important;
@@ -7,9 +11,60 @@
     margin-bottom: 20px !important;
 }
 
+.filter-menu-container {
+    .label-container {
+        padding-right: 0 !important;
+        span {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.93em;
+            font-weight: 700;
+        }
+    }
+    .field-container {
+        padding-left: 0 !important;
+        .ui.dropdown {
+            text-align: center;
+        }
+    }
+}
 
-.no-padding {
+.index-all-records-list-container {
     padding: 0 !important;
+    .index-all-records-list {
+        .list-header {
+            font-weight: 700;
+            font-size: 1.2em;
+            background-color: rgba(248,248,249,1);
+            border-top-left-radius: 0.28571429rem;
+            border-top-right-radius: 0.28571429rem;
+            border-bottom: 1px solid rgba(34,36,38,.15);
+        }
+        .item:not(.list-header):not(:first-child) {
+            border-top: 1px solid rgba(34,36,38,.15);
+        }
+        .item {
+            padding: 0.85em 1em 0.85em 1em !important;
+            .content {
+                .header {
+                    margin-bottom: 0.3em;
+                    font-weight: 700;
+                }
+                .details {
+                    .key, .value {
+                        font-size: 0.9em;
+                        color: rgba(0,0,0, 0.6);
+                        vertical-align: text-top;
+                    }
+                    .key {
+                        width: 7.5em;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .field .ui.segments {
@@ -27,12 +82,26 @@
     max-height: 50vh;   
         .item {
             border-top: 1px solid rgba(34,36,38,.1);
-            .text.title {
+            .segmented-title-container {
+                width: 100%;
+                .left-text, .right-text {
+                    vertical-align: text-top;
+                    * {
+                        word-wrap: break-word;
+                        white-space: normal;
+                    }
+                }
+                .left-text {
+                    width: 75%;
+                }
+                .right-text {
+                    text-align: right;
+                    width: 25%;
+                }
+            }
+            .title.text {
                 font-weight: 700;
                 font-size: 1em;
-            }
-            .float-right {
-                float: right;
             }
             .details {
                 margin-top: 0.5em;
@@ -44,15 +113,15 @@
                         padding-bottom: 0.25em;
                     }
                     .key {
-                        width: 6em;
                         font-weight: 600;
+                        width: 8em;
                     }
                 }
             }
         }
-        .item.active, .item.selected { 
+        .item.selected, .item.active { 
             font-weight: normal;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.06);
             .details {
                 color: rgba(0,0,0, 0.9);
             }

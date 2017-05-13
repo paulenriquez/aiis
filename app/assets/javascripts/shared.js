@@ -1,11 +1,11 @@
-$(document).on('turbolinks:load', function() {
+$(document).on('ready', function() {
     /** Initialize all Semantic-UI Dropdowns */
     $('.ui.dropdown').dropdown();
     $('.ui.dropdown').dropdown({
         onShow: function() {
             /** Make the Active item the selected one on open. 
              * Same block of code executes when dropdown is clicked open,
-             * as seen in the .click() function below.
+             * as seen in the .click() and .on('input'...function below.
              */
             $(this).find('.menu .item').removeClass('selected');
             $(this).find('.menu .item.active').addClass('selected');
@@ -23,7 +23,6 @@ $(document).on('turbolinks:load', function() {
     });
 
     /** Configure Shared Dropdowns */
-
     /** MutationObserver is used to detect changes in the dropdown. Once a change is detected, 
      * the dropdown text is adjusted to show only the title text.
      */
@@ -32,14 +31,14 @@ $(document).on('turbolinks:load', function() {
     if ($('#select-customerAccounts').length) {
         $('#select-customerAccounts').dropdown({
             fullTextSearch: true,
-            forceSelection: false,
+            forceSelection: false
         });
         observer_customerAccounts.observe($('#select-customerAccounts').find('.menu')[0], observerConfig);
     }
     if ($('#select-products').length) {
         $('#select-products').dropdown({
             fullTextSearch: true,
-            forceSelection: false,
+            forceSelection: false
         });
         observer_products.observe($('#select-products').find('.menu')[0], observerConfig);
     }
@@ -54,7 +53,7 @@ $(document).on('turbolinks:load', function() {
 
 /** Run page-specific JS */
 function executeScriptFor(elementIdentifier, script) {
-    $(document).on('turbolinks:load', function() {
+    $(document).on('ready', function() {
         if ($(elementIdentifier).length) {
             script();
         }
@@ -94,7 +93,7 @@ var observer_customerAccounts = new MutationObserver(function () {
 var observer_products = new MutationObserver(function () {
     if ($('#select-products').dropdown('get value') !== '') {
         if ($('#select-products').find('input').val() === '') {
-            $('#select-products').dropdown('set text', $('#select-products').find('.menu .item.active .title.text').html() + ' (' + $('#select-products').find('.menu .item.active .value.specs').html() + ')');
+            $('#select-products').dropdown('set text', $('#select-products').find('.menu .item.active .title.text').html());
         } else {
             $('#select-products').dropdown('set text', '');
         }

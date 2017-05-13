@@ -1,0 +1,37 @@
+<%= render 'header' %>
+<div class = 'container-content view-edit-status'>
+    <div class = 'ui attached message'>
+        <div class = 'header'>Edit Purchase Order Status</div>
+    </div>
+    <%= form_for @purchase_order, method: :patch, html: {class: 'ui form'} do |purchase_order| %>
+        <div class = 'ui attached segment'>
+            <div class = 'field'>
+                <label>Purchase Order ID</label>
+                <span><%= @purchase_order.po_num %></span>
+            </div>
+        </div>
+        <div class = 'ui attached segment'>
+            <div class = 'field'>
+                <label>Status</label>
+                <div id = 'select-status' class = 'ui fluid floating dropdown button' data-value = 'unfulfilled'>
+                    <span class = 'text'>Unfulfilled</span>
+                    <i class = 'dropdown icon'></i>
+                    <div class = 'menu'>
+                        <div class = 'item' data-value = 'unfulfilled'>Unfulfilled</div>
+                        <div class = 'item' data-value = 'fulfilled'>Fulfilled</div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'field date-fulfilled-container'>
+                <label>Date Fulfilled</label>
+                <%= purchase_order.date_field :date_fulfilled %>
+            </div>
+        </div>
+        <div class = 'ui bottom attached segment'>
+            <%= purchase_order.submit 'Save', class: 'ui primary button' %>
+        </div>
+
+         <!-- Hidden Field -->
+        <%= purchase_order.text_field :status, hidden: true %>
+    <% end %>
+</div>

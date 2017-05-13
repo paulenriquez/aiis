@@ -14,5 +14,4 @@
 //= require jquery_ujs
 //= require semantic-ui
 //= require cocoon
-//= require turbolinks
 //= require shared

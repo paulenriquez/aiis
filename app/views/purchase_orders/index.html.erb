@@ -1,9 +1,109 @@
+<%= render 'header' %>
 <div class = 'container-content view-index'>
+    <div class = 'ui segment index-all-records-list-container'>
+        <div class = 'ui middle aligned divided very relaxed list index-all-records-list'>
+            <div class = 'item list-header'>
+                <div class = 'ui column grid content'>
+                    <div class = 'row'>
+                        <div class = 'wide column col-date'>Date</div>
+                        <div class = 'wide column col-poDetails'>Purchase Order Details</div>
+                        <div class = 'wide column col-status'>Status</div>
+                        <div class = 'wide column col-dueDate'>Due Date</div>
+                        <div class = 'wide column col-outstandingBal'>Outstanding Bal.</div>
+                        <div class = 'wide column col-actions'>Actions</div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'scrollable-item-area'>
+                <% @purchase_orders.each do |purchase_order| %>
+                    <div class = 'item'>
+                        <div class = 'ui column grid content'>
+                            <div class = 'row'>
+                                <div class = 'wide column col-date'>
+                                    <%= purchase_order.purchase_date.strftime('%b %d, %Y') %>
+                                </div>
+                                <div class = 'wide column col-poDetails'>
+                                    <div class = 'header'><%= purchase_order.po_num %></div>
+                                    <table class = 'details'>
+                                        <tbody>
+                                            <tr>
+                                                <td class = 'key'>Customer:</td>
+                                                <td class = 'value'><%= purchase_order.customer_account.customer_name %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Terms:</td>
+                                                <td class = 'value'>
+                                                    <%= '30 Days' if purchase_order.payment_terms == '30-days' %>
+                                                    <%= '60 Days' if purchase_order.payment_terms == '60-days' %>
+                                                    <%= '90 Days' if purchase_order.payment_terms == '90-days' %>
+                                                    <%= 'Paid on purchase' if purchase_order.payment_terms == 'paid' %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Discount:</td>
+                                                <td class = 'value'>
+                                                    <% if purchase_order.discount_type != 'none' && purchase_order.discount > 0 %>
+                                                        ₱
+                                                        <%= number_with_precision(purchase_order.discount, precision: 2, delimiter: ',') %>
+                                                        <% if purchase_order.discount_type == 'percent' %>
+                                                            (<%= number_with_precision(((purchase_order.discount / purchase_order.subtotal) * 100), precision: 0).to_s + '%'  %>)
+                                                        <% elsif purchase_order.discount_type == 'amount' %>
+                                                            (Exact)
+                                                        <% end %>
+                                                    <% else %>
+                                                        <i>No Discount</i>
+                                                    <% end %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Total:</td>
+                                                <td class = 'value'>₱ <%= number_with_precision(purchase_order.negotiated_price, precision: 2, delimiter: ',') %></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class = 'wide column col-status'>
+                                    <%= purchase_order.status.capitalize %>
+                                </div>
+                                <div class = 'wide column col-dueDate'>
+                                    <% if purchase_order.due_date != nil && purchase_order.payment_terms != 'paid' %>
+                                        <%= purchase_order.due_date.strftime('%b %d, %Y') %>
+                                    <% else %>
+                                        <i>NA</i>
+                                    <% end %>
+                                </div>
+                                <div class = 'wide column col-outstandingBal'>
+                                    <% if purchase_order.outstanding_balance > 0 %>
+                                        ₱ <%= number_with_precision(purchase_order.outstanding_balance, precision: 2, delimiter: ',') %>
+                                    <% else %>
+                                        <i>Fully paid</i>
+                                    <% end %>
+                                </div>
+                                <div class = 'wide column col-actions'>
+                                    <div class = 'ui small basic buttons basic-action-container'>
+                                        <a class = 'ui icon button' href = <%= purchase_order_path(purchase_order.id) %>><i class = 'folder open icon'></i></a>
+                                        <a class = 'ui icon button' href = <%= edit_purchase_order_path(purchase_order.id) %>><i class = 'edit icon'></i></a>
+                                        <a class = 'ui icon button'><i class = 'trash icon'></i></a>
+                                    </div>
+                                    <div class = 'ui small basic buttons status-payment-container'>
+                                        <a class = 'ui button' href = <%= purchase_order_edit_status_path(purchase_order_id: purchase_order.id) %>>Update Status</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class = 'sort-fields-container'>
     
     </div>
     <div class = 'purchase-order-table-container'>
-        <table class = 'ui celled striped table'>
+        <table class = 'ui celled table'>
             <thead>
                 <tr>
                     <th>Date</th>
@@ -16,7 +116,9 @@
             </thead>
             <tbody>
                 <% if @purchase_orders.empty? %>
-
+                    <tr>
+                        <td colspan = 7>No Purchase Orders</td>
+                    </tr>
                 <% else %>
                     <% @purchase_orders.each do |purchase_order| %>
                         <tr>

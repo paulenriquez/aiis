@@ -5,7 +5,11 @@ class InventoryHistoriesController < ApplicationController
 
     end
     def new
-        @inventory_history = InventoryHistory.new
+        if params[:product] != nil && params[:product] != '' && Product.exists?(params[:product])
+            @inventory_history = InventoryHistory.new(product_id: params[:product])
+        else
+            @inventory_history = InventoryHistory.new
+        end
     end
     def create
         @inventory_history = InventoryHistory.new(inventory_history_params)

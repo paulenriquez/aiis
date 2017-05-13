@@ -6,7 +6,6 @@ gem 'puma', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
-gem 'turbolinks', '~> 5.0.0'
 gem 'jbuilder', '~> 2.5'
 
 gem 'semantic-ui-sass', '~> 2.2', '>= 2.2.1.1'

@@ -1,6 +1,39 @@
+.view-index {
+    min-width: 900px;
+    width: 80vw;
+    .index-all-records-list-container {
+        .col-date {
+            width: 10% !important;
+        }
+        .col-poDetails {
+            width: 25% !important;
+        }
+        .col-status {
+            width: 10% !important;
+        }
+        .col-dueDate {
+            width: 10% !important;
+        }
+        .col-outstandingBal {
+            width: 15% !important;
+            text-align: right;
+        }
+        .col-actions {
+            width: 30% !important;
+            text-align: right;
+            * {
+                float: right;
+            }
+            .status-payment-container {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
 .view-new, .view-edit {
     min-width: 850px;
-    max-width: 60vw;
+    width: 60vw;
 }
 
 .view-form-partial {
@@ -62,6 +95,7 @@
             min-height: 50vh;
             max-height: 70vh;
             overflow: auto;
+            padding: 0;
             table {
                 border-top: 0 !important;
                 border-left: 0 !important;
@@ -173,36 +207,33 @@
     }
 }
 
+.view-edit-status {
+    min-width: 300px;
+    width: 20vw;
+}
+
 .view-show {
+    min-width: 870px;
+    width: 65vw;
     .customer-information-container {
-        .field {
-            margin-bottom: 0.2em !important; 
-            label {
-                margin-bottom: 1em;
+        .customer-details {
+            .key, .value {
+                padding-bottom: 0.2em;
+                vertical-align: text-top;
             }
-            .customer-account-name {
-                font-size: 1.3em;
-            }
-        } 
-        .customer-details-container {
-            .customer-detail {
-                font-weight: 500;
-                padding: 0;
-                font-size: 0.95em;
-                border: 0;
-                margin-right: 2em;
-                .detail {
-                    margin-left: 0.3em !important;
-                }
+            .key {
+                font-weight: 700;
+                font-style: italic;
+                width: 6em;
             }
         }
     }
     .metadata-container {
+        border-top: 0 !important;
         .custom.wide.column {
             margin-right: 1em;
             width: auto !important;
         }
-        
     }
     .order-line-table-container {
         padding: 0;

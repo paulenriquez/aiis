@@ -1,29 +1,37 @@
+<%= render 'header' %>
 <div class = 'container-content view-show'>
     <div class = 'ui form'>
         <div class = 'ui attached message'>
-            <div class = 'header'>Purchase Order (<%= @purchase_order.po_num %>)</div>
+            <div class = 'header'>View Purchase Order</div>
         </div>
         <div class = 'ui attached segment'>
             <div class = 'customer-information-container'>
                 <div class = 'field'>
                     <label>Customer Information</label>
-                    <span class = 'customer-account-name'><%= @purchase_order.customer_account.customer_name %></span>
-                </div>
-                <div class = 'customer-details-container'>
-                    <div class = 'field'>
-                        <div class = 'ui basic label customer-detail'>
-                            Email:
-                            <div class = 'detail'> <%= @purchase_order.customer_account.email %></div>
-                        </div>
-                        <div class = 'ui basic label customer-detail'>
-                            Tel.:
-                            <div class = 'detail'> <%= @purchase_order.customer_account.telephone_number %></div>
-                        </div>
-                        <div class = 'ui basic label customer-detail'>
-                            Fax:
-                            <div class = 'detail'> <%= @purchase_order.customer_account.fax_number %></div>
-                        </div>
-                    </div>    
+                    <table class = 'customer-details'>
+                        <tbody>
+                            <tr>
+                                <td class = 'key'>Name:</td>
+                                <td class = 'value'><%= @purchase_order.customer_account.customer_name %></td>
+                            </tr>
+                            <tr>
+                                <td class = 'key'>Address:</td>
+                                <td class = 'value'><%= @purchase_order.customer_account.address %></td>
+                            </tr>
+                            <tr>
+                                <td class = 'key'>Email:</td>
+                                <td class = 'value'><%= @purchase_order.customer_account.email %></td>
+                            </tr>
+                            <tr>
+                                <td class = 'key'>Tel. No.:</td>
+                                <td class = 'value'><%= @purchase_order.customer_account.telephone_number %></td>
+                            </tr>
+                            <tr>
+                                <td class = 'key'>Fax No.:</td>
+                                <td class = 'value'><%= @purchase_order.customer_account.fax_number %></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -32,8 +40,14 @@
                 <div class = 'row metadata-container'>
                     <div class = 'custom wide column'>
                         <div class = 'field'>
+                            <label>Purchase Order ID</label>
+                            <span><%= @purchase_order.po_num %></span>
+                        </div>
+                    </div>
+                    <div class = 'custom wide column'>
+                        <div class = 'field'>
                             <label>Purchase Date</label>
-                            <span><%= @purchase_order.purchase_date.to_formatted_s(:long) %></span>
+                            <span><%= @purchase_order.purchase_date.strftime('%b %d, %Y') %></span>
                         </div>
                     </div>
                     <div class = 'custom wide column'>
@@ -45,7 +59,7 @@
                                 <% if @purchase_order.status == 'unfulfilled' %>
                                     NA
                                 <% elsif @purchase_order.status == 'fulfilled' %>
-                                    <%= @purchase_order.date_fulfilled.to_formatted_s(:long) %>
+                                    <%= @purchase_order.date_fulfilled.strftime('%b %d, %Y') %>
                                 <% end %>
                             </span>
                         </div>
@@ -67,7 +81,7 @@
                                 <% if @purchase_order.payment_terms == 'paid' %>
                                     NA
                                 <% else %>
-                                    <%= @purchase_order.due_date.to_formatted_s(:long) %>
+                                    <%= @purchase_order.due_date.strftime('%b %d, %Y') %>
                                 <% end %>
                             </span>
                         </div>
@@ -79,7 +93,7 @@
                                 <% if @purchase_order.outstanding_balance > 0 %>
                                     <%= number_with_precision(@purchase_order.outstanding_balance, precision: 2, delimiter: ',').to_s + ' remaining' %>
                                 <% else %>
-                                    Fully Paid.
+                                    Fully Paid
                                 <% end %>
                             </span>
                         </div>
@@ -89,7 +103,7 @@
         </div>
         <div class = 'ui bottom attached segment'>
             <div class = 'field'>
-                <label>Order Details</label>
+                <label>Orders</label>
                 <div class = 'ui segments'>
                     <div class = 'ui attached segment order-line-table-container'>
                         <table class = 'ui celled striped table'>

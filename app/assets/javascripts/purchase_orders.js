@@ -268,14 +268,12 @@ function view_form_partial() {
                 if (action.toLowerCase() === 'after-insert') {
                     select_products.find('.menu .item').each(function() {
                         if ($(this).data('value') == item.find('.main-form.product-id').val()) {
-                            $(this).css('display', 'none');
                             $(this).addClass('disabled');
                         }
                     });
                 } else if (action.toLowerCase() === 'after-remove') {
                     select_products.find('.menu .item').each(function() {
                         if ($(this).data('value') == item.find('.main-form.product-id').val()) {
-                            $(this).css('display', 'block');
                             $(this).removeClass('disabled');
                         }
                     });
@@ -356,7 +354,7 @@ function view_form_partial() {
                 });
                 
                 /** Assign values to Columns */
-                item.find('.col-particulars').html(productData.productName + ' (' + productData.productSpecs + ')');
+                item.find('.col-particulars').html(productData.productName);
                 item.find('.col-unit-price').html(productData.unitPrice)
                 item.find('.col-qty').html(mainForm_orderLineQty.val());
                 item.find('.col-order-price').html(toPriceString(mainForm_orderLineQty.val() * getPriceValue(productData.unitPrice)));
@@ -571,4 +569,54 @@ function view_form_partial() {
     script();
 }
 
+function view_edit_status() {
+    var select_status,
+        container_dateFulfilled;
+    var mainForm_status,
+        mainForm_dateFulfilled;
+
+    function script() {
+        select_status = $('.view-edit-status #select-status');
+        container_dateFulfilled = $('.view-edit-status .date-fulfilled-container');
+
+        mainForm_status = $('.view-edit-status #purchase_order_status');
+        mainForm_dateFulfilled = $('.view-edit-status #purchase_order_date_fulfilled');
+
+        select_status.dropdown({
+            onChange: function() {
+                mainForm_status.val($(this).dropdown('get value'));
+                if ($(this).dropdown('get value') === 'unfulfilled') {
+                    container_dateFulfilled.addClass('disabled');
+                    mainForm_dateFulfilled.val('');
+                    mainForm_dateFulfilled.attr('required', false);
+                } else if ($(this).dropdown('get value') === 'fulfilled') {
+                    container_dateFulfilled.removeClass('disabled');
+                    mainForm_dateFulfilled.val(new Date().formatForDateField());
+                    mainForm_dateFulfilled.attr('required', true);
+                }
+            }
+        });
+
+        function loadData() {
+            var mainFormValuesOnLoad = {
+                status: mainForm_status.val()
+            }
+            if (mainFormValuesOnLoad.status != '') {
+                select_status.dropdown('set selected', mainFormValuesOnLoad.status);
+                if (select_status.dropdown('get value') === 'unfulfilled') {
+                    container_dateFulfilled.addClass('disabled');
+                    mainForm_dateFulfilled.val('');
+                    mainForm_dateFulfilled.attr('required', false);
+                } else if (select_status.dropdown('get value') === 'fulfilled') {
+                    container_dateFulfilled.removeClass('disabled');
+                    mainForm_dateFulfilled.attr('required', true);
+                }
+            }
+        }
+        loadData();
+    }
+    script();
+}
+
 executeScriptFor('.view-form-partial', view_form_partial);
+executeScriptFor('.view-edit-status', view_edit_status);

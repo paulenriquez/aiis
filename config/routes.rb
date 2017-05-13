@@ -9,11 +9,12 @@ Rails.application.routes.draw do
   end
 
   resources :customer_accounts, path: 'customers'
-  resources :purchase_orders, path: 'orders'
-  resources :products, path: 'inventory' do
-    collection do
-      resources :inventory_histories, path: 'updates'
-    end
+  resources :purchase_orders, path: 'orders' do
+    get '/edit/status', to: 'purchase_orders#edit_status'
+  end
+  scope '/inventory' do
+    resources :products, path: 'products'
+    resources :inventory_histories, path: 'updates'
   end
   resources :customer_payments, path: 'payments'
 end
