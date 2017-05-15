@@ -1,28 +1,26 @@
 <div class = 'view-form-partial'>
     <%= form_for @customer_account, html: {class: 'ui form'} do |customer_account| %>
         <div class = 'ui attached segment'>
-            <div class = 'field'>
+            <div class = 'required field <%= 'error' if @customer_account.errors[:customer_name].empty? == false %>'>
                 <%= label_tag :customer_name, 'Customer Name' %>
                 <%= customer_account.text_field :customer_name %>
             </div>
-            <div class = 'field'>
+            <div class = 'required field <%= 'error' if @customer_account.errors[:address].empty? == false %>'>
                 <%= label_tag :address %>
-                <%= customer_account.text_field :address %>
+                <%= customer_account.text_area :address %>
+            </div>
+            <div class = 'required field <%= 'error' if @customer_account.errors[:email].empty? == false %>'>
+                <%= label_tag :email%>
+                <%= customer_account.text_field :email %>
             </div>
             <div class = 'fields'>
-                <div class = 'six wide field'>
-                    <div class = 'field'>
-                        <%= label_tag :email%>
-                        <%= customer_account.text_field :email %>
-                    </div>
-                </div>
-                <div class = 'five wide field'>   
+                <div class = 'eight wide field'>   
                     <div class = 'field'>
                         <%= label_tag :telephone_number, 'Tel. No.' %>
                         <%= customer_account.telephone_field :telephone_number %>
                     </div>
                 </div>
-                <div class = 'five wide field'>
+                <div class = 'eight wide field'>
                     <div class = 'field'>
                         <%= label_tag :fax_number, 'Fax No.' %>
                         <%= customer_account.telephone_field :fax_number %>

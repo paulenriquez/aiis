@@ -11,6 +11,18 @@ class PurchaseOrdersController < ApplicationController
         if @purchase_order.save
             create_inventory_histories(@purchase_order)
             redirect_to(purchase_order_path(@purchase_order))
+
+            flash_content = [
+                "This purchase order was successfully created. Its assigned identifier is <b>#{@purchase_order.po_num}</b>.",
+                "#{@purchase_order.order_lines.count} Inventory #{@purchase_order.order_lines.count != 1 ? 'Updates were' : 'Update was' } created."
+            ]
+
+            if @purchase_order.payment_terms == 'paid'
+                flash_content.push("Since this purchase order was paid on purchase, a Customer Payment record was also created.")
+                create_customer_payment(@purchase_order)
+            end
+
+            flash[:notice] = {type: 'success', header: 'Successfully created new Purchase Order!', content: flash_content}
         else
             render :new
         end
@@ -57,6 +69,14 @@ class PurchaseOrdersController < ApplicationController
 
         # Create Customer Payment if fully paid.
         def create_customer_payment(purchase_order)
-
+            if purchase_order.payment_terms == 'paid'
+                customer_payment = CustomerPayment.new(
+                    payment_date: purchase_order.purchase_date,
+                    amount_paid: purchase_order.negotiated_price,
+                    customer_account_id: purchase_order.customer_account.id,
+                    purchase_order_id: purchase_order.id
+                )
+                customer_payment.save
+            end
         end
 end

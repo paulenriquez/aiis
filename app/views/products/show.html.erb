@@ -1,8 +1,35 @@
+<%= render 'header' %>
 <div class = 'container-content view-show'>
-    <h1>Show Product</h1>
-    <p><b>Product Name:</b> <%= @product.product_name %> </p>
-    <p><b>Product Type:</b> <%= @product.product_type %> </p>
-    <p><b>Specifications:</b> <%= @product.product_specs %> </p>
-    <p><b>Description:</b> <%= @product.description %> </p>
-    <p><b>Unit Price:</b> <%= @product.unit_price %> </p>
+    <div class = 'section-messages'>
+        <%= render '/shared/flash_message' %>
+    </div>
+    <div class = 'section-content'>
+        <div class = 'ui attached message'>
+            <div class = 'header'>View Product</div>
+        </div>
+        <div class = 'ui bottom attached segment'>
+            <div class = 'ui form'>
+                <div class = 'field'>
+                    <label>Name</label>
+                    <span><%=  @product.product_name %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Classification</label>
+                    <span><%=  @product.product_type %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Specifications</label>
+                    <span><%=  @product.product_specs %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Description</label>
+                    <span><%= @product.description.blank? ? '<i>No Description.</i>'.html_safe : @product.description %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Unit Price</label>
+                    <span>₱ <%= number_with_precision(@product.unit_price, precision: 2, delimiter: ',') %></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

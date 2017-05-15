@@ -8,7 +8,8 @@ class CustomerAccountsController < ApplicationController
     def create
         @customer_account = CustomerAccount.new(customer_account_params)
         if @customer_account.save
-            redirect_to(customer_account_path(@customer_account))
+            redirect_to customer_account_path(@customer_account)
+            flash[:notice] = {type: 'success', header: 'Successfully created new Customer Account!', content: "The record for <b>#{@customer_account.customer_name}</b> was successfully created."}
         else
             render :new
         end

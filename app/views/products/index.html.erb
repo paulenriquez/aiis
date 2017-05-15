@@ -58,55 +58,59 @@
                 </div>
             </div>
             <div class = 'scrollable-item-area'>
-                <% @products.each do |product| %>
-                    <div class = 'item'>
-                        <div class = 'ui column grid content'>
-                            <div class = 'row'>
-                                <div class = 'wide column col-productDetails'>
-                                    <div class = 'header'><%= product.product_name %></div>
-                                    <table = class = 'details'>
-                                        <tbody>
-                                        <tr>
-                                            <td class = 'key'>Classification:</td>
-                                            <td class = 'value'><%= product.product_type %></td>
-                                        </tr>
-                                        <tr>
-                                            <td class = 'key'>Specifications:</td>
-                                            <td class = 'value'><%= product.product_specs %></td>
-                                        </tr>
-                                        <tr>
-                                            <td class = 'key'>Unit Price:</td>
-                                            <td class = 'value'>₱ <%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></td>
-                                        </tr>
-                                        <tr>
-                                            <td class = 'key'>Description:</td>
-                                            <td class = 'value'>
-                                                <% if product.description != nil && product.description != '' %>
-                                                    <%= product.description %>
-                                                <% else %>
-                                                    <i>No Description</i>
-                                                <% end %>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class = 'wide column col-qty'>
-                                    <%= product.remaining_quantity %>
-                                </div>
-                                <div class = 'wide column col-actions'>
-                                    <div class = 'ui small basic icon buttons basic-action-container'>
-                                        <a class = 'ui button' href = <%= product_path(product.id) %>><i class = 'folder open icon'></i></a>
-                                        <a class = 'ui button' href = <%= edit_product_path(product.id) %>><i class = 'edit icon'></i></a>
-                                        <a class = 'ui button'><i class = 'trash icon'></i></a>
+                <% if @products.empty? %>
+                    <div class = 'item list-item'>
+                        <span><i>No Products to show.</i></span>
+                    </div>
+                <% else %>
+                    <% @products.each do |product| %>
+                        <div class = 'item list-item'>
+                            <div class = 'ui column grid content'>
+                                <div class = 'row'>
+                                    <div class = 'wide column col-productDetails'>
+                                        <div class = 'header'><%= product.product_name %></div>
+                                        <table = class = 'details'>
+                                            <tbody>
+                                            <tr>
+                                                <td class = 'key'>Classification:</td>
+                                                <td class = 'value'><%= product.product_type %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Specifications:</td>
+                                                <td class = 'value'><%= product.product_specs %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Unit Price:</td>
+                                                <td class = 'value'>₱ <%= number_with_precision(product.unit_price, precision: 2, delimiter: ',') %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Description:</td>
+                                                <td class = 'value'>
+                                                    <%= product.description != nil && product.description != '' ? product.description : '<i>No Description.</i>'.html_safe %>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class = 'ui small basic buttons update-qty-container'>
-                                        <a class = 'ui button' href = <%= new_inventory_history_path(product:product.id) %>>Update Qty.</a>
+                                    <div class = 'wide column col-qty'>
+                                        <%= product.remaining_quantity %>
+                                    </div>
+                                    <div class = 'wide column col-actions'>
+                                        <div class = 'ui small floating dropdown icon button'>
+                                            <i class = 'caret down icon'></i>
+                                            <div class = 'menu'>
+                                                <a class = 'item' href = <%= new_inventory_history_path(product_id: product.id) %>>Update Qty.</a>
+                                                <div class = 'divider'></div>
+                                                <a class = 'item' href = <%= product_path(product.id) %>><i class = 'folder open icon'></i>View</a>
+                                                <a class = 'item' href = <%= edit_product_path(product.id) %>><i class = 'edit icon'></i>Edit</a>
+                                                <a class = 'item' href = ''><i class = 'trash icon'></i>Delete</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <% end %>
                 <% end %>
             </div>
         </div>

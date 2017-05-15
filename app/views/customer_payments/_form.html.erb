@@ -1,57 +1,130 @@
 <div class = 'view-form-partial'>
     <%= form_for @customer_payment, html: {class: 'ui form'} do |customer_payment| %>
         <div class = 'ui attached bottom segment'>
-            <div class = 'field'>
-                <label>Customer Account</label>
-                <%= render '/shared/customer_account_selector' %>
-            </div>
-            <div class = 'field'>
-                <label>Purchase Order</label>
-                <div class = 'ui segments'>
-                    <div class = 'ui attached segment'>
-                        <div class = 'ui two column grid'>
-                            <div class = 'row'>
-                                <div class = 'six wide column'>
-                                    <div class = 'ui input'>
-                                        <input type = 'text' placeholder = 'Search...'>
+            <% if @new_form_prefilled_data != nil %>
+                <% if @new_form_prefilled_data.key?(:customer_account_id) && @new_form_prefilled_data.key?(:purchase_order_id) %>
+                    <div class = 'prefilled-form-container'>
+                        <div class = 'ui info message'>
+                            <div>The <b><i>Customer Account</i></b> and <b><i>Purchase Order</i></b> fields have been pre-filled because you opened this form from a specific purchase order record. To load the default blank form, <%= link_to('click here', new_customer_payment_path) %>.</div>
+                        </div>
+                        <div class = 'field'>
+                            <label>Customer Account</label>
+                            <span><%= @customer_accounts.find(@new_form_prefilled_data[:customer_account_id]).customer_name %></span>
+                        </div>
+                        <div class = 'field'>
+                            <label>Purchase Order</label>
+                            <div class = 'ui segment prefilled-po-details-container'>
+                                <table id = 'table-preFilledPOTable' class = 'ui celled table'>
+                                    <thead>
+                                        <tr>
+                                            <th class = 'col-poNum'>ID</th>
+                                            <th class = 'col-purchaseDate'>Purchase Date</th>
+                                            <th class = 'col-total'>Total</th>
+                                            <th class = 'col-outstanding'>Outstanding Bal.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class = 'col-poNum'><%= @purchase_orders.find(@new_form_prefilled_data[:purchase_order_id]).po_num %></td>
+                                            <td class = 'col-purchaseDate'><%= @purchase_orders.find(@new_form_prefilled_data[:purchase_order_id]).purchase_date.strftime('%b %d, %Y') %></td>
+                                            <td class = 'col-total'><%= number_with_precision(@purchase_orders.find(@new_form_prefilled_data[:purchase_order_id]).negotiated_price, precision: 2, delimiter: ',') %></td>
+                                            <td class = 'col-outstanding'><%= number_with_precision(@purchase_orders.find(@new_form_prefilled_data[:purchase_order_id]).outstanding_balance, precision: 2, delimiter: ',') %></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                <% else %>
+                    <div class = 'prefilled-form-container'>
+                        <div class = 'ui info message'>
+                            <div>The <b><i>Customer Account</i></b> field has been pre-filled because you opened this form from a specific customer record. To load the default blank form, <%= link_to('click here', new_customer_payment_path) %>.</div>
+                        </div>
+                        <div class = 'field'>
+                            <label>Customer Account</label>
+                            <span><%= @customer_accounts.find(@new_form_prefilled_data[:customer_account_id]).customer_name %></span>
+                        </div>
+                        <div class = 'field'>
+                            <label>Purchase Order</label>
+                            <div class = 'ui segments'>
+                                <div class = 'ui attached segment'>
+                                    <div class = 'ui two column grid'>
+                                        <div class = 'row'>
+                                            <div class = 'sixteen wide column'>
+                                                <span id = 'label-poStatus'>No Purchase Order selected.</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class = 'ten wide column'>
-                                    <span id = 'label-poCount'></span>
+                                <div class = 'ui attached segment po-table-container'>
+                                    <table id = 'table-poTable' class = 'ui celled table'>
+                                        <thead>
+                                            <tr>
+                                                <th class = 'col-select'></th>
+                                                <th class = 'col-poNum'>ID</th>
+                                                <th class = 'col-purchaseDate'>Purchase Date</th>
+                                                <th class = 'col-total'>Total</th>
+                                                <th class = 'col-outstanding'>Outstanding Bal.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class = 'ui attached segment po-table-container'>
-                        <table id = 'table-poTable' class = 'ui celled striped table'>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th>Purchase Date</th>
-                                    <th>Total</th>
-                                    <th>Outstanding Bal.</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            
-                            </tbody>
-                        </table>
+                <% end %>
+                <br>
+            <% else %>
+                <div class = 'field'>
+                    <label>Customer Account</label>
+                    <%= render '/shared/customer_account_selector' %>
+                </div>
+                <div class = 'field'>
+                    <label>Purchase Order</label>
+                    <div class = 'ui segments'>
+                        <div class = 'ui attached segment'>
+                            <div class = 'ui two column grid'>
+                                <div class = 'row'>
+                                    <div class = 'sixteen wide column'>
+                                        <span id = 'label-poStatus'>No Purchase Order selected.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class = 'ui attached segment po-table-container'>
+                            <table id = 'table-poTable' class = 'ui celled table'>
+                                <thead>
+                                    <tr>
+                                        <th class = 'col-select'></th>
+                                        <th class = 'col-poNum'>ID</th>
+                                        <th class = 'col-purchaseDate'>Purchase Date</th>
+                                        <th class = 'col-total'>Total</th>
+                                        <th class = 'col-outstanding'>Outstanding Bal.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <% end %>
             <div class = 'fields'>
-                <div class = 'eight wide field'>
+                <div class = 'six wide field'>
                     <div class = 'field'>
                         <%= label_tag :payment_date, 'Payment Date' %>
-                        <%= customer_payment.date_field :payment_date  %>
+                        <%= customer_payment.date_field :payment_date, required: true %>
                     </div>
                 </div>
-                <div class = 'eight wide field'>
+                <div class = 'six wide field'>
                     <div class = 'field'>
-                        <%= label_tag :amount_paid %>
-                        <%= customer_payment.text_field :amount_paid %>
+                        <%= label_tag :amount_paid, 'Amount Paid' %>
+                        <div class = 'ui labeled input'>
+                            <div class = 'ui basic label'>₱</div>
+                            <%= customer_payment.text_field :amount_paid %>
+                        </div>
                     </div>
                 </div>
             </div>

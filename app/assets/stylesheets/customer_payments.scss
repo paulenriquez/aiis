@@ -1,16 +1,69 @@
 .view-new, .view-edit {
     min-width: 650px;
-    max-width: 50vw;
+    width: 40vw;
 }
 
 .view-form-partial {
+    .prefilled-form-container {
+        .prefilled-po-details-container {
+            padding: 0;
+            #table-preFilledPOTable {
+                border: 0 !important;
+                .col-poNum {
+                    width: 15% !important;
+                }
+                .col-purchaseDate {
+                    width: 20% !important;
+                }
+                .col-total {
+                    width: 15% !important;
+                    text-align: right;
+                }
+                .col-outstanding {
+                    width: 15% !important;
+                    text-align: right;
+                }
+            }
+        }
+    }
     .po-table-container {
         padding: 0;
-        height: 30vh;
+        height: 40vh;
+        overflow-y: auto;
         #table-poTable {
             border-top: 0 !important;
             border-left: 0 !important;
-            border-right: 0 !important;    
+            border-right: 0 !important;
+            border-radius: 0 !important;
+            .col-select {
+                width: 5% !important;
+                text-align: center;
+            }
+            .col-poNum {
+                width: 15% !important;
+            }
+            .col-purchaseDate {
+                width: 20% !important;
+            }
+            .col-total {
+                width: 15% !important;
+                text-align: right;
+            }
+            .col-outstanding {
+                width: 15% !important;
+                text-align: right;
+            }
+            .tr-message {
+                background-color: rgba(248, 248, 249, 1);
+            }
         }
+    }
+}
+
+.view-show {
+    min-width: 300px;
+    width: 20vw;
+    .section-messages {
+        min-width: 800px !important;
     }
 }

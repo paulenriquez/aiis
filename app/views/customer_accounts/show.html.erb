@@ -1,8 +1,35 @@
+<%= render 'header' %>
 <div class = 'container-content view-show'>
-    <h1>View Customer Account</h1>
-    <p><b>Name:</b> <%= @customer_account.customer_name %></p>
-    <p><b>Address:</b> <%= @customer_account.address %></p>
-    <p><b>Email:</b> <%= @customer_account.email %></p>
-    <p><b>Telephone No.:</b> <%= @customer_account.telephone_number %></p>
-    <p><b>Fax No.:</b> <%= @customer_account.fax_number %></p>
+    <div class = 'section-messages'>
+        <%= render '/shared/flash_messages' %>
+    </div>
+    <div class = 'section-content'>
+        <div class = 'ui attached message'>
+            <div class = 'header'>View Customer Account</div>
+        </div>
+        <div class = 'ui bottom attached segment'>
+            <div class = 'ui form'>
+                <div class = 'field'>
+                    <label>Name</label>
+                    <span><%= @customer_account.customer_name %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Address</label>
+                    <span><%= @customer_account.address %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Email</label>
+                    <span><%= @customer_account.email %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Tel. No.</label>
+                    <span><%= @customer_account.telephone_number %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Fax No.</label>
+                    <span><%= @customer_account.fax_number %></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

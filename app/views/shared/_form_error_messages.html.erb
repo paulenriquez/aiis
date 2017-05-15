@@ -1,0 +1,10 @@
+<% if object.errors.any? %>
+    <div class = 'ui small error message form-error-message'>
+        <div class = 'header'>Oops, the form can't be saved.</div>
+        <ul class = 'list'>
+            <% object.errors.messages.values.each do |message| %>
+                <li><%= message[0] %></li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>

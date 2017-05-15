@@ -1,7 +1,31 @@
+<%= render 'header' %>
 <div class = 'container-content view-show'>
-    <h1>Show Customer Payment</h1>
-    <p><b>Customer Account:</b> <%= @customer_account.name %></p>
-    <p><b>Purchase Order:</b> 0 </p>
-    <p><b>Payment Date:</b> <%= @customer_payment.purchase_date %></p>
-    <p><b>Amount Paid:</b> <%= @customer_payment.amount_paid %></p>
+    <div class = 'section-messages'>
+        <%= render '/shared/flash_messages' %>
+    </div>
+    <div class = 'section-content'>
+        <div class = 'ui attached message'>
+            <div class = 'header'>View Customer Payment</div>
+        </div>
+        <div class = 'ui bottom attached segment'>
+            <div class = 'ui form'>
+                <div class = 'field'>
+                    <label>Customer Account</label>
+                    <span><%= @customer_payment.customer_account.customer_name %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Purchase Order</label>
+                    <span><%= @customer_payment.purchase_order.po_num %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Payment Date</label>
+                    <span><%= @customer_payment.payment_date %></span>
+                </div>
+                <div class = 'field'>
+                    <label>Amount Paid</label>
+                    <span>₱ <%= number_with_precision(@customer_payment.amount_paid, precision: 2, delimiter: ',') %></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

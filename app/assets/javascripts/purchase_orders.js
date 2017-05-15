@@ -19,7 +19,6 @@ function view_form_partial() {
         mainForm_discount,
         mainForm_paymentTerms,
         mainForm_dueDate,
-        mainForm_outstandingBalance,
         mainForm_dateFulfilled,
         mainForm_status;
 
@@ -66,7 +65,6 @@ function view_form_partial() {
         mainForm_discount = $('.view-form-partial #purchase_order_discount');
         mainForm_negotiatedPrice = $('.view-form-partial #purchase_order_negotiated_price');
         mainForm_paymentTerms = $('.view-form-partial #purchase_order_payment_terms');
-        mainForm_outstandingBalance = $('.view-form-partial #purchase_order_outstanding_balance');
         mainForm_dueDate = $('.view-form-partial #purchase_order_due_date');
         mainForm_dateFulfilled = $('.view-form-partial #purchase_order_date_fulfilled');
         mainForm_status = $('.view-form-partial #purchase_order_status');
@@ -106,7 +104,6 @@ function view_form_partial() {
             select_paymentTerms.dropdown({
                 onChange: function() {
                     computeDueDate();
-                    computeOutstandingBalance();
                 }
             });
 
@@ -431,19 +428,11 @@ function view_form_partial() {
 
                 mainForm_discount.val(getPriceValue(label_discount.html()));
             }
-            function computeOutstandingBalance() {
-                if (select_paymentTerms.dropdown('get value') == 'paid') {
-                    mainForm_outstandingBalance.val(0);
-                } else {
-                    mainForm_outstandingBalance.val(mainForm_negotiatedPrice.val());
-                }
-            }
             function updateAllPrices() {
                 computeOrderPrices();
                 computeSubtotal();
                 computeDiscount();
                 computeTotal();
-                computeOutstandingBalance();
             }
             select_discountType.dropdown({
                 onChange: function() {
@@ -452,7 +441,6 @@ function view_form_partial() {
                     label_discount.html('0.00');
                     computeDiscount();
                     computeTotal();
-                    computeOutstandingBalance();
                     if ($(this).dropdown('get value') === 'none') {
                         $('.view-form-partial .discount-value-label-container span').css('display', 'none');
                         container_discountAmount.css('display', 'none');
@@ -474,12 +462,10 @@ function view_form_partial() {
             field_discountPercent.on('input', function() {
                 computeDiscount();
                 computeTotal();
-                computeOutstandingBalance();
             });
             field_discountAmount.on('input', function() {
                 computeDiscount();
                 computeTotal();
-                computeOutstandingBalance();
             });
 
         /** STATUS */
@@ -505,7 +491,6 @@ function view_form_partial() {
                     discountType: mainForm_discountType.val(),
                     discount: mainForm_discount.val(),
                     negotiatedPrice: mainForm_negotiatedPrice.val(),
-                    outstandingBalance: mainForm_outstandingBalance.val(),
                     status: mainForm_status.val(),
                     dateFulfilled: mainForm_dateFulfilled.val()
                 }

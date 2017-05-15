@@ -1,0 +1,18 @@
+<% if flash[:notice] %>
+    <div class = 'ui small <%= flash[:notice]['type'] %> message'>
+        <div class = 'header'><%= flash[:notice]['header'] %></div>
+        <% if flash[:notice]['content'].is_a?(Array) %>
+            <% if flash[:notice]['content'].count > 1 %>
+                <ul class = 'list'>
+                    <% flash[:notice]['content'].each do |message| %>
+                        <li><%= message.html_safe %></li>
+                    <% end %>
+                </ul>
+            <% else %>
+                <%= flash[:notice]['content'][0].html_safe %>
+            <% end %>
+        <% else %>
+            <%= flash[:notice]['content'].html_safe %>
+        <% end %>
+    </div>
+<% end %>

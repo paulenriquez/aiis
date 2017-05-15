@@ -1,7 +1,7 @@
 $(document).on('ready', function() {
     /** Initialize all Semantic-UI Dropdowns */
     $('.ui.dropdown').dropdown();
-    $('.ui.dropdown').dropdown({
+    $('.ui.selection.search.dropdown').dropdown({
         onShow: function() {
             /** Make the Active item the selected one on open. 
              * Same block of code executes when dropdown is clicked open,
@@ -11,11 +11,11 @@ $(document).on('ready', function() {
             $(this).find('.menu .item.active').addClass('selected');
         }
     })
-    $('.ui.dropdown').find('input').on('input', function() {
+    $('.ui.selection.search.dropdown').find('input').on('input', function() {
         $(this).find('.menu .item').removeClass('selected');
         $(this).find('.menu .item.active').addClass('selected');
     });
-    $('.ui.dropdown').click(function() {
+    $('.ui.selection.search.dropdown').click(function() {
         if ($(this).find('.menu .item.active').html() !== undefined) {
             $(this).find('.menu .item').removeClass('selected');
             $(this).find('.menu .item.active').addClass('selected');
@@ -70,6 +70,13 @@ Date.prototype.formatForDateField = function() {
     return this.getFullYear()
         + '-' + ((this.getMonth() + 1) < 10 ? ('0' + (this.getMonth() + 1)) : (this.getMonth() + 1))
         + '-' + ((this.getDate()) < 10 ? ('0' + this.getDate()) : (this.getDate()));
+}
+Date.prototype.formatHumanReadable = function() {
+    var monthNames = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ]
+    return monthNames[this.getMonth()] + ' ' + this.getDate() + ', ' + this.getFullYear();
 }
 
 /** Price Functions */

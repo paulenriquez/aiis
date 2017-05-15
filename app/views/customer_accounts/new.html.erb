@@ -1,7 +1,14 @@
 <%= render 'header' %>
 <div class = 'container-content view-new'>
-    <div class = 'ui attached message'>
-        <div class = 'header'>New Customer Account</div>
+    <div class = 'section-messages'>
+        <% if @customer_account.errors.any? %>
+            <%= render '/shared/form_error_messages', object: @customer_account %>
+        <% end %>
     </div>
-    <%= render 'form' %>
+    <div class = 'section-content'>
+        <div class = 'ui attached message'>
+            <div class = 'header'>New Customer Account</div>
+        </div>
+        <%= render 'form' %>
+    </div>
 </div>

@@ -1,44 +1,39 @@
 .view-index {
-    min-width: 880px;
-    width: 60vw;
+    min-width: 700px;
+    width: 50vw;
     .filter-menu-container {
-        .show-label {
-            margin-right: 10px;
-        }
         .show-field {
-            width: 18% !important;
-        }
-        .sort-label {
-            margin-right: 10px;
+            width: 25% !important;
         }
         .sort-by-field {
-            width: 18% !important;
+            width: 25% !important;
         }
         .sort-asc-desc-field {
-            width: 13% !important;
+            width: 15% !important;
         }
     }
     .index-all-records-list {
         .col-productDetails {
-            width: 50% !important;
+            width: 55% !important;
         }
         .col-qty {
-            width: 15% !important;
+            width: 30% !important;
             text-align: right;
         }
         .col-actions {
-            width: 35% !important;
+            width: 15% !important;
             text-align: right;
-            * {
-                float: right;
-            }
-            .update-qty-container {
-                margin-right: 10px;
-            }
+        }
+        .content .details .key {
+            width: 7.5em;
         }
     }
 }
 .view-new, .view-edit {
     min-width: 450px;
+    width: 35vw;
+}
+.view-show {
+    min-width: 400px;
     width: 35vw;
 }

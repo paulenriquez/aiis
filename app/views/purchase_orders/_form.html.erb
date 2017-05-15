@@ -4,19 +4,19 @@
             <div class = 'ui three column grid'>
                 <div class = 'row'>
                     <div class = 'nine wide column'>
-                        <div class = 'field'>
-                            <label>Customer Information</label>
+                        <div class = 'required field'>
+                            <label>Customer Account</label>
                             <%= render '/shared/customer_account_selector' %>
                         </div>
                     </div>
                     <div class = 'four wide column'>
-                        <div class = 'field'>
+                        <div class = 'required field'>
                             <%= label_tag :purchase_date, 'Purchase Date' %>
                             <%= purchase_order.date_field :purchase_date, required: true %>
                         </div>
                     </div>
                     <div class = 'three wide column'>
-                        <div class = 'field'>
+                        <div class = 'required field'>
                             <label>Payment Terms</label>
                             <div id = 'select-paymentTerms' class = 'ui fluid floating dropdown button' data-value = '30-days'>
                                 <span class = 'text'>30 Days</span>
@@ -35,7 +35,7 @@
         </div>
 
         <div class = 'ui attached segment order-details-segment'>
-            <div class = 'field'>
+            <div class = 'required field'>
                 <label>Orders</label>
                 <div class = 'ui segments'>
                     <div class = 'ui attached segment add-product-fields-segment'>
@@ -171,10 +171,10 @@
             </div>
         </div>
         <div class = 'ui attached segment status-segment'>
-            <div class = 'field'>
+            <div class = 'required field'>
                 <label>Status</label>
                 <div class = 'ui two column grid'>
-                    <div class = 'four wide column'>
+                    <div class = 'wide column status-container'>
                         <div id = 'select-status' class = 'ui fluid floating dropdown button' data-value = 'unfulfilled'>
                             <span class = 'text'>Unfulfilled</span>
                             <i class = 'dropdown icon'></i>
@@ -200,6 +200,17 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <div class = 'field'>
+                <%= label_tag :remarks %>
+                <div class = 'ui column grid'>
+                    <div class = 'row'>
+                        <div class = 'sixteen wide column'>
+                            <%= purchase_order.text_area :remarks %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class = 'ui bottom attached segment'>
             <%= purchase_order.submit 'Save', class: 'ui primary button' %>
@@ -214,7 +225,6 @@
         <%= purchase_order.text_field :discount_type, hidden: false %>
         <%= purchase_order.text_field :discount, hidden: false %>
         <%= purchase_order.text_field :negotiated_price, hidden: false %>
-        <%= purchase_order.text_field :outstanding_balance, hidden: false %>
         <%= purchase_order.text_field :status, hidden: false %>
         <!-- Date Fulfilled field used above. -->
     <% end %>

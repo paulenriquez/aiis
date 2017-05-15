@@ -8,7 +8,16 @@ class PurchaseOrder < ApplicationRecord
 
     validates :customer_account_id, presence: true
 
-    before_save :generate_purchase_order_number, :sanitize_input
+    before_create :generate_purchase_order_number
+    before_save :sanitize_input
+
+    def outstanding_balance
+        total_payments = 0;
+        self.customer_payments.each do |customer_payment|
+            total_payments += customer_payment.amount_paid
+        end
+        return self.negotiated_price - total_payments
+    end
 
     private
         def generate_purchase_order_number

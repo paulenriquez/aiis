@@ -1,39 +1,46 @@
 .view-index {
-    min-width: 900px;
-    width: 80vw;
+    min-width: 950px;
+    width: 70vw;
+    .filter-menu-container {
+        .show-field {
+            width: 23% !important;
+        }
+        .sort-by-field {
+            width: 20% !important;
+        }
+        .sort-asc-desc-field {
+            width: 12% !important;
+        }
+    }
     .index-all-records-list-container {
-        .col-date {
-            width: 10% !important;
+        .col-purchaseDate {
+            width: 15% !important;
         }
         .col-poDetails {
-            width: 25% !important;
+            width: 42% !important;
         }
         .col-status {
-            width: 10% !important;
-        }
-        .col-dueDate {
-            width: 10% !important;
-        }
-        .col-outstandingBal {
             width: 15% !important;
             text-align: right;
         }
-        .col-actions {
-            width: 30% !important;
+        .col-outstandingBal {
+            width: 18% !important;
             text-align: right;
-            * {
-                float: right;
-            }
-            .status-payment-container {
-                margin-right: 10px;
-            }
+        }
+        .col-actions {
+            width: 10% !important;
+            text-align: right;
+        }
+
+        .content .details .key {
+            width: 6em;
         }
     }
 }
 
 .view-new, .view-edit {
-    min-width: 850px;
-    width: 60vw;
+    min-width: 820px;
+    width: 50vw;
 }
 
 .view-form-partial {
@@ -198,8 +205,11 @@
         }
     }
     .status-segment {
-        #select-status {
-            text-align: center;
+        .status-container {
+            width: 23% !important;
+            #select-status {
+                text-align: center;
+            }
         }
         .date-fulfilled-container {
             display: none;
@@ -213,17 +223,11 @@
 }
 
 .view-show {
-    min-width: 870px;
-    width: 65vw;
+    min-width: 800px;
+    width: 55vw;
     .customer-information-container {
-        .customer-details {
-            .key, .value {
-                padding-bottom: 0.2em;
-                vertical-align: text-top;
-            }
+        .general-details-table {
             .key {
-                font-weight: 700;
-                font-style: italic;
                 width: 6em;
             }
         }

@@ -1,50 +1,44 @@
 <div class = 'view-form-partial'>
     <%= form_for @inventory_history, html: {class: 'ui form'} do |inventory_history| %>
         <div class = 'ui attached segment'>
-            <div class = 'ui column grid'>
-                <div class = 'row'>
-                    <div class = 'sixteen wide column'>
-                        <div class = 'field'>
-                            <label>Product</label>
-                            <%= render '/shared/product_selector' %>
+            <% if @new_form_prefilled_data != nil %>
+                <div class = 'ui info message'>
+                    <div>The <b><i>Product</i></b> field has been pre-filled because you opened this form from a specific product record. To load the default blank form, <%= link_to('click here', new_inventory_history_path) %>.</div>
+                </div>
+                <div class = 'field'>
+                    <label>Product</label>
+                    <span><%= @products.find(@new_form_prefilled_data[:product_id]).product_name %></span>
+                </div>
+            <% else %>
+                <div class = 'field'>
+                    <label>Product</label>
+                    <%= render '/shared/product_selector' %>
+                </div>
+            <% end %>
+            <div class = 'fields'>
+                <div class = 'eight wide field'>
+                    <label>Date Changed</label>
+                    <%= inventory_history.date_field :date_changed, required: true %>
+                </div>
+                <div class = 'four wide field'>
+                    <label>Type</label>
+                    <div id = 'select-actionType' class = 'ui fluid floating dropdown button'>
+                        <span class = 'text'>In</span>
+                        <i class = 'dropdown icon'></i>
+                        <div class = 'menu'>
+                            <div class = 'item' data-value = 'in'>In</div>
+                            <div class = 'item' data-value = 'out'>Out</div>
                         </div>
                     </div>
                 </div>
-                <div class = 'row'>
-                    <div class = 'eight wide column'>
-                        <div class = 'field'>
-                            <label>Date Changed</label>
-                            <%= inventory_history.date_field :date_changed, required: true %>
-                        </div>
-                    </div>
-                    <div class = 'four wide column'>
-                        <div class = 'field'>
-                            <label>Type</label>
-                            <div id = 'select-actionType' class = 'ui fluid floating dropdown button'>
-                                <span class = 'text'>In (+)</span>
-                                <i class = 'dropdown icon'></i>
-                                <div class = 'menu'>
-                                    <div class = 'item' data-value = 'in'>In (+)</div>
-                                    <div class = 'item' data-value = 'out'>Out (-)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = 'four wide column'>
-                        <div class = 'field'>
-                            <label>Qty</label>
-                            <%= inventory_history.text_field :quantity, type: 'number' %>
-                        </div>
-                    </div>
+                <div class = 'four wide field'>
+                    <label>Qty</label>
+                    <%= inventory_history.text_field :quantity, type: 'number' %>
                 </div>
-                <div class = 'row'>
-                    <div class = 'sixteen wide column'>
-                        <div class = 'field'>
-                            <label>Remarks</label>
-                            <%= inventory_history.text_area :remarks %>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div class = 'field'>
+                <label>Remarks</label>
+                <%= inventory_history.text_area :remarks %>
             </div>
         </div>
         <div class = 'ui bottom attached segment'>

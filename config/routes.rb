@@ -3,8 +3,7 @@ Rails.application.routes.draw do
 
   resources :api, only:[] do
     collection do
-        get 'db', to: 'api#get'
-        get 'db/search', to: 'api#search'
+        get '/po_for_payment', to: 'api#get_purchase_orders_for_customer_payment'
     end
   end
 

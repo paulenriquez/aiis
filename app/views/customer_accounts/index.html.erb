@@ -1,29 +1,78 @@
 <%= render 'header' %>
 <div class = 'container-content view-index'>
-    <table class='ui celled table'>
-        <thead>
-             <th>Customer Name</th>
-             <th>Address</th>
-             <th>Email</th>
-             <th>Telephone No.</th>
-             <th>Fax No.</th>
-        </thead>
-        <tbody>
-            <% if @customer_accounts.empty? %>
-                <tr>
-                    <td><p>No Customer Accounts</p></td>
-                </tr>
-            <% else %>
-                <% @customer_accounts.each do |customer_account| %>
-                    <tr>
-                        <td><%= customer_account.customer_name %></td>
-                        <td><%= customer_account.address %></td>
-                        <td><%= customer_account.email %></td>
-                        <td><%= customer_account.telephone_number %></td>
-                        <td><%= customer_account.fax_number %></td>
-                    </tr>
+    <div class = 'ui segment index-all-records-list-container'>
+        <div class = 'ui middle aligned divided very relaxed list index-all-records-list'>
+            <div class = 'item list-header'>
+                <div class = 'ui column grid content'>
+                    <div class = 'row'>
+                        <div class = 'wide column col-customerDetails'>Customer Details</div>
+                        <div class = 'wide column col-cumulativeBal'>Cumulative Bal.</div>
+                        <div class = 'wide column col-actions'>Actions</div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'scrollable-item-area'>
+                <% if @customer_accounts.empty? %>
+                    <div class = 'item list-item'>
+                        <span><i>No Customer Accounts to show.</i></span>
+                    </div>
+                <% else %>
+                    <% @customer_accounts.each do |customer_account| %>
+                        <div class = 'item list-item'>
+                            <div class = 'ui column grid content'>
+                                <div class = 'row'>
+                                    <div class = 'wide column col-customerDetails'>
+                                        <div class = 'header'><%= customer_account.customer_name %></div>
+                                        <table = class = 'details'>
+                                            <tbody>
+                                            <tr>
+                                                <td class = 'key'>Address:</td>
+                                                <td class = 'value'><%= customer_account.address %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Email:</td>
+                                                <td class = 'value'><%= customer_account.email %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Tel. No.:</td>
+                                                <td class = 'value'><%= customer_account.telephone_number %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class = 'key'>Fax No.:</td>
+                                                <td class = 'value'><%= customer_account.fax_number %></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class = 'wide column col-cumulativeBal'>
+                                        <% if customer_account.cumulative_balance > 0 %>
+                                            <%= number_with_precision(customer_account.cumulative_balance, precision: 2, delimiter: ',') %>
+                                            <div class = 'single-detail'>
+                                                <%= 'in ' + customer_account.payable_purchase_orders_count.to_s %>
+                                                <%= customer_account.payable_purchase_orders_count != 1 ? 'purchase orders ' : 'purchase order' %>
+                                            </div>
+                                        <% else %>
+                                            <i>No Balance.</i>
+                                        <% end %>
+                                    </div>
+                                    <div class = 'wide column col-actions'>
+                                        <div class = 'ui small floating dropdown icon button'>
+                                            <i class = 'caret down icon'></i>
+                                            <div class = 'menu'>
+                                                <a class = 'item <%= 'disabled' if customer_account.cumulative_balance == 0 %>' href = <%= new_customer_payment_path(customer_account_id: customer_account.id) %>>Add Payment</a>
+                                                <div class = 'divider'></div>
+                                                <a class = 'item' href = <%= customer_account_path(customer_account.id) %>><i class = 'folder open icon'></i>View</a>
+                                                <a class = 'item' href = <%= edit_customer_account_path(customer_account.id) %>><i class = 'edit icon'></i>Edit</a>
+                                                <a class = 'item' href = ''><i class = 'trash icon'></i>Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
                 <% end %>
-            <% end %>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
 </div>

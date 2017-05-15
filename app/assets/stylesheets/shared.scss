@@ -5,14 +5,24 @@
 .container-content, .container-header {
     padding-left: 15px !important;
     padding-right: 15px !important;
-    margin-bottom: 50px;
+    margin-bottom: 3em;;
 }
 .container-header {
-    margin-bottom: 20px !important;
+    margin-bottom: 1em !important;
+}
+
+.section-messages {
+    margin-bottom: 1em;
+    .ui.message {
+        li {
+            margin-bottom: 0 !important;
+        }
+    }
 }
 
 .filter-menu-container {
     .label-container {
+        margin-right: 1em;
         padding-right: 0 !important;
         span {
             position: absolute;
@@ -33,6 +43,9 @@
 .index-all-records-list-container {
     padding: 0 !important;
     .index-all-records-list {
+        .list-header, .list-item {
+            padding: 0.85em 1em 0.85em 1em !important;
+        }  
         .list-header {
             font-weight: 700;
             font-size: 1.2em;
@@ -41,24 +54,29 @@
             border-top-right-radius: 0.28571429rem;
             border-bottom: 1px solid rgba(34,36,38,.15);
         }
-        .item:not(.list-header):not(:first-child) {
+        .list-item:not(.list-header):not(:first-child) {
             border-top: 1px solid rgba(34,36,38,.15);
         }
-        .item {
-            padding: 0.85em 1em 0.85em 1em !important;
+        .list-item {
             .content {
                 .header {
-                    margin-bottom: 0.3em;
                     font-weight: 700;
                 }
+                .details, .single-detail {
+                    margin-top: 0.1em;
+                }
+                .single-detail {
+                    font-size: 0.9em;
+                    color: rgba(0,0,0, 0.6);
+                }
                 .details {
+                    line-height: 1.25em !important;
                     .key, .value {
                         font-size: 0.9em;
                         color: rgba(0,0,0, 0.6);
                         vertical-align: text-top;
                     }
                     .key {
-                        width: 7.5em;
                         font-weight: 700;
                     }
                 }
@@ -67,11 +85,11 @@
     }
 }
 
-.field .ui.segments {
+.field .ui.segments, .field .ui.segment {
     margin-top: 0;
 }
 
-.ui.search.dropdown {
+.ui.selection.search.dropdown {
     .text {
         width: 100% !important;
         text-overflow: ellipsis;
@@ -79,7 +97,7 @@
         white-space: nowrap;
     }
     .menu.custom {
-    max-height: 50vh;   
+        max-height: 50vh;   
         .item {
             border-top: 1px solid rgba(34,36,38,.1);
             .segmented-title-container {
@@ -114,7 +132,7 @@
                     }
                     .key {
                         font-weight: 600;
-                        width: 8em;
+                        width: 5em;
                     }
                 }
             }
@@ -128,6 +146,19 @@
         }
     }
 }
+
+.general-details-table {
+    .key, .value {
+        padding-bottom: 0.2em;
+        vertical-align: text-top;
+        font-size: 0.95em;
+    }
+    .key {
+        font-weight: 700;
+        font-style: italic;
+    }
+}
+
 .inline-grid-label-container {
     padding-right: 0 !important;
     .inline-grid-label {

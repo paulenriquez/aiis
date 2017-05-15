@@ -11,7 +11,8 @@ class CreatePurchaseOrders < ActiveRecord::Migration[5.0]
 
       t.string :payment_terms
       t.date :due_date
-      t.decimal :outstanding_balance
+
+      t.text :remarks
 
       t.timestamps
     end

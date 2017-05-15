@@ -1,4 +1,33 @@
-.view-new, .view-edit {
-    min-width: 500px;
-    max-width: 40vw;
+.view-index {
+    min-width: 800px;
+    width: 55vw;
+    .index-all-records-list {
+        .col-customerDetails {
+            width: 62.5% !important;
+        }
+        .col-cumulativeBal {
+            width: 22.5% !important;
+            text-align: right;
+        }
+        .col-actions {
+            width: 15% !important;
+            text-align: right;
+        }
+        .content .details .key {
+            width: 5em;
+        }
+    }
 }
+
+.view-new, .view-edit {
+    min-width: 420px;
+    width: 30vw;
+}
+
+.view-form-partial {
+    #customer_account_address {
+        min-height: 6em !important;
+        height: 6em !important;
+    }
+}
+

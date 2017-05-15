@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20170511164645) do
     t.string   "status"
     t.string   "payment_terms"
     t.date     "due_date"
-    t.decimal  "outstanding_balance"
+    t.text     "remarks"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "customer_account_id"
