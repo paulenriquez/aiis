@@ -20,8 +20,8 @@ class Product < ApplicationRecord
     end
 
     private
-        def santize_input
-            self.unit_price = self.unit_price
+        def sanitize_input
+            
         end
         def validate_input
              # PRODUCT NAME
