@@ -1,3 +1,27 @@
+.view-index {
+    min-width: 600px;
+    width: 1vw;
+    .index-all-records-list {
+        .col-paymentDate {
+            width: 20% !important;
+        }
+        .col-paymentDetails {
+            width: 40% !important;
+        }
+        .col-amountPaid {
+            width: 25% !important;
+            text-align: right;
+        }
+        .col-actions {
+            width: 15% !important;
+            text-align: right;
+        }
+        .content .details .key {
+            width: 7.5em;
+        }
+    }
+}
+
 .view-new, .view-edit {
     min-width: 650px;
     width: 40vw;

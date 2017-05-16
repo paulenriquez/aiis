@@ -1,4 +1,4 @@
-<% if flash[:notice] %>
+<% if flash[:notice].is_a?(Hash) %>
     <div class = 'ui small <%= flash[:notice]['type'] %> message'>
         <div class = 'header'><%= flash[:notice]['header'] %></div>
         <% if flash[:notice]['content'].is_a?(Array) %>

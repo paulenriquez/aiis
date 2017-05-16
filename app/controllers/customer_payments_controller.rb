@@ -1,5 +1,5 @@
 class CustomerPaymentsController < ApplicationController
-    before_action :get_records, only: [:index, :new, :edit]
+    before_action :authenticate_user!, :get_records, only: [:index, :new, :edit]
 
     def index
         @customer_payments = CustomerPayment.all
@@ -26,7 +26,7 @@ class CustomerPaymentsController < ApplicationController
         @customer_payment = CustomerPayment.new(customer_payment_params)
         if @customer_payment.save
             redirect_to customer_payment_path(@customer_payment), notice: 'Payment successfully recorded.'
-             flash[:notice] = {type: 'success', header: 'Successfully created new Customer Payment!', content: "The payment record by <b>#{@customer_payment.customer_account.customer_name}</b> for <b>#{@customer_payment.purchase_order.po_num}</b> was successfully created."}
+             flash[:notice] = {type: 'success', header: 'Successfully created new Customer Payment!', content: "The payment record of <b>#{@customer_payment.customer_account.customer_name}</b> for <b>#{@customer_payment.purchase_order.po_num}</b> was successfully created."}
         else
             render :new
         end
@@ -39,6 +39,7 @@ class CustomerPaymentsController < ApplicationController
 
     private
         def get_records
+            @customer_payments = CustomerPayment.all
             @customer_accounts = CustomerAccount.all
             @products = Product.all
             @purchase_orders = PurchaseOrder.all

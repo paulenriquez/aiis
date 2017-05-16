@@ -51,13 +51,17 @@
             text-align: center;
         }
     }
-
     .order-details-segment {
         border-bottom: 0 !important;
         padding-bottom: 0 !important;
         .add-product-fields-segment {
             border-bottom: 0 !important;
             padding-bottom: 0 !important;
+            .order-details-message-container {
+                #message-orderValidation {
+                    margin-bottom: 1em;
+                }
+            }
             .add-product-fields-container {
                 .product-selector-label-container {
                     width: 10% !important;

@@ -1,3 +1,13 @@
 <div class = 'ui vertical segment container-header'>
     <h1>Inventory</h1>
+    <div class = 'menu-buttons'>
+        <div class = 'ui compact menu header-menu'>
+            <a class = 'item' href = <%= inventory_histories_path %>>All Inventory Updates</a>
+            <a class = 'item' href = <%= new_inventory_history_path %>><i class = 'add icon'></i>New</a>
+        </div>
+        <div class = 'ui compact menu header-menu'>
+            <a class = 'item' href = <%= products_path %>>All Products</a>
+            <a class = 'item' href = <%= new_product_path %>><i class = 'add icon'></i>New</a>
+        </div>
+    </div>
 </div>

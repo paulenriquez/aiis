@@ -1,5 +1,5 @@
 class PurchaseOrdersController < ApplicationController
-    before_action :get_records, only: [:index, :new, :edit]
+    before_action :authenticate_user!, :get_records, only: [:index, :new, :edit]
 
     def index
     end

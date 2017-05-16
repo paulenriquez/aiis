@@ -2,6 +2,17 @@
     width: calc(100% - 260px);
 }
 
+.top-content {
+    padding: 15px 15px 0 15px;
+    .system-info {
+        font-size: 0.9em;
+        color: gray;
+    }
+    .login-info {
+        float: right;
+    }
+}
+
 .container-content, .container-header {
     padding-left: 15px !important;
     padding-right: 15px !important;
@@ -9,6 +20,9 @@
 }
 .container-header {
     margin-bottom: 1em !important;
+    .header-menu {
+        margin-right: 1em !important;
+    }
 }
 
 .section-messages {

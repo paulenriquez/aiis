@@ -24,8 +24,7 @@ class CustomerAccount < ApplicationRecord
             # CUSTOMER NAME
                 if self.customer_name.blank?
                     errors.add(:customer_name, 'Customer Name can\'t be blank.')
-                end
-                if CustomerAccount.exists?(customer_name: self.customer_name)
+                elsif CustomerAccount.exists?(customer_name: self.customer_name)
                     errors.add(:customer_name, 'Customer Name has been taken.')
                 end
 
@@ -37,8 +36,7 @@ class CustomerAccount < ApplicationRecord
             # EMAIL
                 if self.email.blank?
                     errors.add(:email, 'Email can\'t be blank.')
-                end
-                if CustomerAccount.exists?(email: self.email.gsub(' ',''))
+                elsif CustomerAccount.exists?(email: self.email.gsub(' ',''))
                     errors.add(:email, 'Email has been taken.')
                 end
         end

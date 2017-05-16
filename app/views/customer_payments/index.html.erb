@@ -1,26 +1,53 @@
 <%= render 'header' %>
 <div class = 'container-content view-index'>
-    <table class='ui celled table'>
-        <thead>
-            <th>Payment Date</th>
-            <th>Customer Account</th>
-            <th>Purchase Order</th>
-            <th>Amount Paid</th>
-        </thead>
-        <tbody>
-            <% if @customer_payments.empty? %>
-                <tr>
-                    <td><p>No Customer Payments</p></td>
-                </tr>
-            <% else %>
-                <% @customer_payments.each do |customer_payment| %>
-                    <tr>
-                        <td><%= customer_payment.payment_date %></td>
-                        <td><%= customer_payment.customer_account %></td>
-                        <td><%= customer_payment.purchase_order %></td>
-                        <td><%= customer_payment.amount_paid %></td>
-                    </tr>
+    <div class = 'ui segment index-all-records-list-container'>
+        <div class = 'ui middle aligned divided very relaxed list index-all-records-list'>
+            <div class = 'item list-header'>
+                <div class = 'ui column grid content'>
+                    <div class = 'row'>
+                        <div class = 'wide column col-paymentDate'>Date</div>
+                        <div class = 'wide column col-paymentDetails'>Payment Details</div>
+                        <div class = 'wide column col-amountPaid'>Amount Paid</div>
+                        <div class = 'wide column col-actions'>Actions</div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'scrollable-item-area'>
+                <% if @customer_payments.empty? %>
+                    <div class = 'item list-item'>
+                        <span><i>No Customer Payments to show.</i></span>
+                    </div>
+                <% else %>
+                    <% @customer_payments.each do |customer_payment| %>
+                        <div class = 'item list-item'>
+                            <div class = 'ui column grid content'>
+                                <div class = 'row'>
+                                    <div class = 'wide column col-paymentDate'>
+                                        <%= customer_payment.payment_date.strftime('%b %d, %Y') %>
+                                    </div>
+                                    <div class = 'wide column col-paymentDetails'>
+                                        <div class = 'header'><%= customer_payment.customer_account.customer_name %></div>
+                                        <div class = 'single-detail'>for Purchase Order <b><%= customer_payment.purchase_order.po_num %></b></div>
+                                    </div>
+                                    <div class = 'wide column col-amountPaid'>
+                                        <%= number_with_precision(customer_payment.amount_paid, precision: 2, delimiter: ',') %>
+                                    </div>
+                                    <div class = 'wide column col-actions'>
+                                        <div class = 'ui small floating dropdown icon button'>
+                                            <i class = 'caret down icon'></i>
+                                            <div class = 'menu'>
+                                                <a class = 'item' href = <%= customer_payment_path(customer_payment.id) %>><i class = 'folder open icon'></i>View</a>
+                                                <a class = 'item' href = <%= edit_customer_payment_path(customer_payment.id) %>><i class = 'edit icon'></i>Edit</a>
+                                                <a class = 'item' href = ''><i class = 'trash icon'></i>Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
                 <% end %>
-            <% end %>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,11 +7,11 @@
                         <div class = 'ui info message'>
                             <div>The <b><i>Customer Account</i></b> and <b><i>Purchase Order</i></b> fields have been pre-filled because you opened this form from a specific purchase order record. To load the default blank form, <%= link_to('click here', new_customer_payment_path) %>.</div>
                         </div>
-                        <div class = 'field'>
+                        <div class = 'required field'>
                             <label>Customer Account</label>
                             <span><%= @customer_accounts.find(@new_form_prefilled_data[:customer_account_id]).customer_name %></span>
                         </div>
-                        <div class = 'field'>
+                        <div class = 'required field'>
                             <label>Purchase Order</label>
                             <div class = 'ui segment prefilled-po-details-container'>
                                 <table id = 'table-preFilledPOTable' class = 'ui celled table'>
@@ -40,11 +40,11 @@
                         <div class = 'ui info message'>
                             <div>The <b><i>Customer Account</i></b> field has been pre-filled because you opened this form from a specific customer record. To load the default blank form, <%= link_to('click here', new_customer_payment_path) %>.</div>
                         </div>
-                        <div class = 'field'>
+                        <div class = 'required field'>
                             <label>Customer Account</label>
                             <span><%= @customer_accounts.find(@new_form_prefilled_data[:customer_account_id]).customer_name %></span>
                         </div>
-                        <div class = 'field'>
+                        <div class = 'required field'>
                             <label>Purchase Order</label>
                             <div class = 'ui segments'>
                                 <div class = 'ui attached segment'>
@@ -77,11 +77,11 @@
                 <% end %>
                 <br>
             <% else %>
-                <div class = 'field'>
+                <div class = 'required field'>
                     <label>Customer Account</label>
                     <%= render '/shared/customer_account_selector' %>
                 </div>
-                <div class = 'field'>
+                <div class = 'required field'>
                     <label>Purchase Order</label>
                     <div class = 'ui segments'>
                         <div class = 'ui attached segment'>
@@ -113,13 +113,13 @@
             <% end %>
             <div class = 'fields'>
                 <div class = 'six wide field'>
-                    <div class = 'field'>
+                    <div class = 'required field'>
                         <%= label_tag :payment_date, 'Payment Date' %>
                         <%= customer_payment.date_field :payment_date, required: true %>
                     </div>
                 </div>
                 <div class = 'six wide field'>
-                    <div class = 'field'>
+                    <div class = 'required field'>
                         <%= label_tag :amount_paid, 'Amount Paid' %>
                         <div class = 'ui labeled input'>
                             <div class = 'ui basic label'>₱</div>

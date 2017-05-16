@@ -69,6 +69,8 @@ function view_form_partial() {
         mainForm_dateFulfilled = $('.view-form-partial #purchase_order_date_fulfilled');
         mainForm_status = $('.view-form-partial #purchase_order_status');
 
+        var inEditMode = false;
+
         /** CUSTOMER SELECTOR */
             /** Since the Customer Account Selector is a shared dropdown, it is
              * initialized at shared.js. Therefore, any settings change will take on
@@ -127,6 +129,8 @@ function view_form_partial() {
 
         /** ORDER LINE TABLE ACTIONS */
             function enterEditMode() {
+                inEditMode = true;
+
                 container_normalMode.css('display', 'none');
                 container_editMode.css('display', 'block');
                 setEnableOfAddProductFields(false);
@@ -137,12 +141,12 @@ function view_form_partial() {
                  * the current set quantity of its item.
                  */
                 table_orderLines.find('tbody .order-line-item').each(function() {
-                    $(this).find('.col-qty').html('<input id="field-editQty" type="number" min="1" value="1">');
+                    $(this).find('.col-qty').html('<div class="field"><input id="field-editQty" type="number" min="1" value="1"></div>');
                     $(this).find('#field-editQty').val($(this).find('.main-form.qty').val());
 
                      /** onInput() event for each edit-Qty. field.  */
                     $(this).find('#field-editQty').on('input', function() {
-                        var orderLineItem = $('.view-form-partial #field-editQty').parent().parent();
+                        var orderLineItem = $('.view-form-partial #field-editQty').parent().parent().parent();
                         orderLineItem.find('.col-order-price').html(toPriceString(orderLineItem.find('#field-editQty').val() * getPriceValue(orderLineItem.find('.col-unit-price').html())));
                         computeSubtotal();
                         computeDiscount();
@@ -151,18 +155,34 @@ function view_form_partial() {
                 });
             }
             function exitEditMode(save) {
-                table_orderLines.find('tbody .order-line-item').each(function() {
-                    if (save === true) {
-                        $(this).find('.main-form.qty').val($(this).find('#field-editQty').val());
-                    }   
-                    $(this).find('.col-qty').html($(this).find('.main-form.qty').val());
-                });
-                container_normalMode.css('display', 'block');
-                container_editMode.css('display', 'none');
-                setEnableOfAddProductFields(true);
-
-                updateTableWithCurrentQty();
-                updateAllPrices();
+                $('#message-orderValidation').css('display', 'none');
+                if (validateSaveEdit() === true) {
+                    table_orderLines.find('tbody .order-line-item').each(function() {
+                        if (save === true) {
+                            $(this).find('.main-form.qty').val($(this).find('#field-editQty').val());
+                        }   
+                        $(this).find('.col-qty').html($(this).find('.main-form.qty').val());
+                    });
+                    container_normalMode.css('display', 'block');
+                    container_editMode.css('display', 'none');
+                    setEnableOfAddProductFields(true);
+                    updateTableWithCurrentQty();
+                    updateAllPrices();
+                    inEditMode = false;
+                } else {
+                    if (save != true) {
+                        $('#message-orderValidation').css('display', 'none');
+                        table_orderLines.find('tbody .order-line-item').each(function() {
+                            $(this).find('.col-qty').html($(this).find('.main-form.qty').val());
+                        });
+                        container_normalMode.css('display', 'block');
+                        container_editMode.css('display', 'none');
+                        setEnableOfAddProductFields(true);
+                        updateTableWithCurrentQty();
+                        updateAllPrices();
+                        inEditMode = false;
+                    }
+                }
             }
             function enterDeleteMode() {
                 container_normalMode.css('display', 'none');
@@ -249,17 +269,89 @@ function view_form_partial() {
             }
             function setEnableOfAddProductFields(enabled) {
                 if (enabled === false) {
+                    $('.view-form-partial .select-product-label').addClass('text-label disabled');
                     select_products.addClass('disabled');
                     $('.view-form-partial .select-qty-label').addClass('text-label disabled');
                     /** Targets .parent() because of Semantic UI Structure */
                     field_newProductQty.parent().addClass('disabled');
                     button_addOrderLine.addClass('disabled');
                 } else {
+                    $('.view-form-partial .select-product-label').removeClass('text-label disabled');
                     select_products.removeClass('disabled');
                     $('.view-form-partial .select-qty-label').removeClass('text-label disabled');
                     field_newProductQty.parent().removeClass('disabled');
                     button_addOrderLine.removeClass('disabled');
                 }
+            }
+            function validateAddProduct() {
+                $('#message-orderValidation').css('display', 'none');
+                field_newProductQty.parent().removeClass('error');
+
+                $('#message-orderValidation').find('.header').html('This product can\'t be added');
+
+                if (field_newProductQty.val() <= 0 || isNaN(field_newProductQty.val())) {
+                    $('#message-orderValidation').find('.content').html('Quantity must be a positive, non-zero integer.');
+                    $('#message-orderValidation').find('.list').html('');
+                    $('#message-orderValidation').css('display', 'block');
+                    field_newProductQty.parent().addClass('error');
+                    field_newProductQty.focus();
+                    return false;
+                } else if (field_newProductQty.val() % 1 !== 0) {
+                    $('#message-orderValidation').find('.content').html('Quantity must be a whole number.');
+                    $('#message-orderValidation').find('.list').html('');
+                    $('#message-orderValidation').css('display', 'block');
+                    field_newProductQty.parent().addClass('error');
+                    field_newProductQty.focus();
+                    return false;
+                } else if (parseInt(field_newProductQty.val()) > parseInt(select_products.dropdown('get item', select_products.dropdown('get value')).find('#val-quantity').html())) {
+                    $('#message-orderValidation').find('.content').html('Order Quantity can\'t be larger than the product\'s remaining quantity.');
+                    $('#message-orderValidation').find('.list').html('');
+                    $('#message-orderValidation').css('display', 'block');
+                    field_newProductQty.parent().addClass('error');
+                    field_newProductQty.focus();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            function validateSaveEdit() {
+                $('#message-orderValidation').css('display', 'none');
+
+                $('#message-orderValidation').find('.header').html('Save unsuccesful');
+
+                var result = true;
+
+                table_orderLines.find('tbody .order-line-item').each(function() {
+                     $(this).find('.col-qty #field-editQty').parent().removeClass('error');
+
+                    if ($(this).find('.col-qty #field-editQty').val() <= 0 || isNaN($(this).find('.col-qty #field-editQty').val())) {
+                        $('#message-orderValidation').find('.content').html('Quantity must be a positive, non-zero integer.');
+                        $('#message-orderValidation').find('.list').html('');
+                        $('#message-orderValidation').css('display', 'block');
+
+                        $(this).find('.col-qty #field-editQty').parent().addClass('error');
+
+                        result = false;
+                    } else if ($(this).find('.col-qty #field-editQty').val() % 1 !== 0) {
+                        $('#message-orderValidation').find('.content').html('Quantity must be a whole number.');
+                        $('#message-orderValidation').find('.list').html('');
+                        $('#message-orderValidation').css('display', 'block');
+                        
+                        $(this).find('.col-qty #field-editQty').parent().addClass('error');
+                        
+                        result = false;
+                    } else if (parseInt($(this).find('.col-qty #field-editQty').val()) > parseInt(select_products.dropdown('get item', $(this).find('.main-form.product-id').val()).find('#val-quantity').html())) {
+                        $('#message-orderValidation').find('.content').html('Order Quantity can\'t be larger than the product\'s remaining quantity.');
+                        $('#message-orderValidation').find('.list').html('');
+                        $('#message-orderValidation').css('display', 'block');
+                        
+                        $(this).find('.col-qty #field-editQty').parent().addClass('error');
+
+                        result = false;
+                    }
+                });
+
+                return result;
             }
             function updateProductSelectorItems(item, action) {
                 if (action.toLowerCase() === 'after-insert') {
@@ -275,8 +367,6 @@ function view_form_partial() {
                         }
                     });
                 }
-                select_products.dropdown('clear');
-                field_newProductQty.val('');
                 validateSelectedProductAndQty();
             }
             function updateTableWithCurrentQty() {
@@ -372,10 +462,17 @@ function view_form_partial() {
             }
 
             table_orderLines.on('cocoon:after-insert', function(e, insertedItem) {
-                writeOrderLineItemAttributes(insertedItem);
-                updateProductSelectorItems(insertedItem, 'after-insert');
-                updateTableWithCurrentQty();
-                updateAllPrices();
+                if (validateAddProduct() != false) {
+                    writeOrderLineItemAttributes(insertedItem);
+                    updateProductSelectorItems(insertedItem, 'after-insert');
+                    updateTableWithCurrentQty();
+                    updateAllPrices();
+
+                    select_products.dropdown('clear');
+                    field_newProductQty.val('');
+                } else {
+                    insertedItem.find('#button-removeItem').click();
+                }
             });
             table_orderLines.on('cocoon:after-remove', function(e, removedItem) {
                 updateProductSelectorItems(removedItem, 'after-remove');

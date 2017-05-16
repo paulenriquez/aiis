@@ -100,7 +100,7 @@ var observer_customerAccounts = new MutationObserver(function () {
 var observer_products = new MutationObserver(function () {
     if ($('#select-products').dropdown('get value') !== '') {
         if ($('#select-products').find('input').val() === '') {
-            $('#select-products').dropdown('set text', $('#select-products').find('.menu .item.active .title.text').html());
+            $('#select-products').dropdown('set text', $('#select-products').find('.menu .item.active .title.text').html() + ' — ' + $('#select-products').find('.menu .item.active .right-text').html());
         } else {
             $('#select-products').dropdown('set text', '');
         }

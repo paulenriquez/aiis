@@ -1,23 +1,23 @@
 <div class = 'view-form-partial'>
     <%= form_for @product, html: {class: 'ui form'} do |product| %>
         <div class = 'ui attached segment'>
-            <div class = 'field'>
+            <div class = 'required field <%= 'error' if @product.errors[:product_name].empty? == false %>'>
                 <%= label_tag :product_name, 'Product Name' %>
                 <%= product.text_field :product_name %>
             </div>
-            <div class = 'field'>
+            <div class = 'required field <%= 'error' if @product.errors[:product_specs].empty? == false %>'>
                 <%= label_tag :product_specs, 'Specifications'%>
                 <%= product.text_field :product_specs %>
             </div>
             <div class = 'fields'>
                 <div class = 'ten wide field'>
-                    <div class = 'field'>
+                    <div class = 'required field <%= 'error' if @product.errors[:product_type].empty? == false %>'>
                         <%= label_tag :product_type, 'Classification' %>
                         <%= product.text_field :product_type %>
                     </div>
                 </div>
                 <div class = 'six wide field'>
-                    <div class = 'field'>
+                    <div class = 'required field <%= 'error' if @product.errors[:unit_price].empty? == false %>'>
                         <%= label_tag :unit_price, 'Unit Price' %>
                         <%= product.text_field :unit_price %>
                     </div>

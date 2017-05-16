@@ -1,7 +1,14 @@
 <%= render 'header' %>
 <div class = 'container-content view-new'>
-    <div class = 'ui attached message'>
-        <div class = 'header'>New Product</div>
+    <div class = 'section-messages'>
+        <% if @product.errors.any? %>
+            <%= render '/shared/form_error_messages', object: @product %>
+        <% end %>
     </div>
-    <%= render 'form' %>
+    <div class = 'section-content'>
+        <div class = 'ui attached message'>
+            <div class = 'header'>New Product</div>
+        </div>
+        <%= render 'form' %>
+    </div>
 </div>

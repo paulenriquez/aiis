@@ -1,8 +1,8 @@
 class InventoryHistoriesController < ApplicationController
-    before_action :get_records, only: [:index, :new, :edit]
+    before_action :authenticate_user!, :get_records, only: [:index, :new, :edit]
 
     def index
-
+        
     end
     def new
         if params[:product_id] != nil  && Product.exists?(params[:product_id] )

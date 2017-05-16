@@ -12,7 +12,11 @@
 
   </head>
   <body>
+  <% if user_signed_in? %>
     <div class = 'ui left vertical menu visible inverted sidebar'>
+      <div class = 'item'>
+        <div class = 'header'>ACCURATECH IIS</div>
+      </div>
       <div class = 'item'>
         <div class = 'header'>Quick Links</div>
         <div class = 'menu'>
@@ -23,7 +27,7 @@
       <div class = 'item'>
         <div class = 'header'>Dashboard</div>
         <div class = 'menu'>
-          <a class = 'item'>Home</a>
+          <a class = 'item' href = <%= pages_path %>>Home</a>
           <a class = 'item' href = <%= products_path %>>Inventory</a>
           <a class = 'item' href = <%= purchase_orders_path %>>Purchase Orders</a>
           <a class = 'item' href = <%= customer_payments_path %>>Customer Payments</a>
@@ -32,9 +36,22 @@
       </div>
     </div>
     <div class = 'pusher view-content-container'>
+      <div class = 'top-content'>
+        <span class = 'system-info'>
+          Integrated Inventory System
+        </span>
+        <span class = 'login-info'>
+          Logged-in as <%= (' <b>' + current_user.email.to_s + '</b>').html_safe %>
+          &nbsp; &nbsp; &nbsp;
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+        </span>
+      </div>
       <div class = 'center-content'>
         <%= yield %>
       </div>
     </div>
+  <% else %>
+    <%= yield %>
+  <% end %>
   </body>
 </html>

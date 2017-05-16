@@ -1,4 +1,5 @@
 class CustomerAccountsController < ApplicationController
+    before_action :authenticate_user!
     def index
         @customer_accounts = CustomerAccount.all
     end
