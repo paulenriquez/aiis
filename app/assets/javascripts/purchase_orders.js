@@ -317,7 +317,7 @@ function view_form_partial() {
             function validateSaveEdit() {
                 $('#message-orderValidation').css('display', 'none');
 
-                $('#message-orderValidation').find('.header').html('Save unsuccesful');
+                $('#message-orderValidation').find('.header').html('The changes can\'t be saved');
 
                 var result = true;
 

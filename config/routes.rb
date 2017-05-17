@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   root to: 'pages#index'
   resources :pages, only: [:index], path: ''
+  get '/backup', to: 'pages#backup'
 
   resources :customer_accounts, path: 'customers'
   resources :purchase_orders, path: 'orders' do

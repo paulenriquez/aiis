@@ -1,3 +1,36 @@
-// Place all the styles related to the Pages controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.view-index {
+    .index-all-records-list-container.records-purchase-orders {
+        .col-poDetails {
+            width: 40% !important;
+        }
+        .col-dueDate {
+            width: 25% !important;
+            text-align: right;
+        }
+        .col-outstandingBal {
+            width: 20% !important;
+            text-align: right;
+        }
+        .col-actions {
+            width: 15% !important;
+            text-align: right;
+        }
+
+        .content .details .key {
+            width: 6em;
+        }
+    }
+    .index-all-records-list-container.records-products {
+        .col-productDetails {
+            width: 85% !important;
+        }
+        .col-actions {
+            width: 15% !important;
+            text-align: right;
+        }
+
+        .content .details .key {
+            width: 8em;
+        }
+    }
+}

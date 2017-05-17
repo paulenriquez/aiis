@@ -1,6 +1,124 @@
 <div class = 'ui vertical segment container-header'>
     <h1>Dashboard</h1>
 </div>
-<div class = 'ui column grid'>
-
+<div class = 'container-content view-index'>
+    <div class = 'ui two column grid'>
+        <div class = 'nine wide column'>
+            <div class = 'ui attached message'>
+                <div class = 'header'>Purchase Orders</div>
+                Due within the next Seven Days
+            </div>
+            <div class = 'ui bottom attached segment index-all-records-list-container records-purchase-orders'>
+                <div class = 'ui middle aligned divided very relaxed list index-all-records-list'>
+                    <% if @purchase_orders_due.empty? %>
+                        <i>No Purchase Orders due within the next seven days.</i>
+                    <% else %>
+                        <% @purchase_orders_due.each do |purchase_order| %>
+                            <div class = 'item list-item'>
+                                <div class = 'ui column grid content'>
+                                    <div class = 'row'>
+                                        <div class = 'wide column col-poDetails'>
+                                            <div class = 'header'><%= purchase_order.po_num %></div>
+                                            <table class = 'details'>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class = 'key'>Customer:</td>
+                                                        <td class = 'value'><%= purchase_order.customer_account.customer_name %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class = 'key'>Total:</td>
+                                                        <td class = 'value'>₱ <%= number_with_precision(purchase_order.negotiated_price, precision: 2, delimiter: ',') %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class = 'key'>Remarks:</td>
+                                                        <td class = 'value'>
+                                                            <%= purchase_order.remarks != nil && purchase_order.remarks != '' ? purchase_order.remarks : '<i>No Remarks.</i>'.html_safe %>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class = 'wide column col-dueDate'>
+                                            <span><%= purchase_order.due_date.strftime('%b %d, %Y') %></span>
+                                            <div class = 'single-detail'>
+                                                <% if (Date.today - purchase_order.due_date).to_i != 0 %>
+                                                    Due <%= (Date.today - purchase_order.due_date).to_i * -1 %> <%= (Date.today - purchase_order.due_date).to_i != 1 ? 'days' : 'day' %> from now
+                                                <% else %>
+                                                    Due today
+                                                <% end %>
+                                            </div>
+                                        </div>
+                                        <div class = 'wide column col-outstandingBal'>
+                                            <%= number_with_precision(purchase_order.outstanding_balance, precision: 2, delimiter: ',') %>
+                                        </div>
+                                        <div class = 'wide column col-actions'>
+                                            <div class = 'ui small floating dropdown icon button'>
+                                                <i class = 'caret down icon'></i>
+                                                <div class = 'menu'>
+                                                    <a class = 'item' href = <%= new_customer_payment_path(customer_account_id: purchase_order.customer_account.id, purchase_order_id: purchase_order.id) %>>Add Payment</a>
+                                                    <div class = 'divider'></div>
+                                                    <a class = 'item' href = <%= purchase_order_path(purchase_order.id) %>><i class = 'folder open icon'></i>View</a>
+                                                    <a class = 'item' href = <%= edit_purchase_order_path(purchase_order.id) %>><i class = 'edit icon'></i>Edit</a>
+                                                    <a class = 'item' href = ''><i class = 'trash icon'></i>Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <div class = 'seven wide column'>
+            <div class = 'ui attached message'>
+                <div class = 'header'>Products</div>
+                Out-of-stock
+            </div>
+            <div class = 'ui bottom attached segment index-all-records-list-container records-products'>
+                <div class = 'ui middle aligned divided very relaxed list index-all-records-list'>
+                    <% if @products_out_of_stock.empty? %>
+                        <i>All products are in-stock.</i>
+                    <% else %>
+                        <% @products_out_of_stock.each do |product| %>
+                            <div class = 'item list-item'>
+                                <div class = 'ui column grid content'>
+                                    <div class = 'row'>
+                                        <div class = 'wide column col-productDetails'>
+                                            <div class = 'header'><%= product.product_name %></div>
+                                            <table class = 'details'>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class = 'key'>Classification:</td>
+                                                        <td class = 'value'><%= product.product_type %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class = 'key'>Specifications:</td>
+                                                        <td class = 'value'><%= product.product_specs %></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class = 'wide column col-actions'>
+                                            <div class = 'ui small floating dropdown icon button'>
+                                                <i class = 'caret down icon'></i>
+                                                <div class = 'menu'>
+                                                    <a class = 'item' href = <%= new_inventory_history_path(product_id: product.id) %>>Update Qty.</a>
+                                                    <div class = 'divider'></div>
+                                                    <a class = 'item' href = <%= product_path(product.id) %>><i class = 'folder open icon'></i>View</a>
+                                                    <a class = 'item' href = <%= edit_product_path(product.id) %>><i class = 'edit icon'></i>Edit</a>
+                                                    <a class = 'item' href = ''><i class = 'trash icon'></i>Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 <div class = 'devise-custom-login-form'>
   <div class = 'cover'>
     <div class="loginform">
-	  	<h1 class="center" style="color:#03A9F4; padding-top: 40px;">Login to Accuratech</h1>
+	  	<h1 class="center" style="color:#03A9F4; padding-top: 40px; padding-bottom: 20px;">Login to Accuratech</h1>
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form centerform' }) do |f| %>
 	  		<div class="fourteen wide field ui left icon input">
     				<%= f.email_field :email, autofocus: true, placeholder: 'Email' %>
@@ -15,7 +15,6 @@
         <%= f.submit "Log in", class: 'ui button login' %>
 	  	<% end %>
 	  	<div style="padding-top: 20px;">
-	  	<center><a  href="">Create a new account.</a></center>
 	  	</div>
 	  </div>
   </div>

@@ -1,0 +1,42 @@
+<table width="100%">
+  <tr>
+    <th>Payment Date</th>
+    <th>Amount Paid</th>
+    <th>Customer Account ID</th>
+    <th>Purchase Order ID</th>
+  </tr>
+  <% @customer_payments.each do |customer_payment| %>
+    <tr>
+      <td><%= customer_payment.payment_date %></td>
+      <td><%= customer_payment.amount_paid %></td>
+      <td><%= customer_payment.customer_account_id %></td>
+      <td><%= customer_payment.purchase_order_id %></td>
+    </tr>
+  <% end %>
+</table>
+
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Payment Date</Data></Cell>
+        <Cell><Data ss:Type="String">Amount Paid</Data></Cell>
+        <Cell><Data ss:Type="String">Customer Account ID</Data></Cell>
+        <Cell><Data ss:Type="String">Purchase Order ID</Data></Cell>
+      </Row>
+    <% @customer_payments.each do |customer_payment| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= customer_payment.payment_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= customer_payment.amount_paid %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= customer_payment.customer_account_id %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= customer_payment.purchase_order_id %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -2,6 +2,12 @@
     width: calc(100% - 260px);
 }
 
+.ui.sidebar {
+    .item {
+        font-size: 1.1em !important;
+    }
+}
+
 .top-content {
     padding: 15px 15px 0 15px;
     .system-info {
